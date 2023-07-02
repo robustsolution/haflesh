@@ -112,7 +112,7 @@ class _CreateInfoPageState extends State<CreateInfoPage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Expanded(
-                    child: SingleChildScrollView(
+                    child: Container(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 16, vertical: 8),
                         child: Column(
@@ -142,7 +142,11 @@ class _CreateInfoPageState extends State<CreateInfoPage> {
                             const SizedBox(
                               height: 24,
                             ),
-                            _activePage()
+                            Expanded(
+                              child: SingleChildScrollView(
+                                child: _activePage(),
+                              ),
+                            )
                           ],
                         ))),
                 Row(children: <Widget>[
@@ -208,10 +212,16 @@ class _CreateInfoPageState extends State<CreateInfoPage> {
   Widget step3(ProfileModel profile) {
     return PromptInput(
       prompts: profile.prompts ?? ["", "", ""],
-      onChange: (value) {
+      answers: profile.answers ?? ["", "", ""],
+      onChangePrompts: (value) {
         context
             .read<ProfileBloc>()
             .add(ProfileUpdated(profile.copyWith(prompts: value)));
+      },
+      onChangeAnswers: (value) {
+        context
+            .read<ProfileBloc>()
+            .add(ProfileUpdated(profile.copyWith(answers: value)));
       },
     );
   }

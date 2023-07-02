@@ -291,7 +291,7 @@ class _InputWidgetState extends State<InternationalPhoneNumberInput> {
             hintText: widget.hintText,
             fillColor: Theme.of(context).colorScheme.onBackground,
             filled: true,
-            contentPadding: const EdgeInsets.all(20),
+            contentPadding: const EdgeInsets.all(12),
             border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12.0),
                 borderSide: BorderSide.none),
@@ -408,47 +408,42 @@ class _InputWidgetView
           width: 8,
         ),
         Flexible(
-            child: Theme(
-                data: ThemeData(
-                    highlightColor: Colors.transparent,
-                    hoverColor: Colors.transparent),
-                child: TextFormField(
-                  key: widget.fieldKey ??
-                      const Key(TestHelper.TextInputKeyValue),
-                  textDirection: TextDirection.ltr,
-                  controller: state.controller,
-                  cursorColor: widget.cursorColor,
-                  focusNode: widget.focusNode,
-                  enabled: widget.isEnabled,
-                  autofocus: widget.autoFocus,
-                  keyboardType: widget.keyboardType,
-                  textInputAction: widget.keyboardAction,
-                  cursorHeight: 20,
-                  style: widget.textStyle,
-                  decoration: state.getInputDecoration(widget.inputDecoration),
-                  textAlign: widget.textAlign,
-                  textAlignVertical: widget.textAlignVertical,
-                  onEditingComplete: widget.onSubmit,
-                  onFieldSubmitted: widget.onFieldSubmitted,
-                  autovalidateMode: widget.autoValidateMode,
-                  autofillHints: widget.autofillHints,
-                  validator: widget.validator ?? state.validator,
-                  onSaved: state.onSaved,
-                  scrollPadding: widget.scrollPadding,
-                  inputFormatters: [
-                    LengthLimitingTextInputFormatter(widget.maxLength),
-                    widget.formatInput
-                        ? AsYouTypeFormatter(
-                            isoCode: countryCode,
-                            dialCode: dialCode,
-                            onInputFormatted: (TextEditingValue value) {
-                              state.controller!.value = value;
-                            },
-                          )
-                        : FilteringTextInputFormatter.digitsOnly,
-                  ],
-                  onChanged: state.onChanged,
-                )))
+            child: TextFormField(
+          key: widget.fieldKey ?? Key(TestHelper.TextInputKeyValue),
+          textDirection: TextDirection.ltr,
+          controller: state.controller,
+          cursorColor: widget.cursorColor,
+          focusNode: widget.focusNode,
+          enabled: widget.isEnabled,
+          autofocus: widget.autoFocus,
+          keyboardType: widget.keyboardType,
+          textInputAction: widget.keyboardAction,
+          cursorHeight: 24,
+          style: widget.textStyle,
+          decoration: state.getInputDecoration(widget.inputDecoration),
+          textAlign: widget.textAlign,
+          textAlignVertical: widget.textAlignVertical,
+          onEditingComplete: widget.onSubmit,
+          onFieldSubmitted: widget.onFieldSubmitted,
+          autovalidateMode: widget.autoValidateMode,
+          autofillHints: widget.autofillHints,
+          validator: widget.validator ?? state.validator,
+          onSaved: state.onSaved,
+          scrollPadding: widget.scrollPadding,
+          inputFormatters: [
+            LengthLimitingTextInputFormatter(widget.maxLength),
+            widget.formatInput
+                ? AsYouTypeFormatter(
+                    isoCode: countryCode,
+                    dialCode: dialCode,
+                    onInputFormatted: (TextEditingValue value) {
+                      state.controller!.value = value;
+                    },
+                  )
+                : FilteringTextInputFormatter.digitsOnly,
+          ],
+          onChanged: state.onChanged,
+        ))
       ],
     );
   }

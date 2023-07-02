@@ -55,7 +55,7 @@ class _HomeTownInputState extends State<HomeTownInput>
                 fillColor: Theme.of(context).colorScheme.onBackground,
                 filled: true,
                 border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(4.0),
+                    borderRadius: BorderRadius.circular(12.0),
                     borderSide: BorderSide.none),
                 hintStyle: CustomTextStyle.getSubtitleStyle(
                     Theme.of(context).colorScheme.onSurface),

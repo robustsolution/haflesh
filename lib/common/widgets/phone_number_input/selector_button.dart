@@ -78,31 +78,28 @@ class SelectorButton extends StatelessWidget {
             minWidth: 0,
             onPressed: countries.isNotEmpty && countries.length > 1 && isEnabled
                 ? () async {
-                    Country? selected;
-                    if (selectorConfig.selectorType ==
-                        PhoneInputSelectorType.BOTTOM_SHEET) {
-                      selected = await showCountrySelectorBottomSheet(
-                          context, countries);
-                    } else {
-                      selected =
-                          await showCountrySelectorDialog(context, countries);
-                    }
+                    // Country? selected;
+                    // if (selectorConfig.selectorType ==
+                    //     PhoneInputSelectorType.BOTTOM_SHEET) {
+                    //   selected = await showCountrySelectorBottomSheet(
+                    //       context, countries);
+                    // } else {
+                    //   selected =
+                    //       await showCountrySelectorDialog(context, countries);
+                    // }
 
-                    if (selected != null) {
-                      onCountryChanged(selected);
-                    }
+                    // if (selected != null) {
+                    //   onCountryChanged(selected);
+                    // }
                   }
                 : null,
-            child: Padding(
-              padding: const EdgeInsets.only(right: 8.0),
-              child: Item(
-                country: country,
-                showFlag: selectorConfig.showFlags,
-                useEmoji: selectorConfig.useEmoji,
-                leadingPadding: selectorConfig.leadingPadding,
-                trailingSpace: selectorConfig.trailingSpace,
-                textStyle: selectorTextStyle,
-              ),
+            child: Item(
+              country: country,
+              showFlag: selectorConfig.showFlags,
+              useEmoji: selectorConfig.useEmoji,
+              leadingPadding: selectorConfig.leadingPadding,
+              trailingSpace: selectorConfig.trailingSpace,
+              textStyle: selectorTextStyle,
             ),
           );
   }
@@ -184,15 +181,6 @@ class SelectorButton extends StatelessWidget {
                         ),
                       ),
                     ),
-                    // child: CountrySearchListWidget(
-                    //   countries,
-                    //   locale,
-                    //   searchBoxDecoration: searchBoxDecoration,
-                    //   scrollController: controller,
-                    //   showFlags: selectorConfig.showFlags,
-                    //   useEmoji: selectorConfig.useEmoji,
-                    //   autoFocus: autoFocusSearchField,
-                    // ),
                   ),
                 );
               },

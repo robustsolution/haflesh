@@ -110,6 +110,8 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
         return visibleStep3(profile);
       case 3:
         return visibleStep4(profile);
+      case 4:
+        return visibleStep5(profile);
       case 5:
         return visibleStep6(profile);
       case 6:
@@ -158,7 +160,6 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
 
     return Scaffold(
         backgroundColor: Theme.of(context).colorScheme.secondary,
-        resizeToAvoidBottomInset: false,
         body: BlocListener<ProfileBloc, ProfileState>(
             listener: (context, state) {
               // if the profile successfully created, show welcome modal
@@ -175,7 +176,7 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Expanded(
-                    child: SingleChildScrollView(
+                    child: Container(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 16, vertical: 8),
                         child: Column(
@@ -204,7 +205,11 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
                             const SizedBox(
                               height: 24,
                             ),
-                            _activePage()
+                            Expanded(
+                              child: SingleChildScrollView(
+                                child: _activePage(),
+                              ),
+                            )
                           ],
                         ))),
                 Row(children: <Widget>[
@@ -339,8 +344,31 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
   }
 
   Widget step5(ProfileModel profile) {
-    return const NationalityChoose(
-      title: "",
+    return NationalityChoose(
+      nation: profile.nation ?? ["", ""],
+      onChange: (value) {
+        context
+            .read<ProfileBloc>()
+            .add(ProfileUpdated(profile.copyWith(nation: value)));
+      },
+    );
+  }
+
+  Widget visibleStep5(ProfileModel profile) {
+    return CheckboxListTile(
+      contentPadding: const EdgeInsets.all(0),
+      value: profile.nationVisibility ?? false,
+      activeColor: Theme.of(context).colorScheme.primary,
+      checkColor: Theme.of(context).colorScheme.secondary,
+      controlAffinity: ListTileControlAffinity.leading,
+      onChanged: (bool? value) {
+        setState(() {
+          context
+              .read<ProfileBloc>()
+              .add(ProfileUpdated(profile.copyWith(nationVisibility: value)));
+        });
+      },
+      title: const Text("Visible on my profile"),
     );
   }
 

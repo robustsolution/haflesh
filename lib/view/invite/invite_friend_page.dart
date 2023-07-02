@@ -70,7 +70,6 @@ class _InviteFriendPageState extends State<InviteFriendPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Theme.of(context).colorScheme.secondary,
-        resizeToAvoidBottomInset: false,
         body: Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: Column(
@@ -85,6 +84,7 @@ class _InviteFriendPageState extends State<InviteFriendPage> {
                     ),
                     const SizedBox(height: 12),
                     Text('Let your friends know about Dateapp',
+                        textAlign: TextAlign.center,
                         style: CustomTextStyle.getTitleStyle()),
                     const SizedBox(height: 34),
                     InternationalPhoneNumberInput(
@@ -120,16 +120,10 @@ class _InviteFriendPageState extends State<InviteFriendPage> {
                       },
                     ),
                     const SizedBox(height: 20),
-                    Flex(
-                      direction:
-                          Axis.horizontal, // or Axis.vertical if using Column
-                      children: [
-                        Text(
-                            "This number will receive a link to download the application",
-                            style: CustomTextStyle.getSpanStyle(
-                                Theme.of(context).colorScheme.primary))
-                      ],
-                    ),
+                    Text(
+                        "This number will receive a link to download the application",
+                        style: CustomTextStyle.getSpanStyle(
+                            Theme.of(context).colorScheme.primary))
                   ],
                 )),
                 Row(children: <Widget>[

@@ -3,16 +3,12 @@ import 'package:hafleh/common/widgets/multi_select/constants.dart';
 import 'package:hafleh/common/widgets/multi_select/multi_search_selection.dart';
 
 class NationalityChoose extends StatefulWidget {
-  final String title;
-  // final String lastname;
-  // final Function onChangeFirstname;
-  // final Function onChangeLastname;
+  final List<String> nation;
+  final Function onChange;
   const NationalityChoose({
     super.key,
-    required this.title,
-    // required this.lastname,
-    // required this.onChangeFirstname,
-    // required this.onChangeLastname,
+    required this.nation,
+    required this.onChange,
   });
 
   @override
@@ -37,6 +33,8 @@ class _NationalityChooseState extends State<NationalityChoose>
 
   @override
   Widget build(BuildContext context) {
+    int count = 0;
+    List<String> nations = [];
     super.build(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -47,7 +45,14 @@ class _NationalityChooseState extends State<NationalityChoose>
               hoverColor: Colors.transparent),
           child: MultipleSearchSelection<Country>(
             showClearAllButton: false,
-            onItemAdded: (c) {},
+            onItemAdded: (c) {
+              if (count < 2) {
+                count++;
+                nations.add(c.name);
+              } else {
+                print(nations);
+              }
+            },
             showClearSearchFieldButton: true,
             items: countries,
             fieldToCheck: (c) {
@@ -85,38 +90,6 @@ class _NationalityChooseState extends State<NationalityChoose>
             },
             sortShowedItems: true,
             sortPickedItems: true,
-            selectAllButton: Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  border:
-                      Border.all(color: Theme.of(context).colorScheme.primary),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    'Select All',
-                    style: kStyleDefault,
-                  ),
-                ),
-              ),
-            ),
-            clearAllButton: Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  border:
-                      Border.all(color: Theme.of(context).colorScheme.primary),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    'Clear All',
-                    style: kStyleDefault,
-                  ),
-                ),
-              ),
-            ),
             caseSensitiveSearch: false,
             fuzzySearch: FuzzySearch.none,
             itemsVisibility: ShowedItemsVisibility.alwaysOn,

@@ -61,7 +61,9 @@ class _BioInputState extends State<BioInput>
         // keyboardType: TextInputType.text,
         // inputFormatters: [LengthLimitingTextInputFormatter(120)],
         style: const TextStyle(color: ThemeColors.onSecondary, fontSize: 15),
-        onChanged: (value) {},
+        onChanged: (value) {
+          widget.onChange(value);
+        },
       ),
     );
   }
