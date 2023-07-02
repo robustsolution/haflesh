@@ -39,9 +39,6 @@ AuthRouteState getRouteState(
   ProfileState profileState,
   InfoState infoState,
 ) {
-  print(authState);
-  print(profileState.status);
-  print(infoState.status);
   if (authState is AppInitializing) {
     return AuthRouteState.initializing;
   } else if (authState is Authenticated &&
