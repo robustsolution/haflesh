@@ -1,3 +1,5 @@
+// ignore_for_file: constant_identifier_names, library_private_types_in_public_api
+
 import 'dart:math';
 
 part 'strings_ar.dart';
@@ -156,32 +158,32 @@ const DateTimePickerLocale DATETIME_PICKER_LOCALE_DEFAULT =
     DateTimePickerLocale.en_us;
 
 const Map<DateTimePickerLocale, _StringsI18n> datePickerI18n = {
-  DateTimePickerLocale.en_us: const _StringsEnUs(),
-  DateTimePickerLocale.zh_cn: const _StringsZhCn(),
-  DateTimePickerLocale.pt_br: const _StringsPtBr(),
-  DateTimePickerLocale.es: const _StringsEs(),
-  DateTimePickerLocale.ro: const _StringsRo(),
-  DateTimePickerLocale.bn: const _StringsBn(),
-  DateTimePickerLocale.ar: const _StringsAr(),
-  DateTimePickerLocale.jp: const _StringsJp(),
-  DateTimePickerLocale.ru: const _StringsRu(),
-  DateTimePickerLocale.de: const _StringsDe(),
-  DateTimePickerLocale.ko: const _StringsKo(),
-  DateTimePickerLocale.it: const _StringsIt(),
-  DateTimePickerLocale.hu: const _StringsHu(),
-  DateTimePickerLocale.he: const _StringsHe(),
-  DateTimePickerLocale.id: const _StringsId(),
-  DateTimePickerLocale.tr: const _StringsTr(),
-  DateTimePickerLocale.no_nb: const _StringsNoNb(),
-  DateTimePickerLocale.no_nn: const _StringsNoNn(),
-  DateTimePickerLocale.nl: const _StringsNl(),
-  DateTimePickerLocale.fr: const _StringsFr(),
-  DateTimePickerLocale.th: const _StringsTh(),
-  DateTimePickerLocale.lt: const _StringsLt(),
-  DateTimePickerLocale.ht: const _StringsHt(),
-  DateTimePickerLocale.sv: const _StringsSv(),
-  DateTimePickerLocale.cz: const _StringsCz(),
-  DateTimePickerLocale.pl: const _StringsPl(),
+  DateTimePickerLocale.en_us: _StringsEnUs(),
+  DateTimePickerLocale.zh_cn: _StringsZhCn(),
+  DateTimePickerLocale.pt_br: _StringsPtBr(),
+  DateTimePickerLocale.es: _StringsEs(),
+  DateTimePickerLocale.ro: _StringsRo(),
+  DateTimePickerLocale.bn: _StringsBn(),
+  DateTimePickerLocale.ar: _StringsAr(),
+  DateTimePickerLocale.jp: _StringsJp(),
+  DateTimePickerLocale.ru: _StringsRu(),
+  DateTimePickerLocale.de: _StringsDe(),
+  DateTimePickerLocale.ko: _StringsKo(),
+  DateTimePickerLocale.it: _StringsIt(),
+  DateTimePickerLocale.hu: _StringsHu(),
+  DateTimePickerLocale.he: _StringsHe(),
+  DateTimePickerLocale.id: _StringsId(),
+  DateTimePickerLocale.tr: _StringsTr(),
+  DateTimePickerLocale.no_nb: _StringsNoNb(),
+  DateTimePickerLocale.no_nn: _StringsNoNn(),
+  DateTimePickerLocale.nl: _StringsNl(),
+  DateTimePickerLocale.fr: _StringsFr(),
+  DateTimePickerLocale.th: _StringsTh(),
+  DateTimePickerLocale.lt: _StringsLt(),
+  DateTimePickerLocale.ht: _StringsHt(),
+  DateTimePickerLocale.sv: _StringsSv(),
+  DateTimePickerLocale.cz: _StringsCz(),
+  DateTimePickerLocale.pl: _StringsPl(),
 };
 
 class DatePickerI18n {

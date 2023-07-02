@@ -1,7 +1,8 @@
+// ignore_for_file: depend_on_referenced_packages
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:the_hafleh/core/models/user_model.dart';
-import 'package:the_hafleh/core/repositories/auth_repository.dart';
+import 'package:hafleh/core/repositories/auth_repository.dart';
 import 'package:meta/meta.dart';
 
 part 'auth_event.dart';
@@ -15,32 +16,40 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         super(AppInitializing()) {
     on<SplashLoaded>((event, emit) async {
       if (authenticationRepository.isLoggedIn()) {
-        UserModel user = await authenticationRepository.createOrFindUser();
-        emit(Authenticated(user));
+        emit(Authenticated());
       } else {
         emit(UnAuthenticated());
       }
     });
 
     on<PhoneSignInRequested>((event, emit) async {
-      emit(AuthLoading());
+      emit(AuthLoading(type: "PhoneSignInRequested"));
       try {
-        await authRepository.signInWithPhone(event.phoneNumber);
+        await authRepository.signInWithPhone(event.phoneNumber,
+            codeSentCallback: () {
+          add(PhoneCodeSent());
+        });
       } catch (e) {
         emit(AuthError(e.toString()));
         emit(UnAuthenticated());
       }
     });
+
+    on<PhoneCodeSent>((event, emit) async {
+      emit(AuthLoading(type: "SMSCodeSent"));
+    });
+
     on<VerifyOTPRequested>((event, emit) async {
-      emit(AuthLoading());
+      emit(AuthLoading(type: "VerifyOTPRequested"));
       try {
-        UserModel user = await authRepository.verifyOTP(event.code);
-        emit(Authenticated(user));
+        await authRepository.verifyOTP(event.code);
+        emit(Authenticated());
       } catch (e) {
         emit(AuthError(e.toString()));
         emit(UnAuthenticated());
       }
     });
+
     on<SignOutRequested>((event, emit) async {
       emit(AuthLoading());
       try {
@@ -50,9 +59,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         emit(AuthError(e.toString()));
       }
     });
+
     on<MakeForceSignIn>((event, emit) async {
-      emit(Authenticated(
-          UserModel(uid: "test", provider: "test", isDisabled: false)));
+      emit(Authenticated());
     });
   }
 }

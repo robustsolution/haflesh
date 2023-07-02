@@ -1,4 +1,4 @@
-package com.onboard.hafleh
+package app.hafleh
 
 import io.flutter.embedding.android.FlutterActivity
 

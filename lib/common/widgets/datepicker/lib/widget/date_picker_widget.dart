@@ -1,9 +1,10 @@
+// ignore_for_file: no_logic_in_create_state, unnecessary_this, avoid_function_literals_in_foreach_calls
+
 import 'dart:math';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:the_hafleh/common/values/colors.dart';
 
 import '../date_time_formatter.dart';
 import '../date_picker_theme.dart';
@@ -20,13 +21,13 @@ class DatePickerWidget extends StatefulWidget {
     this.firstDate,
     this.lastDate,
     this.initialDate,
-    this.dateFormat: DATETIME_PICKER_DATE_FORMAT,
-    this.locale: DATETIME_PICKER_LOCALE_DEFAULT,
-    this.pickerTheme: DateTimePickerTheme.Default,
+    this.dateFormat = DATETIME_PICKER_DATE_FORMAT,
+    this.locale = DATETIME_PICKER_LOCALE_DEFAULT,
+    this.pickerTheme = DateTimePickerTheme.Default,
     this.onCancel,
     this.onChange,
     this.onConfirm,
-    this.looping: false,
+    this.looping = false,
   }) : super(key: key) {
     DateTime minTime = firstDate ?? DateTime.parse(DATE_PICKER_MIN_DATETIME);
     DateTime maxTime = lastDate ?? DateTime.parse(DATE_PICKER_MAX_DATETIME);
@@ -105,7 +106,7 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       //padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 0),
       child: GestureDetector(
         child: Material(
@@ -199,7 +200,7 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
         children: <Widget>[
           Positioned(
             child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 7, vertical: 18),
+              padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 18),
               height: widget.pickerTheme!.pickerHeight,
               decoration:
                   BoxDecoration(color: widget.pickerTheme!.backgroundColor),
@@ -237,7 +238,8 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
                         width: 2,
                         color: Theme.of(context).colorScheme.primary,
                       ),
-                      borderRadius: BorderRadius.all(Radius.circular(10))),
+                      borderRadius:
+                          const BorderRadius.all(Radius.circular(10))),
                 )),
           ),
           Positioned(
@@ -278,8 +280,9 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
   }
 
   double sizeByFormat(String format) {
-    if (format.contains("-MMMM") || format.contains("MMMM-"))
+    if (format.contains("-MMMM") || format.contains("MMMM-")) {
       return DATETIME_PICKER_ITEM_TEXT_SIZE_SMALL;
+    }
 
     return DATETIME_PICKER_ITEM_TEXT_SIZE_BIG;
   }
@@ -343,15 +346,15 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
 
   // get the correct month
   int? _calcCurrentMonth() {
-    int? _currMonth = this._currMonth!;
+    int? currMonth = this._currMonth!;
     List<int> monthRange = _calcMonthRange();
-    if (_currMonth < monthRange.last) {
-      _currMonth = max(_currMonth, monthRange.first);
+    if (currMonth < monthRange.last) {
+      currMonth = max(currMonth, monthRange.first);
     } else {
-      _currMonth = max(monthRange.last, monthRange.first);
+      currMonth = max(monthRange.last, monthRange.first);
     }
 
-    return _currMonth;
+    return currMonth;
   }
 
   /// change range of month and day
@@ -459,9 +462,7 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
     int maxYear = _maxDateTime.year;
     int minMonth = _minDateTime.month;
     int maxMonth = _maxDateTime.month;
-    if (currMonth == null) {
-      currMonth = _currMonth;
-    }
+    currMonth ??= _currMonth;
     if (minYear == _currYear && minMonth == currMonth) {
       // selected minimum year and month, limit day range
       minDay = _minDateTime.day;

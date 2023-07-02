@@ -1,5 +1,7 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
-import 'package:the_hafleh/common/widgets/custom_radio_group.dart';
+import 'package:hafleh/common/widgets/custom_radio_group.dart';
 
 List<String> genders = [
   'Man',
@@ -9,15 +11,12 @@ List<String> genders = [
 
 class GendersChoose extends StatefulWidget {
   final String? gender;
-  // final bool visible;
   final Function onChange;
-  // final Function onVisibilityChange;
+
   const GendersChoose({
     super.key,
     this.gender,
-    // required this.visible,
     required this.onChange,
-    // required this.onVisibilityChange
   });
 
   @override

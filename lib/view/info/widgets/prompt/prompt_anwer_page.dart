@@ -1,16 +1,21 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:the_hafleh/common/values/colors.dart';
-import 'package:the_hafleh/common/values/custom_text_style.dart';
-import 'package:the_hafleh/common/widgets/button.dart';
+import 'package:hafleh/common/values/colors.dart';
+import 'package:hafleh/common/values/custom_text_style.dart';
+import 'package:hafleh/common/widgets/button.dart';
 
 class PromptAnswerPage extends StatefulWidget {
+  const PromptAnswerPage({super.key});
+
   @override
   _PromptAnswerPageState createState() => _PromptAnswerPageState();
 
-  static Page<void> page() => MaterialPage<void>(child: PromptAnswerPage());
+  static Page<void> page() =>
+      const MaterialPage<void>(child: PromptAnswerPage());
   static Route<void> route() =>
-      MaterialPageRoute<void>(builder: (_) => PromptAnswerPage());
+      MaterialPageRoute<void>(builder: (_) => const PromptAnswerPage());
 }
 
 class _PromptAnswerPageState extends State<PromptAnswerPage> {
@@ -42,11 +47,11 @@ class _PromptAnswerPageState extends State<PromptAnswerPage> {
                         style: CustomTextStyle.getTitleStyle()),
                     const SizedBox(height: 24),
                     Container(
-                      decoration: new BoxDecoration(
+                      decoration: BoxDecoration(
                           color: Theme.of(context).colorScheme.secondary,
-                          border: new Border.all(
+                          border: Border.all(
                               color: Theme.of(context).colorScheme.outline),
-                          borderRadius: new BorderRadius.circular(15.0)),
+                          borderRadius: BorderRadius.circular(15.0)),
                       padding: const EdgeInsets.all(12),
                       child: TextField(
                         // controller: _bioEditingController,

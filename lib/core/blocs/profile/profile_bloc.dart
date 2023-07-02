@@ -1,7 +1,9 @@
+// ignore_for_file: depend_on_referenced_packages
+
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:the_hafleh/core/models/profile_model.dart';
-import 'package:the_hafleh/core/repositories/profile_repository.dart';
+import 'package:hafleh/core/models/profile_model.dart';
+import 'package:hafleh/core/repositories/profile_repository.dart';
 import 'package:meta/meta.dart';
 
 part 'profile_event.dart';
@@ -16,25 +18,27 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     on<ProfileLoadRequested>((event, emit) async {
       try {
         emit(state.copyWith(status: ProfileStatus.loading));
-        ProfileModel? existingProfile =
+        ProfileModel? profile =
             await profileRepository.getProfileById(event.uid);
-        if (existingProfile == null) {
+        if (profile == null) {
           emit(state.copyWith(
             status: ProfileStatus.notCreated,
           ));
         } else {
           emit(state.copyWith(
             status: ProfileStatus.success,
-            profile: existingProfile,
+            profile: profile,
           ));
         }
       } catch (e) {
         emit(state.copyWith(status: ProfileStatus.failure));
       }
     });
+
     on<ProfileUpdated>((event, emit) async {
       emit(state.copyWith(profile: event.profile));
     });
+
     on<ProfileCreateRequested>((event, emit) async {
       try {
         emit(state.copyWith(status: ProfileStatus.createLoading));
@@ -48,11 +52,13 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         emit(state.copyWith(status: ProfileStatus.failure));
       }
     });
+
     on<ProfileWelcomeClicked>((event, emit) async {
       emit(state.copyWith(
         status: ProfileStatus.success,
       ));
     });
+
     on<ProfileSignoutRequested>((event, emit) async {
       emit(
           ProfileState(profile: ProfileModel(), status: ProfileStatus.initial));

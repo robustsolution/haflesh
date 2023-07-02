@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:the_hafleh/common/values/colors.dart';
+import 'package:hafleh/common/values/colors.dart';
 
 class AppIconRect extends StatelessWidget {
   final double width;
-  AppIconRect({super.key, this.width = 80});
+  const AppIconRect({super.key, this.width = 80});
 
   @override
   Widget build(BuildContext context) {

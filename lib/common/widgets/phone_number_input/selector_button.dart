@@ -6,7 +6,6 @@ import 'package:intl_phone_number_input/src/utils/selector_config.dart';
 import 'package:intl_phone_number_input/src/utils/test/test_helper.dart';
 import 'package:intl_phone_number_input/src/widgets/countries_search_list_widget.dart';
 import 'package:intl_phone_number_input/src/widgets/input_widget.dart';
-import 'package:the_hafleh/common/values/colors.dart';
 import './country_code_item.dart';
 
 /// [SelectorButton]
@@ -43,7 +42,7 @@ class SelectorButton extends StatelessWidget {
         ? countries.isNotEmpty && countries.length > 1
             ? DropdownButtonHideUnderline(
                 child: DropdownButton<Country>(
-                  key: Key(TestHelper.DropdownButtonKeyValue),
+                  key: const Key(TestHelper.DropdownButtonKeyValue),
                   hint: Item(
                     country: country,
                     showFlag: selectorConfig.showFlags,
@@ -74,8 +73,8 @@ class SelectorButton extends StatelessWidget {
                       .primary), // Set the border color and width
               borderRadius: BorderRadius.circular(10), // Set the border radius
             ),
-            key: Key(TestHelper.DropdownButtonKeyValue),
-            padding: EdgeInsets.fromLTRB(10, 18, 10, 18),
+            key: const Key(TestHelper.DropdownButtonKeyValue),
+            padding: const EdgeInsets.fromLTRB(10, 18, 10, 18),
             minWidth: 0,
             onPressed: countries.isNotEmpty && countries.length > 1 && isEnabled
                 ? () async {
@@ -160,7 +159,7 @@ class SelectorButton extends StatelessWidget {
       clipBehavior: Clip.hardEdge,
       isScrollControlled: isScrollControlled,
       backgroundColor: Colors.transparent,
-      shape: RoundedRectangleBorder(
+      shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(12), topRight: Radius.circular(12))),
       builder: (BuildContext context) {
@@ -178,7 +177,7 @@ class SelectorButton extends StatelessWidget {
                   child: Container(
                     decoration: ShapeDecoration(
                       color: Theme.of(context).canvasColor,
-                      shape: RoundedRectangleBorder(
+                      shape: const RoundedRectangleBorder(
                         borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(12),
                           topRight: Radius.circular(12),

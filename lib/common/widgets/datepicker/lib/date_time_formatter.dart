@@ -1,3 +1,5 @@
+// ignore_for_file: constant_identifier_names
+
 import 'dart:math';
 
 import 'date_picker.dart';
@@ -10,7 +12,7 @@ class DateTimeFormatter {
   /// Get default value of date format.
   static String generateDateFormat(
       String dateFormat, DateTimePickerMode pickerMode) {
-    if (dateFormat.length > 0) {
+    if (dateFormat.isNotEmpty) {
       return dateFormat;
     }
     switch (pickerMode) {
@@ -34,7 +36,7 @@ class DateTimeFormatter {
   /// Split date format to array.
   static List<String> splitDateFormat(String? dateFormat,
       {DateTimePickerMode? mode}) {
-    if (dateFormat == null || dateFormat.length == 0) {
+    if (dateFormat == null || dateFormat.isEmpty) {
       return [];
     }
     List<String> result = dateFormat.split(RegExp(DATE_FORMAT_SEPARATOR));
@@ -73,7 +75,7 @@ class DateTimeFormatter {
   /// Format datetime string
   static String formatDateTime(
       int value, String format, DateTimePickerLocale? locale, weekday) {
-    if (format.length == 0) {
+    if (format.isEmpty) {
       return value.toString();
     }
 
@@ -210,8 +212,8 @@ class DateTimeFormatter {
   static String _formatNumber(int value, String format, String unit) {
     if (format.contains('$unit$unit')) {
       return format.replaceAll('$unit$unit', value.toString().padLeft(2, '0'));
-    } else if (format.contains('$unit')) {
-      return format.replaceAll('$unit', value.toString());
+    } else if (format.contains(unit)) {
+      return format.replaceAll(unit, value.toString());
     }
     return value.toString();
   }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:the_hafleh/common/widgets/custom_radio.dart';
+import 'package:hafleh/common/widgets/custom_radio.dart';
 
 class CustomRadioGroup extends StatelessWidget {
   final List<String> options;

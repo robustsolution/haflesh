@@ -1,7 +1,6 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
-import 'package:the_hafleh/common/values/colors.dart';
 import './prompt_anwer_page.dart';
 import 'package:pressable/pressable.dart';
 

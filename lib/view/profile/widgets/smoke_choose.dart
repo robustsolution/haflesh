@@ -1,9 +1,12 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
-import 'package:the_hafleh/common/widgets/custom_radio_group.dart';
+import 'package:hafleh/common/widgets/custom_radio_group.dart';
 
 class SmokeChoose extends StatefulWidget {
   final String? smoke;
   final Function onChange;
+
   const SmokeChoose({
     super.key,
     this.smoke,
@@ -11,7 +14,6 @@ class SmokeChoose extends StatefulWidget {
   });
 
   @override
-  // ignore: library_private_types_in_public_api
   _SmokeChooseState createState() => _SmokeChooseState();
 }
 

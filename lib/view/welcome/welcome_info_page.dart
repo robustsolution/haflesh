@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:the_hafleh/common/values/colors.dart';
-import 'package:the_hafleh/common/values/custom_text_style.dart';
-import 'package:the_hafleh/common/widgets/button.dart';
-import 'package:the_hafleh/view/info/create_info_page.dart';
+import 'package:hafleh/common/values/custom_text_style.dart';
+import 'package:hafleh/common/widgets/button.dart';
+import 'package:hafleh/view/info/create_info_page.dart';
 
 class WelcomeInfoPage extends StatelessWidget {
   const WelcomeInfoPage({

@@ -1,9 +1,12 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
-import 'package:the_hafleh/common/widgets/custom_radio_group.dart';
+import 'package:hafleh/common/widgets/custom_radio_group.dart';
 
 class DrinkChoose extends StatefulWidget {
   final String? drink;
   final Function onChange;
+
   const DrinkChoose({
     super.key,
     this.drink,
@@ -11,7 +14,6 @@ class DrinkChoose extends StatefulWidget {
   });
 
   @override
-  // ignore: library_private_types_in_public_api
   _DrinkChooseState createState() => _DrinkChooseState();
 }
 

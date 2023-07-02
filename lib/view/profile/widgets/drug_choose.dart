@@ -1,9 +1,12 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
-import 'package:the_hafleh/common/widgets/custom_radio_group.dart';
+import 'package:hafleh/common/widgets/custom_radio_group.dart';
 
 class DrugChoose extends StatefulWidget {
   final String? drug;
   final Function onChange;
+
   const DrugChoose({
     super.key,
     this.drug,
@@ -11,7 +14,6 @@ class DrugChoose extends StatefulWidget {
   });
 
   @override
-  // ignore: library_private_types_in_public_api
   _DrugChooseState createState() => _DrugChooseState();
 }
 

@@ -3,8 +3,6 @@ import 'dart:async';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:the_hafleh/common/values/supabase.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 Future<Uint8List> getImageBytes(ImageProvider imageProvider) async {
   final Completer<Uint8List> completer = Completer();
@@ -20,9 +18,4 @@ Future<Uint8List> getImageBytes(ImageProvider imageProvider) async {
   stream.addListener(listener);
 
   return completer.future;
-}
-
-String getPublicPhotoUrl(String path) {
-  final supabase = Supabase.instance.client;
-  return supabase.storage.from(SupabaseConsts.photoBucket).getPublicUrl(path);
 }
