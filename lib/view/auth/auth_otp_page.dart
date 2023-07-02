@@ -152,7 +152,7 @@ class _AuthOTPPageState extends State<AuthOTPPage> {
                           hideCharacter: false,
                           highlight: false,
                           defaultBorderColor:
-                              Theme.of(context).colorScheme.onPrimary,
+                              Theme.of(context).colorScheme.onSurface,
                           hasTextBorderColor:
                               Theme.of(context).colorScheme.primary,
                           maxLength: pinLength,

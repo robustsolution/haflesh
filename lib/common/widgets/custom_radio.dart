@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
+import 'package:pressable/pressable.dart';
 
 class CustomRadio extends StatefulWidget {
   final String value;
@@ -29,38 +30,43 @@ class _CustomRadioState extends State<CustomRadio> {
               color: Theme.of(context).colorScheme.onBackground,
               borderRadius: BorderRadius.circular(10.0),
             ),
-            child: Row(
-              mainAxisSize: MainAxisSize.min,
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Expanded(
-                  child: SizedBox(
-                    child: Text(
-                      widget.value,
-                      style: TextStyle(
-                        color: Color(0xFF212325),
-                        fontSize: 20,
-                        fontFamily: 'Manrope',
-                        fontWeight: FontWeight.w500,
-                        letterSpacing: 0.40,
+            child: Pressable.opacity(
+              onPressed: () {
+                widget.onChange(widget.value);
+              },
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: SizedBox(
+                      child: Text(
+                        widget.value,
+                        style: TextStyle(
+                          color: Color(0xFF212325),
+                          fontSize: 20,
+                          fontFamily: 'Manrope',
+                          fontWeight: FontWeight.w500,
+                          letterSpacing: 0.40,
+                        ),
                       ),
                     ),
                   ),
-                ),
-                SizedBox(
-                  width: 10,
-                  height: 10,
-                  child: Radio(
-                    value: widget.value,
-                    activeColor: Theme.of(context).colorScheme.primary,
-                    groupValue: widget.groupValue,
-                    onChanged: (value) {
-                      widget.onChange(value);
-                    },
+                  SizedBox(
+                    width: 10,
+                    height: 10,
+                    child: Radio(
+                      value: widget.value,
+                      activeColor: Theme.of(context).colorScheme.primary,
+                      groupValue: widget.groupValue,
+                      onChanged: (value) {
+                        widget.onChange(value);
+                      },
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             )),
         const SizedBox(height: 12),
       ],

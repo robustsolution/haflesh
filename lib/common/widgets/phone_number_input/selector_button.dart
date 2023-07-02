@@ -74,7 +74,7 @@ class SelectorButton extends StatelessWidget {
               borderRadius: BorderRadius.circular(10), // Set the border radius
             ),
             key: const Key(TestHelper.DropdownButtonKeyValue),
-            padding: const EdgeInsets.fromLTRB(10, 18, 10, 18),
+            padding: const EdgeInsets.fromLTRB(10, 14, 10, 14),
             minWidth: 0,
             onPressed: countries.isNotEmpty && countries.length > 1 && isEnabled
                 ? () async {

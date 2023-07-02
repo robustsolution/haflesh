@@ -24,6 +24,7 @@ class WelcomeDonePage extends StatelessWidget {
     double seconds = releaseDate - currentDate;
     return Scaffold(
         backgroundColor: ThemeColors.background,
+        resizeToAvoidBottomInset: false,
         body: Stack(children: [
           SizedBox(
               width: double.infinity,
@@ -120,7 +121,6 @@ class WelcomeDonePage extends StatelessWidget {
                               ),
                               const SizedBox(width: 8),
                               Expanded(
-                                flex: 1,
                                 child: Column(children: [
                                   Container(
                                     height: 80,
@@ -157,7 +157,6 @@ class WelcomeDonePage extends StatelessWidget {
                               ),
                               const SizedBox(width: 8),
                               Expanded(
-                                flex: 1,
                                 child: Column(children: [
                                   Container(
                                     height: 80,
@@ -194,7 +193,6 @@ class WelcomeDonePage extends StatelessWidget {
                               ),
                               const SizedBox(width: 8),
                               Expanded(
-                                flex: 1,
                                 child: Column(children: [
                                   Container(
                                     height: 80,
@@ -401,10 +399,7 @@ class WelcomeDonePage extends StatelessWidget {
                           Expanded(
                               child: Button(
                                   title: "NOTIFY ME ABOUT RELEASE",
-                                  onPressed: () {
-                                    Navigator.of(context)
-                                        .push<void>(InviteFriendPage.route());
-                                  })),
+                                  onPressed: () {})),
                         ]),
                         const SizedBox(height: 16),
                         Row(children: <Widget>[
@@ -412,7 +407,10 @@ class WelcomeDonePage extends StatelessWidget {
                               child: Button(
                                   title: "INVITE MORE PEOPLE",
                                   outlined: true,
-                                  onPressed: () {})),
+                                  onPressed: () {
+                                    Navigator.of(context)
+                                        .push<void>(InviteFriendPage.route());
+                                  })),
                         ]),
                         const SizedBox(height: 50),
                       ],
