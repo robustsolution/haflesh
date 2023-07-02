@@ -8,8 +8,13 @@ class ProfileRepository {
 
   Future<ProfileModel?> getProfileById(String uid) async {
     try {
-      final profile = await profileCollection.doc("iryClcHOtYrIpWmB7AlH").get();
-      return ProfileModel.fromJson(profile as Map<String, dynamic>);
+      DocumentSnapshot snapshot = await profileCollection.doc(uid).get();
+      if (snapshot.exists) {
+        Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
+        return ProfileModel.fromJson(data);
+      } else {
+        return null;
+      }
     } catch (e) {
       return null;
     }

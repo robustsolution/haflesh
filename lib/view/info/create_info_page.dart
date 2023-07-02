@@ -8,9 +8,9 @@ import 'package:hafleh/common/values/custom_text_style.dart';
 import 'package:hafleh/common/utils/logger.dart';
 import 'package:hafleh/common/widgets/static_progress_bar.dart';
 import 'package:hafleh/common/widgets/button.dart';
-import 'package:hafleh/core/blocs/profile/profile_bloc.dart';
+import 'package:hafleh/core/blocs/info/info_bloc.dart';
 import 'package:hafleh/core/blocs/auth/auth_bloc.dart';
-import 'package:hafleh/core/models/profile_model.dart';
+import 'package:hafleh/core/models/info_model.dart';
 import 'package:hafleh/view/info/widgets/profile_photos.dart';
 import 'package:hafleh/view/info/widgets/bio_input.dart';
 import 'package:hafleh/view/info/widgets/prompt/prompt_input.dart';
@@ -46,38 +46,36 @@ class _CreateInfoPageState extends State<CreateInfoPage> {
   @override
   void initState() {
     super.initState();
-    context.read<ProfileBloc>();
+    context.read<InfoBloc>();
   }
 
   Widget _activePage() {
-    ProfileModel profile = context.read<ProfileBloc>().state.profile;
+    InfoModel info = context.read<InfoBloc>().state.info;
     switch (_currentPage) {
       case 0:
-        return step1(profile);
+        return step1(info);
       case 1:
-        return step2(profile);
+        return step2(info);
       case 2:
-        return step3(profile);
+        return step3(info);
       default:
-        return step1(profile);
+        return step1(info);
     }
   }
 
   void createAccount() async {
     try {
-      ProfileModel profile = context.read<ProfileBloc>().state.profile;
+      InfoModel info = context.read<InfoBloc>().state.info;
       User? authedUser = FirebaseAuth.instance.currentUser;
       if (authedUser != null) {
-        List<String> photos = ["", "", "", ""];
-        // ignore: use_build_context_synchronously
+        List<String> photos = ["", "", "", "", "", ""];
         context
-            .read<ProfileBloc>()
-            .add(ProfileUpdated(profile.copyWith(photos: photos)));
-        // ignore: use_build_context_synchronously
-        context.read<ProfileBloc>().add(const ProfileCreateRequested());
+            .read<InfoBloc>()
+            .add(InfoUpdated(info.copyWith(photos: photos)));
+        context.read<InfoBloc>().add(const InfoCreateRequested());
       }
     } catch (e) {
-      logger.e("create account error $e");
+      logger.e("create info error $e");
     }
   }
 
@@ -92,19 +90,19 @@ class _CreateInfoPageState extends State<CreateInfoPage> {
 
   @override
   Widget build(BuildContext context) {
-    context.watch<ProfileBloc>();
+    context.watch<InfoBloc>();
 
     return Scaffold(
         backgroundColor: Theme.of(context).colorScheme.secondary,
-        body: BlocListener<ProfileBloc, ProfileState>(
+        body: BlocListener<InfoBloc, InfoState>(
             listener: (context, state) {
-              // if the profile successfully created, show welcome modal
-              if (state.status == ProfileStatus.created) {
+              // if the info successfully created, show welcome modal
+              if (state.status == InfoStatus.created) {
                 // WelcomeDialog.showWelcomeDialog(context, onButtonPressed: () {
                 //   context
-                //       .read<ProfileBloc>()
+                //       .read<InfoBloc>()
                 //       .add(// after click ok button, move to main page
-                //           ProfileWelcomeClicked());
+                //           InfoWelcomeClicked());
                 // });
               }
             },
@@ -188,7 +186,7 @@ class _CreateInfoPageState extends State<CreateInfoPage> {
             )));
   }
 
-  Widget step1(ProfileModel profile) {
+  Widget step1(InfoModel info) {
     return ProfilePhotos(
         profileImages: profileImages,
         onChange: (value) {
@@ -198,30 +196,28 @@ class _CreateInfoPageState extends State<CreateInfoPage> {
         });
   }
 
-  Widget step2(ProfileModel profile) {
+  Widget step2(InfoModel info) {
     return BioInput(
-      bio: profile.bio ?? "",
+      bio: info.bio ?? "",
       onChange: (value) {
-        context
-            .read<ProfileBloc>()
-            .add(ProfileUpdated(profile.copyWith(bio: value)));
+        context.read<InfoBloc>().add(InfoUpdated(info.copyWith(bio: value)));
       },
     );
   }
 
-  Widget step3(ProfileModel profile) {
+  Widget step3(InfoModel info) {
     return PromptInput(
-      prompts: profile.prompts ?? ["", "", ""],
-      answers: profile.answers ?? ["", "", ""],
+      prompts: info.prompts ?? ["", "", ""],
+      answers: info.answers ?? ["", "", ""],
       onChangePrompts: (value) {
         context
-            .read<ProfileBloc>()
-            .add(ProfileUpdated(profile.copyWith(prompts: value)));
+            .read<InfoBloc>()
+            .add(InfoUpdated(info.copyWith(prompts: value)));
       },
       onChangeAnswers: (value) {
         context
-            .read<ProfileBloc>()
-            .add(ProfileUpdated(profile.copyWith(answers: value)));
+            .read<InfoBloc>()
+            .add(InfoUpdated(info.copyWith(answers: value)));
       },
     );
   }

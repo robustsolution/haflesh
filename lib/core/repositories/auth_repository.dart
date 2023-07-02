@@ -1,10 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hafleh/common/utils/logger.dart';
-import 'package:hafleh/services/firebase_users.dart';
 
 class AuthRepository {
   User? authedUser = FirebaseAuth.instance.currentUser;
-  final FirebaseUsers firebaseUsers = FirebaseUsers();
 
   String _verificationId = "";
   bool codeSent = false;

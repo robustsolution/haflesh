@@ -3,6 +3,8 @@ import 'package:flow_builder/flow_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hafleh/core/blocs/info/info_bloc.dart';
+import 'package:hafleh/core/repositories/info_repository.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:hafleh/common/values/app_strings.dart';
@@ -26,12 +28,14 @@ void main() async {
 
   final authenticationRepository = AuthRepository();
   final profileRepository = ProfileRepository();
+  final infoRepository = InfoRepository();
 
   runApp(DevicePreview(
     enabled: false,
     builder: (context) => MyApp(
       authenticationRepository: authenticationRepository,
       profileRepository: profileRepository,
+      infoRepository: infoRepository,
     ),
   ));
 }
@@ -39,13 +43,16 @@ void main() async {
 class MyApp extends StatelessWidget {
   final AuthRepository _authenticationRepository;
   final ProfileRepository _profileRepository;
+  final InfoRepository _infoRepository;
 
   const MyApp({
     super.key,
     required AuthRepository authenticationRepository,
     required ProfileRepository profileRepository,
+    required InfoRepository infoRepository,
   })  : _authenticationRepository = authenticationRepository,
-        _profileRepository = profileRepository;
+        _profileRepository = profileRepository,
+        _infoRepository = infoRepository;
 
   // This widget is the root of your application.
   @override
@@ -61,6 +68,11 @@ class MyApp extends StatelessWidget {
           BlocProvider<ProfileBloc>(
             create: (_) => ProfileBloc(
               profileRepository: _profileRepository,
+            ),
+          ),
+          BlocProvider<InfoBloc>(
+            create: (_) => InfoBloc(
+              infoRepository: _infoRepository,
             ),
           ),
         ], child: const OverlaySupport.global(child: AppView())));
@@ -88,6 +100,9 @@ class AppView extends StatelessWidget implements TickerProvider {
                   context
                       .read<ProfileBloc>()
                       .add(ProfileLoadRequested(authedUser!.uid));
+                  context
+                      .read<InfoBloc>()
+                      .add(InfoLoadRequested(authedUser.uid));
                 } else if (state is UnAuthenticated) {
                   context.read<ProfileBloc>().add(ProfileSignoutRequested());
                   if (state.error != null && state.error != "") {
@@ -102,6 +117,7 @@ class AppView extends StatelessWidget implements TickerProvider {
             state: getRouteState(
               context.select((AuthBloc bloc) => bloc.state),
               context.select((ProfileBloc bloc) => bloc.state),
+              context.select((InfoBloc bloc) => bloc.state),
             ),
             onGeneratePages: onGenerateAppViewPages,
           )),
