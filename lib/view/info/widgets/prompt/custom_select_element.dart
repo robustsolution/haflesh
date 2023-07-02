@@ -23,12 +23,17 @@ class _CustomSelectElementState extends State<CustomSelectElement> {
       children: [
         Pressable.opacity(
           onPressed: () {
-            Navigator.of(context).push<void>(PromptAnswerPage.route());
+            Navigator.of(context).push<void>(MaterialPageRoute(
+              builder: (context) => PromptAnswerPage(value: widget.value),
+            ));
           },
           child: Container(
               width: double.infinity,
-              color: Theme.of(context).colorScheme.onPrimary,
               padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.onPrimary,
+                borderRadius: BorderRadius.circular(10.0),
+              ),
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.start,

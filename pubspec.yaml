@@ -55,6 +55,9 @@ dependencies:
   dotted_border: ^2.0.0+3
   photo_manager: ^2.6.0
   modal_bottom_sheet: ^2.1.2
+  flutter_countdown_timer: ^4.1.0
+  timer_count_down: ^2.2.2
+  hl_image_picker: ^1.2.0
 
 dev_dependencies:
   flutter_test:

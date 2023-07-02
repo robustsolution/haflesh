@@ -29,19 +29,18 @@ class Item extends StatelessWidget {
   Widget build(BuildContext context) {
     String dialCode = (country?.dialCode ?? '');
     if (trailingSpace) {
-      dialCode = dialCode.padRight(5, "   ");
+      dialCode = dialCode.padRight(3, " ");
     }
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        SizedBox(width: leadingPadding),
         _Flag(
           country: country,
           showFlag: showFlag,
           useEmoji: useEmoji,
         ),
-        // SizedBox(width: 12.0),
+        SizedBox(width: 1.0),
         Text(
           dialCode,
           textDirection: TextDirection.ltr,
@@ -68,8 +67,8 @@ class _Flag extends StatelessWidget {
   Widget build(BuildContext context) {
     return country != null && showFlag!
         ? Container(
-            width: 60.0,
-            height: 30.0,
+            width: 40,
+            height: 20.0,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               image: DecorationImage(

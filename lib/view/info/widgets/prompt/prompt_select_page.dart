@@ -17,17 +17,10 @@ List<String> prompts = [
   "To me,relaxation is",
 ];
 
-class PromptSelectPage extends StatefulWidget {
-  @override
-  _PromptSelectPageState createState() => _PromptSelectPageState();
-
-  static Page<void> page() => MaterialPage<void>(child: PromptSelectPage());
-  static Route<void> route() =>
-      MaterialPageRoute<void>(builder: (_) => PromptSelectPage());
-}
-
-class _PromptSelectPageState extends State<PromptSelectPage> {
-  final TextEditingController controller = TextEditingController();
+class PromptSelectPage extends StatelessWidget {
+  final String prompt;
+  final String answer;
+  PromptSelectPage({required this.prompt, required this.answer});
 
   @override
   Widget build(BuildContext context) {
@@ -72,10 +65,6 @@ class _PromptSelectPageState extends State<PromptSelectPage> {
                           onPressed: () {
                             Navigator.of(context).pop();
                           })),
-                  const SizedBox(width: 8),
-                  Expanded(
-                      child:
-                          Button(title: "NEXT", flag: true, onPressed: () {})),
                   const SizedBox(width: 8),
                 ]),
                 const SizedBox(height: 16),

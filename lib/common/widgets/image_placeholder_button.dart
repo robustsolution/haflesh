@@ -15,7 +15,7 @@ class ImagePlaceholderButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<String> options1 = ['Choose From library', 'Take Photo'];
+    List<String> options = ['Choose From library', 'Take Photo'];
 
     return Pressable.opacity(
       onPressed: () {
@@ -23,7 +23,7 @@ class ImagePlaceholderButton extends StatelessWidget {
           showCupertinoModalPopup(
             context: context,
             builder: (BuildContext context) => CupertinoActionSheet(
-                actions: options1
+                actions: options
                     .map((e) => CupertinoActionSheetAction(
                           child: Text(e),
                           onPressed: () {
@@ -53,6 +53,7 @@ class ImagePlaceholderButton extends StatelessWidget {
               borderType: BorderType.RRect,
               radius: Radius.circular(20),
               child: Container(
+                  height: 110,
                   decoration: BoxDecoration(
                       color: Colors.transparent,
                       borderRadius: BorderRadius.circular(20),

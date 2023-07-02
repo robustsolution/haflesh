@@ -26,19 +26,7 @@ class WelcomePage extends StatelessWidget {
                 fit: BoxFit.cover,
               )),
           Container(
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      Color.fromRGBO(251, 104, 94, 0.82),
-                      Color.fromRGBO(247, 84, 162, 0.82),
-                    ],
-                    stops: [
-                      0,
-                      1
-                    ]),
-              ),
+              decoration: const BoxDecoration(gradient: ThemeColors.gradient),
               width: double.infinity,
               height: double.infinity,
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
@@ -68,7 +56,7 @@ class WelcomePage extends StatelessWidget {
                     Column(
                       children: [
                         Row(children: <Widget>[
-                          const SizedBox(width: 24),
+                          const SizedBox(width: 8),
                           Expanded(
                               child: Button(
                                   title: "CREATE ACCOUNT",
@@ -76,11 +64,11 @@ class WelcomePage extends StatelessWidget {
                                     Navigator.of(context)
                                         .push<void>(SignupPage.route());
                                   })),
-                          const SizedBox(width: 24),
+                          const SizedBox(width: 8),
                         ]),
                         const SizedBox(height: 16),
                         Row(children: <Widget>[
-                          const SizedBox(width: 24),
+                          const SizedBox(width: 8),
                           Expanded(
                               child: Button(
                                   title: "SIGN IN",
@@ -89,15 +77,15 @@ class WelcomePage extends StatelessWidget {
                                     // Navigator.of(context)
                                     //     .push<void>(SigninPage.route());
                                   })),
-                          const SizedBox(width: 24),
+                          const SizedBox(width: 8),
                         ]),
                         const SizedBox(height: 32),
                         Row(children: <Widget>[
-                          const SizedBox(width: 24),
+                          const SizedBox(width: 8),
                           Expanded(
                               child:
                                   privacyPolicyLinkAndTermsOfService(context)),
-                          const SizedBox(width: 24),
+                          const SizedBox(width: 8),
                         ]),
                         const SizedBox(height: 16),
                       ],

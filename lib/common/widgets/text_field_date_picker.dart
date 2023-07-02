@@ -17,15 +17,19 @@ class TextFieldDatePicker extends StatefulWidget {
 
 class _TextFieldDatePickerState extends State<TextFieldDatePicker> {
   DateTime? _selected;
+  int? _year;
   final DateFormat formatter = DateFormat('MM/dd/yyyy');
 
   @override
   void initState() {
     super.initState();
+    _selected = widget.value;
   }
 
   @override
   Widget build(BuildContext context) {
+    DateTime currentDate = DateTime.now();
+    _year = currentDate.year - (_selected?.year ?? 0);
     return Column(
       children: [
         const SizedBox(height: 24),
@@ -45,6 +49,8 @@ class _TextFieldDatePickerState extends State<TextFieldDatePicker> {
           onChange: ((DateTime date, list) {
             setState(() {
               _selected = date;
+              widget.onChanged(date);
+              _year = currentDate.year - date.year;
             });
           }),
         ),
@@ -65,7 +71,7 @@ class _TextFieldDatePickerState extends State<TextFieldDatePicker> {
                     style: CustomTextStyle.getDescStyle(
                         ThemeColors.onSecondary, 16)),
                 const SizedBox(height: 4),
-                Text("26",
+                Text(_year.toString(),
                     textAlign: TextAlign.center,
                     style:
                         CustomTextStyle.getTitleStyle(ThemeColors.primary, 44)),

@@ -172,7 +172,7 @@ class _AuthOTPPageState extends State<AuthOTPPage> {
                       hideCharacter: false,
                       highlight: false,
                       defaultBorderColor:
-                          Theme.of(context).colorScheme.onPrimary,
+                          Theme.of(context).colorScheme.onSurface,
                       hasTextBorderColor: Theme.of(context).colorScheme.primary,
                       maxLength: pinLength,
                       hasError: hasError,
@@ -184,8 +184,7 @@ class _AuthOTPPageState extends State<AuthOTPPage> {
                       onDone: (text) {
                         onNextProcess(text);
                       },
-                      // pinBoxWidth: 49,
-                      // pinBoxHeight: 59,
+                      pinBoxHeight: 64,
                       hasUnderline: true,
                       wrapAlignment: WrapAlignment.spaceAround,
                       pinTextStyle: const TextStyle(fontSize: 28.0),

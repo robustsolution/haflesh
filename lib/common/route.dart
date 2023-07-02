@@ -6,7 +6,6 @@ import 'package:the_hafleh/view/info/create_info_page.dart';
 import 'package:the_hafleh/view/profile/create_profile_page.dart';
 import 'package:the_hafleh/view/welcome/welcome_info_page.dart';
 import 'package:the_hafleh/view/auth/signin_page.dart';
-import 'package:the_hafleh/view/auth/signup_page.dart';
 import 'package:the_hafleh/view/welcome/welcome_done_page.dart';
 import 'package:the_hafleh/view/welcome/welcome_page.dart';
 import 'package:the_hafleh/view/welcome/welcome_profile_PAGE.dart';

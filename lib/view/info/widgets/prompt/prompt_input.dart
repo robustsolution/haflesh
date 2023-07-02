@@ -9,11 +9,15 @@ import './prompt_select_page.dart';
 
 class PromptInput extends StatefulWidget {
   final List<String> prompts;
-  final Function onChange;
+  final List<String> answers;
+  final Function onChangePrompts;
+  final Function onChangeAnswers;
   const PromptInput({
     super.key,
     required this.prompts,
-    required this.onChange,
+    required this.answers,
+    required this.onChangePrompts,
+    required this.onChangeAnswers,
   });
 
   @override
@@ -29,12 +33,10 @@ class _PromptInputState extends State<PromptInput>
   @override
   void initState() {
     super.initState();
-    // _bioEditingController.text = widget.bio;
   }
 
   @override
   void dispose() {
-    // _bioEditingController.dispose();
     super.dispose();
   }
 
@@ -53,7 +55,10 @@ class _PromptInputState extends State<PromptInput>
           padding: const EdgeInsets.all(0),
           child: Pressable.opacity(
             onPressed: () {
-              Navigator.of(context).push<void>(PromptSelectPage.route());
+              Navigator.of(context).push<void>(MaterialPageRoute(
+                builder: (context) => PromptSelectPage(
+                    prompt: widget.prompts[0], answer: widget.answers[0]),
+              ));
             },
             child: Container(
               height: 120,
@@ -68,9 +73,9 @@ class _PromptInputState extends State<PromptInput>
                               Container(
                                 padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
                                 child: Text(
-                                  "My friends ask me for advice about",
+                                  widget.prompts[0],
                                   style: CustomTextStyle.getTitleStyle(
-                                      Theme.of(context).colorScheme.background,
+                                      Theme.of(context).colorScheme.onSecondary,
                                       16,
                                       FontWeight.w700),
                                 ),
@@ -78,9 +83,9 @@ class _PromptInputState extends State<PromptInput>
                               Container(
                                 padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
                                 child: Text(
-                                  "Crypto Currency",
+                                  widget.answers[0],
                                   style: CustomTextStyle.getTitleStyle(
-                                      Theme.of(context).colorScheme.background,
+                                      Theme.of(context).colorScheme.onSecondary,
                                       16,
                                       FontWeight.w400),
                                 ),
@@ -130,7 +135,7 @@ class _PromptInputState extends State<PromptInput>
           radius: Radius.circular(20),
           child: Pressable.opacity(
             onPressed: () {
-              Navigator.of(context).push<void>(PromptSelectPage.route());
+              // Navigator.of(context).push<void>(PromptSelectPage.route());
             },
             child: Container(
               height: 120,
@@ -167,7 +172,7 @@ class _PromptInputState extends State<PromptInput>
           radius: Radius.circular(20),
           child: Pressable.opacity(
             onPressed: () {
-              Navigator.of(context).push<void>(PromptSelectPage.route());
+              // Navigator.of(context).push<void>(PromptSelectPage.route());
             },
             //inner container
             child: Container(

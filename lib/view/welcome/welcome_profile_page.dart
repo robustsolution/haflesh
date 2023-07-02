@@ -28,17 +28,7 @@ class WelcomeProfilePage extends StatelessWidget {
               )),
           Container(
               decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [
-                      Color.fromRGBO(251, 104, 94, 0.82),
-                      Color.fromRGBO(247, 84, 162, 0.82),
-                    ],
-                    stops: [
-                      0,
-                      1
-                    ]),
+                gradient: ThemeColors.gradient,
               ),
               width: double.infinity,
               height: double.infinity,

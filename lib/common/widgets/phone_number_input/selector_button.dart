@@ -6,7 +6,6 @@ import 'package:intl_phone_number_input/src/utils/selector_config.dart';
 import 'package:intl_phone_number_input/src/utils/test/test_helper.dart';
 import 'package:intl_phone_number_input/src/widgets/countries_search_list_widget.dart';
 import 'package:intl_phone_number_input/src/widgets/input_widget.dart';
-import 'package:the_hafleh/common/values/colors.dart';
 import './country_code_item.dart';
 
 /// [SelectorButton]
@@ -75,35 +74,32 @@ class SelectorButton extends StatelessWidget {
               borderRadius: BorderRadius.circular(10), // Set the border radius
             ),
             key: Key(TestHelper.DropdownButtonKeyValue),
-            padding: EdgeInsets.fromLTRB(10, 18, 10, 18),
+            padding: const EdgeInsets.fromLTRB(8, 14, 8, 14),
             minWidth: 0,
             onPressed: countries.isNotEmpty && countries.length > 1 && isEnabled
                 ? () async {
-                    Country? selected;
-                    if (selectorConfig.selectorType ==
-                        PhoneInputSelectorType.BOTTOM_SHEET) {
-                      selected = await showCountrySelectorBottomSheet(
-                          context, countries);
-                    } else {
-                      selected =
-                          await showCountrySelectorDialog(context, countries);
-                    }
+                    // Country? selected;
+                    // if (selectorConfig.selectorType ==
+                    //     PhoneInputSelectorType.BOTTOM_SHEET) {
+                    //   selected = await showCountrySelectorBottomSheet(
+                    //       context, countries);
+                    // } else {
+                    //   selected =
+                    //       await showCountrySelectorDialog(context, countries);
+                    // }
 
-                    if (selected != null) {
-                      onCountryChanged(selected);
-                    }
+                    // if (selected != null) {
+                    //   onCountryChanged(selected);
+                    // }
                   }
                 : null,
-            child: Padding(
-              padding: const EdgeInsets.only(right: 8.0),
-              child: Item(
-                country: country,
-                showFlag: selectorConfig.showFlags,
-                useEmoji: selectorConfig.useEmoji,
-                leadingPadding: selectorConfig.leadingPadding,
-                trailingSpace: selectorConfig.trailingSpace,
-                textStyle: selectorTextStyle,
-              ),
+            child: Item(
+              country: country,
+              showFlag: selectorConfig.showFlags,
+              useEmoji: selectorConfig.useEmoji,
+              leadingPadding: selectorConfig.leadingPadding,
+              trailingSpace: selectorConfig.trailingSpace,
+              textStyle: selectorTextStyle,
             ),
           );
   }
@@ -185,15 +181,6 @@ class SelectorButton extends StatelessWidget {
                         ),
                       ),
                     ),
-                    // child: CountrySearchListWidget(
-                    //   countries,
-                    //   locale,
-                    //   searchBoxDecoration: searchBoxDecoration,
-                    //   scrollController: controller,
-                    //   showFlags: selectorConfig.showFlags,
-                    //   useEmoji: selectorConfig.useEmoji,
-                    //   autoFocus: autoFocusSearchField,
-                    // ),
                   ),
                 );
               },

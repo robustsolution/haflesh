@@ -68,7 +68,6 @@ class _SignupPageState extends State<SignupPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Theme.of(context).colorScheme.secondary,
-        resizeToAvoidBottomInset: false,
         body: Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: Column(
@@ -111,6 +110,7 @@ class _SignupPageState extends State<SignupPage> {
                       ignoreBlank: false,
                       autoValidateMode: AutovalidateMode.onUserInteraction,
                       hintText: 'Phone number',
+                      textStyle: const TextStyle(fontSize: 16),
                       errorMessage: '*Please enter a valid phone number',
                       selectorTextStyle:
                           const TextStyle(color: ThemeColors.primary),

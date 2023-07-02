@@ -4,23 +4,15 @@ import 'package:the_hafleh/common/values/colors.dart';
 import 'package:the_hafleh/common/values/custom_text_style.dart';
 import 'package:the_hafleh/common/widgets/button.dart';
 
-class PromptAnswerPage extends StatefulWidget {
-  @override
-  _PromptAnswerPageState createState() => _PromptAnswerPageState();
-
-  static Page<void> page() => MaterialPage<void>(child: PromptAnswerPage());
-  static Route<void> route() =>
-      MaterialPageRoute<void>(builder: (_) => PromptAnswerPage());
-}
-
-class _PromptAnswerPageState extends State<PromptAnswerPage> {
+class PromptAnswerPage extends StatelessWidget {
+  final String value;
+  PromptAnswerPage({required this.value});
   final TextEditingController controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Theme.of(context).colorScheme.secondary,
-        resizeToAvoidBottomInset: false,
         body: Container(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Column(
@@ -38,18 +30,21 @@ class _PromptAnswerPageState extends State<PromptAnswerPage> {
                     Text('Write an answer',
                         style: CustomTextStyle.getTitleStyle()),
                     const SizedBox(height: 12),
-                    Text('My friends ask me for advice about',
-                        style: CustomTextStyle.getTitleStyle()),
+                    Text(value,
+                        textAlign: TextAlign.center,
+                        style: CustomTextStyle.getTitleStyle(
+                            Theme.of(context).colorScheme.onSecondary,
+                            20,
+                            FontWeight.w500)),
                     const SizedBox(height: 24),
                     Container(
-                      decoration: new BoxDecoration(
+                      decoration: BoxDecoration(
                           color: Theme.of(context).colorScheme.secondary,
-                          border: new Border.all(
+                          border: Border.all(
                               color: Theme.of(context).colorScheme.outline),
-                          borderRadius: new BorderRadius.circular(15.0)),
+                          borderRadius: BorderRadius.circular(15.0)),
                       padding: const EdgeInsets.all(12),
                       child: TextField(
-                        // controller: _bioEditingController,
                         maxLength: 90,
                         maxLines: 5,
                         decoration: const InputDecoration(

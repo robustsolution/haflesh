@@ -1,5 +1,19 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.onboard.hafleh">
+    <!-- Android 12 and lower -->
+<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+<!-- Targeting Android 13 or higher -->
+<uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+<uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
+
+<!-- Request the camera permission -->
+<uses-feature android:name="android.hardware.camera" android:required="false" />
+<uses-permission android:name="android.permission.CAMERA" />
+
+<!-- Add this permission if you need to record videos -->
+<uses-permission android:name="android.permission.RECORD_AUDIO" />
    <application
         android:label="the_hafleh"
         android:name="${applicationName}"

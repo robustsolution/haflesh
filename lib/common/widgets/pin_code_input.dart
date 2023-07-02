@@ -148,7 +148,7 @@ class PinCodeTextField extends StatefulWidget {
   const PinCodeTextField({
     Key? key,
     this.isCupertino: false,
-    this.maxLength: 4,
+    this.maxLength: 6,
     this.controller,
     this.hideCharacter: false,
     this.highlight: false,
@@ -159,7 +159,7 @@ class PinCodeTextField extends StatefulWidget {
     this.highlightColor: ThemeColors.onSecondary,
     this.pinBoxDecoration,
     this.maskCharacter: "\u25CF",
-    this.pinBoxWidth: 70.0,
+    this.pinBoxWidth: 50.0,
     this.pinBoxHeight: 70.0,
     this.pinTextStyle,
     this.onDone,
@@ -231,7 +231,7 @@ class PinCodeTextFieldState extends State<PinCodeTextField>
       strList.length = widget.maxLength;
     }
     while (strList.length < widget.maxLength) {
-      strList.add("");
+      strList.add("0");
     }
   }
 
@@ -382,8 +382,8 @@ class PinCodeTextFieldState extends State<PinCodeTextField>
             ? <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly]
             : null,
         style: TextStyle(
-          height: 0.1, color: Colors.transparent,
-//          color: Colors.transparent,
+          height: 0.1,
+          color: Colors.transparent,
         ),
         decoration: InputDecoration(
           focusedErrorBorder: transparentBorder,
@@ -509,7 +509,9 @@ class PinCodeTextFieldState extends State<PinCodeTextField>
 
                 return Container(
                   key: ValueKey<String>("container$i"),
-                  child: Center(child: _animatedTextBox(strList[i], i)),
+                  child: Center(
+                      child: _animatedTextBox(
+                          strList[i], i, widget.defaultBorderColor)),
                   decoration: boxDecoration,
                   width: widget.pinBoxWidth,
                   height: widget.pinBoxHeight,
@@ -570,11 +572,17 @@ class PinCodeTextFieldState extends State<PinCodeTextField>
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8),
           child: Container(
-            child: Center(child: _animatedTextBox(strList[i], i)),
+            child: Center(
+                child: _animatedTextBox(
+                    strList[i],
+                    i,
+                    i < text.length
+                        ? widget.hasTextBorderColor
+                        : widget.defaultBorderColor)),
             decoration: widget.hasUnderline
                 ? BoxDecoration(
                     border: Border(
-                      bottom: BorderSide(color: borderColor, width: 6),
+                      bottom: BorderSide(color: borderColor, width: 2),
                     ),
                   )
                 : null,
@@ -592,7 +600,7 @@ class PinCodeTextFieldState extends State<PinCodeTextField>
             (i == text.length - 1 && text.length == widget.maxLength));
   }
 
-  Widget _animatedTextBox(String text, int i) {
+  Widget _animatedTextBox(String text, int i, Color color) {
     if (widget.pinTextAnimatedSwitcherTransition != null) {
       return AnimatedSwitcher(
         duration: widget.pinTextAnimatedSwitcherDuration,
@@ -603,14 +611,14 @@ class PinCodeTextFieldState extends State<PinCodeTextField>
         child: Text(
           text,
           key: ValueKey<String>("$text$i"),
-          style: widget.pinTextStyle,
+          style: TextStyle(fontSize: 28, color: color),
         ),
       );
     } else {
       return Text(
         text,
         key: ValueKey<String>("${strList[i]}$i"),
-        style: widget.pinTextStyle,
+        style: TextStyle(fontSize: 28, color: color),
       );
     }
   }
