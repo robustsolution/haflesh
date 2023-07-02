@@ -17,10 +17,6 @@ class ProfileModel {
   final bool? drinkVisibility;
   final String? drug;
   final bool? drugVisibility;
-  final List<String>? photos;
-  final String? bio;
-  final List<String>? prompts;
-  final List<String>? answers;
 
   ProfileModel({
     this.uid,
@@ -41,10 +37,6 @@ class ProfileModel {
     this.drinkVisibility,
     this.drug,
     this.drugVisibility,
-    this.photos,
-    this.bio,
-    this.prompts,
-    this.answers,
   });
 
   ProfileModel copyWith(
@@ -69,11 +61,7 @@ class ProfileModel {
       String? pronoun,
       bool? pronounVisibility,
       int? height,
-      bool? heightVisibility,
-      List<String>? photos,
-      String? bio,
-      List<String>? prompts,
-      List<String>? answers}) {
+      bool? heightVisibility}) {
     return ProfileModel(
         uid: uid ?? this.uid,
         firstname: firstname ?? this.firstname,
@@ -92,39 +80,30 @@ class ProfileModel {
         drink: drink ?? this.drink,
         drinkVisibility: drinkVisibility ?? this.drinkVisibility,
         drug: drug ?? this.drug,
-        drugVisibility: drugVisibility ?? this.drugVisibility,
-        photos: photos ?? this.photos,
-        bio: bio ?? this.bio,
-        prompts: prompts ?? this.prompts,
-        answers: answers ?? this.answers);
+        drugVisibility: drugVisibility ?? this.drugVisibility);
   }
 
   factory ProfileModel.fromJson(Map<String, dynamic> map) {
     return ProfileModel(
-      uid: map['uid'],
-      firstname: map['firstname'],
-      lastname: map['lastname'],
-      birthday:
-          map['birthday'] != null ? DateTime.parse(map['birthday']) : null,
-      gender: map['gender'],
-      genderVisibility: map['gender_visibility'],
-      town: map['town'],
-      townVisibility: map['town_visibility'],
-      nation: map['nation'],
-      nationVisibility: map['nation_visibility'],
-      religious: map['religious'],
-      religiousVisibility: map['religious_visibility'],
-      smoke: map['smoke'],
-      smokeVisibility: map['smoke_visibility'],
-      drink: map['drink'],
-      drinkVisibility: map['drink_visibility'],
-      drug: map['drug'],
-      drugVisibility: map['drug_visibility'],
-      photos: List<String>.from(map['photos'] ?? []),
-      bio: map['bio'],
-      prompts: List<String>.from(map['prompts'] ?? []),
-      answers: List<String>.from(map['answers'] ?? []),
-    );
+        uid: map['uid'],
+        firstname: map['firstname'],
+        lastname: map['lastname'],
+        birthday:
+            map['birthday'] != null ? DateTime.parse(map['birthday']) : null,
+        gender: map['gender'],
+        genderVisibility: map['gender_visibility'],
+        town: map['town'],
+        townVisibility: map['town_visibility'],
+        nation: map['nation'],
+        nationVisibility: map['nation_visibility'],
+        religious: map['religious'],
+        religiousVisibility: map['religious_visibility'],
+        smoke: map['smoke'],
+        smokeVisibility: map['smoke_visibility'],
+        drink: map['drink'],
+        drinkVisibility: map['drink_visibility'],
+        drug: map['drug'],
+        drugVisibility: map['drug_visibility']);
   }
 
   Map<String, dynamic> toJson() => {
@@ -145,10 +124,6 @@ class ProfileModel {
         'drink': drink,
         'drink_visibility': drinkVisibility,
         'drug': drug,
-        'drug_visibility': drugVisibility,
-        'photos': photos,
-        'bio': bio,
-        'prompts': prompts,
-        'answers': answers,
+        'drug_visibility': drugVisibility
       };
 }

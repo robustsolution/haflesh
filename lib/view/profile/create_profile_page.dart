@@ -12,7 +12,6 @@ import 'package:hafleh/core/blocs/auth/auth_bloc.dart';
 import 'package:hafleh/core/blocs/profile/profile_bloc.dart';
 import 'package:hafleh/core/models/profile_model.dart';
 import 'package:hafleh/view/welcome/welcome_info_page.dart';
-
 import 'package:hafleh/view/profile/widgets/name_input.dart';
 import 'package:hafleh/view/profile/widgets/birthday_choose.dart';
 import 'package:hafleh/view/profile/widgets/genders_choose.dart';
@@ -129,16 +128,10 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
 
   void createAccount() async {
     try {
-      ProfileModel profile = context.read<ProfileBloc>().state.profile;
       User? authedUser = FirebaseAuth.instance.currentUser;
       if (authedUser != null) {
-        List<String> photos = ["", "", "", ""];
-        // ignore: use_build_context_synchronously
-        context
-            .read<ProfileBloc>()
-            .add(ProfileUpdated(profile.copyWith(photos: photos)));
-        // ignore: use_build_context_synchronously
-        context.read<ProfileBloc>().add(const ProfileCreateRequested());
+        // context.read<ProfileBloc>().add(const ProfileCreateRequested());
+        Navigator.of(context).push<void>(WelcomeInfoPage.route());
       }
     } catch (e) {
       logger.e("create account error $e");
@@ -246,9 +239,7 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
                             });
                             if (_currentPage >= 9) {
                               _currentPage = 8;
-                              Navigator.of(context)
-                                  .push<void>(WelcomeInfoPage.route());
-                              // createAccount();
+                              createAccount();
                             }
                           })),
                   const SizedBox(width: 24),

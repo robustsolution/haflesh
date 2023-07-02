@@ -2,6 +2,7 @@
 
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:hafleh/common/utils/logger.dart';
 import 'package:hafleh/core/models/profile_model.dart';
 import 'package:hafleh/core/repositories/profile_repository.dart';
 import 'package:meta/meta.dart';
@@ -31,6 +32,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
           ));
         }
       } catch (e) {
+        logger.e("ProfileLoadRequested error $e");
         emit(state.copyWith(status: ProfileStatus.failure));
       }
     });

@@ -1,15 +1,18 @@
 import 'package:flutter/widgets.dart';
 import 'package:hafleh/core/blocs/auth/auth_bloc.dart';
+import 'package:hafleh/core/blocs/info/info_bloc.dart';
 import 'package:hafleh/core/blocs/profile/profile_bloc.dart';
 import 'package:hafleh/view/auth/signup_page.dart';
-import 'package:hafleh/view/invite/invite_friend_page.dart';
 import 'package:hafleh/view/splash/splash_page.dart';
+import 'package:hafleh/view/welcome/welcome_done_page.dart';
+import 'package:hafleh/view/welcome/welcome_info_page.dart';
 import 'package:hafleh/view/welcome/welcome_page.dart';
 import 'package:hafleh/view/welcome/welcome_profile_page.dart';
 
 enum AuthRouteState {
   initializing,
-  creating,
+  creatingProfile,
+  creatingInfo,
   authenticated,
   unauthenticated,
 }
@@ -21,9 +24,11 @@ List<Page<dynamic>> onGenerateAppViewPages(
   if (state == AuthRouteState.initializing) {
     return [SplashPage.page()];
   } else if (state == AuthRouteState.authenticated) {
-    return [InviteFriendPage.page()];
-  } else if (state == AuthRouteState.creating) {
+    return [WelcomeDonePage.page()];
+  } else if (state == AuthRouteState.creatingProfile) {
     return [WelcomeProfilePage.page()];
+  } else if (state == AuthRouteState.creatingInfo) {
+    return [WelcomeInfoPage.page()];
   } else {
     return [SignupPage.page(), WelcomePage.page()];
   }
@@ -32,18 +37,29 @@ List<Page<dynamic>> onGenerateAppViewPages(
 AuthRouteState getRouteState(
   AuthState authState,
   ProfileState profileState,
+  InfoState infoState,
 ) {
+  print(authState);
+  print(profileState.status);
+  print(infoState.status);
   if (authState is AppInitializing) {
     return AuthRouteState.initializing;
   } else if (authState is Authenticated &&
       (profileState.status == ProfileStatus.success ||
-          profileState.status == ProfileStatus.updateLoading)) {
+          profileState.status == ProfileStatus.updateLoading) &&
+      (infoState.status == InfoStatus.success ||
+          infoState.status == InfoStatus.updateLoading)) {
     return AuthRouteState.authenticated;
   } else if (authState is Authenticated &&
       (profileState.status == ProfileStatus.notCreated ||
           profileState.status == ProfileStatus.created ||
           profileState.status == ProfileStatus.createLoading)) {
-    return AuthRouteState.creating;
+    return AuthRouteState.creatingProfile;
+  } else if (authState is Authenticated &&
+      (infoState.status == InfoStatus.notCreated ||
+          infoState.status == InfoStatus.created ||
+          infoState.status == InfoStatus.createLoading)) {
+    return AuthRouteState.creatingInfo;
   } else {
     return AuthRouteState.unauthenticated;
   }
