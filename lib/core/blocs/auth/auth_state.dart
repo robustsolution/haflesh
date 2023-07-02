@@ -9,20 +9,26 @@ class AppInitializing extends AuthState {
 }
 
 class AuthLoading extends AuthState {
+  final String type;
+
+  AuthLoading({this.type = "default"});
+
+  @override
+  List<Object?> get props => [type];
+}
+
+class Authenticated extends AuthState {
+  Authenticated();
+
   @override
   List<Object?> get props => [];
 }
 
-class Authenticated extends AuthState {
-  final UserModel user;
-
-  Authenticated(this.user);
-
-  @override
-  List<Object?> get props => [user];
-}
-
 class UnAuthenticated extends AuthState {
+  final String? error;
+
+  UnAuthenticated({this.error});
+
   @override
   List<Object?> get props => [];
 }

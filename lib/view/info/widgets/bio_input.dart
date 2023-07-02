@@ -1,7 +1,7 @@
 // ignore_for_file: unnecessary_new
 
 import 'package:flutter/material.dart';
-import 'package:the_hafleh/common/values/colors.dart';
+import 'package:hafleh/common/values/colors.dart';
 
 class BioInput extends StatefulWidget {
   final String bio;

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:the_hafleh/common/widgets/multi_select/constants.dart';
-import 'package:the_hafleh/common/widgets/multi_select/multi_search_selection.dart';
+import 'package:hafleh/common/widgets/multi_select/constants.dart';
+import 'package:hafleh/common/widgets/multi_select/multi_search_selection.dart';
 
 class NationalityChoose extends StatefulWidget {
   final List<String> nation;

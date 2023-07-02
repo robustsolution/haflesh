@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: prefer_const_constructors, must_be_immutable, library_private_types_in_public_api, non_constant_identifier_names
 
 import 'dart:async';
 
@@ -6,23 +6,20 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:the_hafleh/common/values/colors.dart';
-import 'package:the_hafleh/common/values/custom_text_style.dart';
-import 'package:the_hafleh/common/widgets/button.dart';
-import 'package:the_hafleh/common/widgets/pin_code_input.dart';
-import 'package:the_hafleh/common/widgets/static_progress_bar.dart';
-import 'package:the_hafleh/core/blocs/auth/auth_bloc.dart';
-import 'package:the_hafleh/core/repositories/auth_repository.dart';
-// import 'package:the_hafleh/view/auth/camera_page.dart';
-// import 'package:the_hafleh/view/auth/create_account/create_account_page.dart';
-import 'package:the_hafleh/view/welcome/welcome_profile_page.dart';
+import 'package:loader_overlay/loader_overlay.dart';
+import 'package:hafleh/common/values/custom_text_style.dart';
+import 'package:hafleh/common/widgets/button.dart';
+import 'package:hafleh/common/widgets/pin_code_input.dart';
+import 'package:hafleh/common/widgets/static_progress_bar.dart';
+import 'package:hafleh/core/blocs/auth/auth_bloc.dart';
 
-enum OTPState { shouldArrive, sendAgain, didNotGetCode }
+enum OTPState { notStarted, shouldArrive, sendAgain, didNotGetCode, success }
 
 class AuthOTPPage extends StatefulWidget {
   String phoneNumber;
   String type;
-  AuthOTPPage({required this.phoneNumber, required this.type});
+
+  AuthOTPPage({super.key, required this.phoneNumber, required this.type});
 
   static Route<void> route({required phoneNumber, required type}) =>
       MaterialPageRoute<void>(
@@ -33,13 +30,11 @@ class AuthOTPPage extends StatefulWidget {
 }
 
 class _AuthOTPPageState extends State<AuthOTPPage> {
-  bool isChecked = false;
   TextEditingController controller = TextEditingController(text: "");
-  String thisText = "";
   int pinLength = 6;
   bool hasError = false;
-  late String errorMessage;
-  OTPState step = OTPState.shouldArrive;
+  String? OTPCode;
+  OTPState step = OTPState.notStarted;
   int timeoutCount = 60;
   late Timer timer;
 
@@ -47,8 +42,7 @@ class _AuthOTPPageState extends State<AuthOTPPage> {
   void initState() {
     super.initState();
     timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      AuthRepository authRepository = context.read<AuthBloc>().authRepository;
-      if (timeoutCount >= 0 && authRepository.codeSent == true) {
+      if (timeoutCount >= 0 && step == OTPState.shouldArrive) {
         setState(() {
           timeoutCount--;
         });
@@ -71,167 +65,157 @@ class _AuthOTPPageState extends State<AuthOTPPage> {
     context.read<AuthBloc>().add(PhoneSignInRequested(widget.phoneNumber));
     controller.clear();
     setState(() {
-      timeoutCount = 60;
-      step = OTPState.shouldArrive;
+      timeoutCount = 0;
+      step = OTPState.notStarted;
     });
   }
 
-  void onNextProcess(String text) async {
-    print("DONE CONTROLLER ${controller.text}");
-    AuthRepository authRepository = context.read<AuthBloc>().authRepository;
-    try {
-      await authRepository.verifyOTP(controller.text);
-    } catch (e) {
-      setState(() {
-        timeoutCount = 0;
-        step = OTPState.sendAgain;
-      });
-      return;
-    }
-
-    if (widget.type == 'signin') {
-      // ignore: use_build_context_synchronously
-      // CommonDialogs.showSimpleDialog(
-      //   context,
-      //   title: "Extra security with photo",
-      //   description: "Take a selfie to verify account",
-      //   button1: "Make Selfie",
-      //   dismissible: false,
-      //   onButton1Pressed: () async {
-      //     if (Platform.isAndroid || Platform.isIOS) {
-      //       await Navigator.of(context).push(CameraPage.route());
-      //     }
-      //     ignore: use_build_context_synchronously
-      //     CommonDialogs.showSimpleDialog(
-      //       context,
-      //       title: "Success",
-      //       description: "Thanks, your safety verification is complete.",
-      //       button1: "Ok",
-      //       dismissible: false,
-      //       onButton1Pressed: () {
-      //         context.read<AuthBloc>().add(MakeForceSignIn());
-      //       },
-      //     );
-      //   },
-      //   button2: "Not Now",
-      //   onButton2Pressed: () {
-      //     context.read<AuthBloc>().add(MakeForceSignIn());
-      //   },
-      // );
-    } else {
-      // context.read<AuthBloc>().add(VerifyOTPRequested(controller.text));
-      // Navigator.of(context).push(CreateAccountPage.route());
-    }
+  void onNextProcess() async {
+    context.read<AuthBloc>().add(VerifyOTPRequested(controller.text));
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        backgroundColor: Theme.of(context).colorScheme.secondary,
-        body: Container(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                    child: Column(
+    return BlocListener<AuthBloc, AuthState>(
+        listener: (context, state) {
+          if (state is AuthLoading && state.type == "PhoneSignInRequested") {
+            context.loaderOverlay.show();
+            return;
+          } else if (state is AuthLoading &&
+              state.type == "VerifyOTPRequested") {
+            context.loaderOverlay.show();
+            return;
+          } else if (state is AuthLoading && state.type == "SMSCodeSent") {
+            setState(() {
+              timeoutCount = 60;
+              step = OTPState.shouldArrive;
+            });
+          }
+          if (state is Authenticated) {
+            setState(() {
+              timeoutCount = 0;
+              step = OTPState.success;
+            });
+          }
+          if (state is AuthError) {
+            setState(() {
+              timeoutCount = 0;
+              step = OTPState.sendAgain;
+            });
+          }
+          context.loaderOverlay.hide();
+        },
+        child: Scaffold(
+            backgroundColor: Theme.of(context).colorScheme.secondary,
+            body: Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Row(children: const <Widget>[
-                      SizedBox(width: 8),
+                    Expanded(
+                        child: Column(
+                      children: [
+                        Row(children: const <Widget>[
+                          SizedBox(width: 8),
+                          Expanded(
+                            child: StaticProgressBar(count: 2, current: 2),
+                          ),
+                          SizedBox(width: 8),
+                        ]),
+                        const SizedBox(height: 12),
+                        SvgPicture.asset(
+                          "assets/icons/verify.svg",
+                          fit: BoxFit.cover,
+                        ),
+                        const SizedBox(height: 12),
+                        Text('Enter your verification code',
+                            style: CustomTextStyle.getTitleStyle()),
+                        const SizedBox(height: 12),
+                        Text('The code has been sent to your number:',
+                            style: CustomTextStyle.getDescStyle(
+                                Theme.of(context).colorScheme.onSurface)),
+                        const SizedBox(height: 4),
+                        RichText(
+                          text: TextSpan(
+                            style: CustomTextStyle.getDescStyle(
+                                Theme.of(context).colorScheme.onSurface),
+                            children: <TextSpan>[
+                              TextSpan(text: "${widget.phoneNumber} "),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 24),
+                        PinCodeTextField(
+                          autofocus: true,
+                          controller: controller,
+                          hideCharacter: false,
+                          highlight: false,
+                          defaultBorderColor:
+                              Theme.of(context).colorScheme.onPrimary,
+                          hasTextBorderColor:
+                              Theme.of(context).colorScheme.primary,
+                          maxLength: pinLength,
+                          hasError: hasError,
+                          onTextChanged: (text) {
+                            setState(() {
+                              hasError = false;
+                            });
+                          },
+                          onDone: (text) {
+                            // onNextProcess(text);
+                            setState(() {
+                              OTPCode = text;
+                            });
+                          },
+                          hasUnderline: true,
+                          wrapAlignment: WrapAlignment.spaceBetween,
+                          pinTextStyle: const TextStyle(fontSize: 28.0),
+                          pinTextAnimatedSwitcherTransition:
+                              ProvidedPinBoxTextAnimation.scalingTransition,
+                          pinBoxColor: Colors.transparent,
+                          pinTextAnimatedSwitcherDuration:
+                              const Duration(milliseconds: 300),
+                          highlightAnimationBeginColor:
+                              Theme.of(context).colorScheme.onSecondary,
+                          highlightAnimationEndColor: Colors.white12,
+                          keyboardType: TextInputType.number,
+                        ),
+                      ],
+                    )),
+                    const SizedBox(height: 20),
+                    if (step == OTPState.shouldArrive)
+                      textArrivedIn(timeoutCount)
+                    else if (step == OTPState.didNotGetCode)
+                      dontGetACode()
+                    else if (step == OTPState.sendAgain)
+                      sendAgain(),
+                    const SizedBox(height: 20),
+                    Row(children: <Widget>[
+                      const SizedBox(width: 8),
                       Expanded(
-                        child: StaticProgressBar(count: 2, current: 2),
-                      ),
-                      SizedBox(width: 8),
+                          child: Button(
+                              title: "BACK",
+                              flag: true,
+                              outlined: true,
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              })),
+                      const SizedBox(width: 8),
+                      Expanded(
+                          child: Button(
+                              title: "NEXT",
+                              flag: true,
+                              onPressed: () {
+                                onNextProcess();
+                                // Navigator.of(context)
+                                //     .push<void>(WelcomeProfilePage.route());
+                              })),
+                      const SizedBox(width: 8),
                     ]),
-                    const SizedBox(height: 12),
-                    SvgPicture.asset(
-                      "assets/icons/verify.svg",
-                      fit: BoxFit.cover,
-                    ),
-                    const SizedBox(height: 12),
-                    Text('Enter your verification code',
-                        style: CustomTextStyle.getTitleStyle()),
-                    const SizedBox(height: 12),
-                    Text('The code has been sent to your number:',
-                        style: CustomTextStyle.getDescStyle(
-                            Theme.of(context).colorScheme.onSurface)),
-                    const SizedBox(height: 4),
-                    RichText(
-                      text: TextSpan(
-                        style: CustomTextStyle.getDescStyle(
-                            Theme.of(context).colorScheme.onSurface),
-                        children: <TextSpan>[
-                          TextSpan(text: "${widget.phoneNumber} "),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 24),
-                    PinCodeTextField(
-                      autofocus: true,
-                      controller: controller,
-                      hideCharacter: false,
-                      highlight: false,
-                      defaultBorderColor:
-                          Theme.of(context).colorScheme.onSurface,
-                      hasTextBorderColor: Theme.of(context).colorScheme.primary,
-                      maxLength: pinLength,
-                      hasError: hasError,
-                      onTextChanged: (text) {
-                        setState(() {
-                          hasError = false;
-                        });
-                      },
-                      onDone: (text) {
-                        onNextProcess(text);
-                      },
-                      pinBoxHeight: 64,
-                      hasUnderline: true,
-                      wrapAlignment: WrapAlignment.spaceAround,
-                      pinTextStyle: const TextStyle(fontSize: 28.0),
-                      pinTextAnimatedSwitcherTransition:
-                          ProvidedPinBoxTextAnimation.scalingTransition,
-                      pinBoxColor: Colors.transparent,
-                      pinTextAnimatedSwitcherDuration:
-                          const Duration(milliseconds: 300),
-                      // highlightAnimation: true,
-                      highlightAnimationBeginColor:
-                          Theme.of(context).colorScheme.onSecondary,
-                      highlightAnimationEndColor: Colors.white12,
-                      keyboardType: TextInputType.number,
-                    ),
+                    const SizedBox(height: 16),
                   ],
-                )),
-                // if (step == OTPState.shouldArrive)
-                //   textArrivedIn(timeoutCount)
-                // else if (step == OTPState.didNotGetCode)
-                //   dontGetACode()
-                // else
-                //   sendAgain()
-                Row(children: <Widget>[
-                  const SizedBox(width: 8),
-                  Expanded(
-                      child: Button(
-                          title: "BACK",
-                          flag: true,
-                          outlined: true,
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          })),
-                  const SizedBox(width: 8),
-                  Expanded(
-                      child: Button(
-                          title: "NEXT",
-                          flag: true,
-                          onPressed: () {
-                            Navigator.of(context)
-                                .push<void>(WelcomeProfilePage.route());
-                            // loginWithPhone();
-                          })),
-                  const SizedBox(width: 8),
-                ]),
-                const SizedBox(height: 16),
-              ],
-            )));
+                ))));
   }
 
   Widget textArrivedIn(int seconds) {
@@ -240,7 +224,7 @@ class _AuthOTPPageState extends State<AuthOTPPage> {
         style: CustomTextStyle.getDescStyle(
             Theme.of(context).colorScheme.onSecondary),
         children: <TextSpan>[
-          TextSpan(text: 'Text should arrive within ${seconds}s. '),
+          TextSpan(text: 'Code is available within ${seconds}s.'),
         ],
       ),
     );
@@ -259,7 +243,6 @@ class _AuthOTPPageState extends State<AuthOTPPage> {
               style: linkStyle,
               recognizer: TapGestureRecognizer()
                 ..onTap = () {
-                  print('send again');
                   countSeconds();
                   controller.clearComposing();
                 }),
@@ -280,21 +263,9 @@ class _AuthOTPPageState extends State<AuthOTPPage> {
               style: linkStyle,
               recognizer: TapGestureRecognizer()
                 ..onTap = () {
-                  print('Didnt get a code');
                   countSeconds();
+                  controller.clearComposing();
                 }),
-        ],
-      ),
-    );
-  }
-
-  Widget changePhone() {
-    return RichText(
-      text: TextSpan(
-        style:
-            CustomTextStyle.getDescStyle(Theme.of(context).colorScheme.outline),
-        children: <TextSpan>[
-          TextSpan(text: "${widget.phoneNumber} "),
         ],
       ),
     );

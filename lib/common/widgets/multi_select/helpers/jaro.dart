@@ -1,5 +1,5 @@
 import 'dart:math';
-import 'package:the_hafleh/common/widgets/multi_select/helpers/extensions.dart';
+import 'package:hafleh/common/widgets/multi_select/helpers/extensions.dart';
 
 double getJaro(String a, String b, {bool caseSensitive = false}) {
   final s = caseSensitive ? a : a.toLowerCase();

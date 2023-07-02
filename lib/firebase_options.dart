@@ -49,31 +49,30 @@ class DefaultFirebaseOptions {
   static const FirebaseOptions web = FirebaseOptions(
     apiKey: 'AIzaSyC23GivPQE826iP06DnQvZGuafvcHwrR1A',
     appId: '1:909447691315:web:c3394e7d3473738743b746',
-    messagingSenderId: '909447691315',
-    projectId: 'isotope-73ea4',
-    authDomain: 'isotope-73ea4.firebaseapp.com',
-    storageBucket: 'isotope-73ea4.appspot.com',
+    messagingSenderId: '431146169809',
+    projectId: 'the-hafleh-app',
+    authDomain: 'the-hafleh-app.firebaseapp.com',
+    storageBucket: 'the-hafleh-app.appspot.com',
     measurementId: 'G-KKL6FZWV3P',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAZEE1APmwwpIzh-sCKlS5odWgrorQE4tk',
-    appId: '1:909447691315:android:d9e159d89c52db1143b746',
-    messagingSenderId: '909447691315',
-    projectId: 'isotope-73ea4',
-    storageBucket: 'isotope-73ea4.appspot.com',
+    apiKey: 'AIzaSyAPHv9WEoY8g5bJ36whd_BY3CK7_5Au_rQ',
+    appId: '1:431146169809:android:dae9116da3a98b13171cf0',
+    messagingSenderId: '431146169809',
+    projectId: 'the-hafleh-app',
+    storageBucket: 'the-hafleh-app.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyDkAVn0FJwLAl_vhcQOaL7DJDCi_xtuxU8',
-    appId: '1:909447691315:ios:e8270c382ea02e9a43b746',
-    messagingSenderId: '909447691315',
-    projectId: 'isotope-73ea4',
-    storageBucket: 'isotope-73ea4.appspot.com',
-    androidClientId:
-        '909447691315-3cl5fci55ouah05qc1u6d8c2cntov10p.apps.googleusercontent.com',
+    apiKey: 'AIzaSyBpXd7eMEKEn5xY2uPgT_2cbGuDUL9uQvQ',
+    appId: '1:431146169809:ios:be8d43ef18bf7df4171cf0',
+    messagingSenderId: '431146169809',
+    projectId: 'the-hafleh-app',
+    storageBucket: 'the-hafleh-app.appspot.com',
+    androidClientId: '',
     iosClientId:
-        '909447691315-betpk9u16k4e81jkoqm32r23s0dgo201.apps.googleusercontent.com',
-    iosBundleId: 'app.isotope',
+        '431146169809-jru47dub72fcgo3u4qlgpm6ik21vrc8v.apps.googleusercontent.com',
+    iosBundleId: 'app.hafleh',
   );
 }

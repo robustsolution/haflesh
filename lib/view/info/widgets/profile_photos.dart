@@ -1,11 +1,13 @@
-import 'dart:io';
+// ignore_for_file: library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:the_hafleh/common/values/colors.dart';
-import 'package:the_hafleh/common/values/custom_text_style.dart';
-import 'package:the_hafleh/common/widgets/image_placeholder_button.dart';
+
+import 'package:hafleh/common/values/custom_text_style.dart';
+import 'package:hafleh/common/widgets/image_placeholder_button.dart';
+import 'package:hafleh/common/values/colors.dart';
 import 'package:hl_image_picker/hl_image_picker.dart';
+
 
 class ProfilePhotos extends StatefulWidget {
   final List<dynamic> profileImages;

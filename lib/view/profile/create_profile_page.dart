@@ -1,32 +1,27 @@
-import 'dart:typed_data';
+// ignore_for_file: library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:supabase_flutter/supabase_flutter.dart' hide User;
-import 'package:the_hafleh/common/values/supabase.dart';
-import 'package:the_hafleh/common/values/colors.dart';
-import 'package:the_hafleh/common/values/custom_text_style.dart';
-import 'package:the_hafleh/common/widgets/button.dart';
-import 'package:the_hafleh/common/widgets/static_progress_bar.dart';
-import 'package:the_hafleh/common/utils/images.dart';
-import 'package:the_hafleh/common/utils/logger.dart';
-import 'package:the_hafleh/core/blocs/auth/auth_bloc.dart';
-import 'package:the_hafleh/core/blocs/profile/profile_bloc.dart';
-import 'package:the_hafleh/core/models/profile_model.dart';
-import 'package:the_hafleh/view/welcome/welcome_info_page.dart';
+import 'package:hafleh/common/values/custom_text_style.dart';
+import 'package:hafleh/common/widgets/button.dart';
+import 'package:hafleh/common/widgets/static_progress_bar.dart';
+import 'package:hafleh/common/utils/logger.dart';
+import 'package:hafleh/core/blocs/auth/auth_bloc.dart';
+import 'package:hafleh/core/blocs/profile/profile_bloc.dart';
+import 'package:hafleh/core/models/profile_model.dart';
+import 'package:hafleh/view/welcome/welcome_info_page.dart';
 
-import 'package:the_hafleh/view/profile/widgets/name_input.dart';
-import 'package:the_hafleh/view/profile/widgets/birthday_choose.dart';
-import 'package:the_hafleh/view/profile/widgets/genders_choose.dart';
-import 'package:the_hafleh/view/profile/widgets/hometown_input.dart';
-import 'package:the_hafleh/view/profile/widgets/nationality_choose.dart';
-import 'package:the_hafleh/view/profile/widgets/religious_choose.dart';
-import 'package:the_hafleh/view/profile/widgets/smoke_choose.dart';
-import 'package:the_hafleh/view/profile/widgets/drink_choose.dart';
-import 'package:the_hafleh/view/profile/widgets/drug_choose.dart';
-// import 'package:the_hafleh/view/auth/create_account/welcome_dialog.dart';
+import 'package:hafleh/view/profile/widgets/name_input.dart';
+import 'package:hafleh/view/profile/widgets/birthday_choose.dart';
+import 'package:hafleh/view/profile/widgets/genders_choose.dart';
+import 'package:hafleh/view/profile/widgets/hometown_input.dart';
+import 'package:hafleh/view/profile/widgets/nationality_choose.dart';
+import 'package:hafleh/view/profile/widgets/religious_choose.dart';
+import 'package:hafleh/view/profile/widgets/smoke_choose.dart';
+import 'package:hafleh/view/profile/widgets/drink_choose.dart';
+import 'package:hafleh/view/profile/widgets/drug_choose.dart';
 
 List<String> headings = [
   "What's your name?",
@@ -71,11 +66,6 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
   @override
   void initState() {
     super.initState();
-    User? authedUser = FirebaseAuth.instance.currentUser;
-    ProfileModel profile = context.read<ProfileBloc>().state.profile;
-    // context
-    //     .read<ProfileBloc>()
-    //     .add(ProfileUpdated(profile.copyWith(uid: authedUser!.uid)));
     context.read<ProfileBloc>();
   }
 
@@ -143,19 +133,6 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
       User? authedUser = FirebaseAuth.instance.currentUser;
       if (authedUser != null) {
         List<String> photos = ["", "", "", ""];
-        for (int i = 0; i < 4; i++) {
-          ImageProvider? element = profileImages[i];
-          if (element == null) {
-            continue;
-          }
-
-          Uint8List bytes = await getImageBytes(element);
-          final response = await Supabase.instance.client.storage
-              .from(SupabaseConsts.photoBucket)
-              .uploadBinary("public/${authedUser.uid}_$i.png", bytes,
-                  fileOptions: const FileOptions(upsert: true));
-          photos[i] = getPublicPhotoUrl(response);
-        }
         // ignore: use_build_context_synchronously
         context
             .read<ProfileBloc>()

@@ -1,4 +1,4 @@
-name: the_hafleh
+name: hafleh
 description: A new Flutter project.
 
 # The following line prevents the package from being accidentally published to
@@ -44,7 +44,6 @@ dependencies:
   firebase_auth: ^4.6.3
   firebase_core: ^2.14.0
   crypto: ^3.0.2
-  supabase_flutter: ^1.10.6
   logger: ^1.4.0
   flutter_svg: ^1.1.6
   intl_phone_number_input: ^0.7.2
@@ -55,9 +54,15 @@ dependencies:
   dotted_border: ^2.0.0+3
   photo_manager: ^2.6.0
   modal_bottom_sheet: ^2.1.2
+  firebase_database: ^10.2.3
+  loader_overlay: ^2.2.0
+  lottie: ^2.3.2
+  overlay_support: ^2.1.0
+  cloud_firestore: ^4.8.2
   flutter_countdown_timer: ^4.1.0
   timer_count_down: ^2.2.2
   hl_image_picker: ^1.2.0
+
 
 dev_dependencies:
   flutter_test:
@@ -85,6 +90,7 @@ flutter:
   assets:
     - assets/images/
     - assets/icons/
+    - assets/lottie/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

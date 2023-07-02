@@ -1,12 +1,14 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
-import 'package:the_hafleh/common/values/colors.dart';
-import 'package:the_hafleh/common/values/custom_text_style.dart';
+import 'package:hafleh/common/values/custom_text_style.dart';
 
 class NameInput extends StatefulWidget {
   final String firstname;
   final String lastname;
   final Function onChangeFirstname;
   final Function onChangeLastname;
+
   const NameInput({
     super.key,
     required this.firstname,
@@ -16,7 +18,6 @@ class NameInput extends StatefulWidget {
   });
 
   @override
-  // ignore: library_private_types_in_public_api
   _NameInputState createState() => _NameInputState();
 }
 

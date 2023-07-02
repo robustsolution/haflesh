@@ -1,26 +1,28 @@
-// ignore_for_file: implementation_imports, avoid_print
+// ignore_for_file: implementation_imports, library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:the_hafleh/common/values/colors.dart';
-import 'package:the_hafleh/common/values/custom_text_style.dart';
-import 'package:the_hafleh/common/utils/logger.dart';
-import 'package:the_hafleh/common/widgets/button.dart';
-import 'package:the_hafleh/common/widgets/phone_number_input/phone_number_input.dart';
-import 'package:the_hafleh/core/blocs/auth/auth_bloc.dart';
-import 'package:the_hafleh/view/auth/auth_otp_page.dart';
-import 'package:the_hafleh/common/widgets/static_progress_bar.dart';
+import 'package:hafleh/common/values/colors.dart';
+import 'package:hafleh/common/values/custom_text_style.dart';
+import 'package:hafleh/common/utils/logger.dart';
+import 'package:hafleh/common/widgets/button.dart';
+import 'package:hafleh/common/widgets/phone_number_input/phone_number_input.dart';
+import 'package:hafleh/core/blocs/auth/auth_bloc.dart';
+import 'package:hafleh/view/auth/auth_otp_page.dart';
 import 'package:intl_phone_number_input/src/utils/phone_number.dart';
 import 'package:intl_phone_number_input/src/utils/selector_config.dart';
 
 class InviteFriendPage extends StatefulWidget {
+  const InviteFriendPage({super.key});
+
   @override
   _InviteFriendPageState createState() => _InviteFriendPageState();
 
-  static Page<void> page() => MaterialPage<void>(child: InviteFriendPage());
+  static Page<void> page() =>
+      const MaterialPage<void>(child: InviteFriendPage());
   static Route<void> route() =>
-      MaterialPageRoute<void>(builder: (_) => InviteFriendPage());
+      MaterialPageRoute<void>(builder: (_) => const InviteFriendPage());
 }
 
 class _InviteFriendPageState extends State<InviteFriendPage> {
@@ -49,7 +51,7 @@ class _InviteFriendPageState extends State<InviteFriendPage> {
 
     context.read<AuthBloc>().add(PhoneSignInRequested(phoneNumber));
     Navigator.of(context)
-        .push(AuthOTPPage.route(phoneNumber: phoneNumber, type: 'signup'));
+        .push(AuthOTPPage.route(phoneNumber: phoneNumber, type: 'invite'));
   }
 
   void doSocialAuth(String type) async {
@@ -87,13 +89,11 @@ class _InviteFriendPageState extends State<InviteFriendPage> {
                     const SizedBox(height: 34),
                     InternationalPhoneNumberInput(
                       onInputChanged: (PhoneNumber number) {
-                        print(number.phoneNumber);
                         setState(() {
                           phoneNumber = number.phoneNumber!;
                         });
                       },
                       onInputValidated: (bool value) {
-                        print("validated $value");
                         setState(() {
                           validated = value;
                         });
@@ -117,7 +117,6 @@ class _InviteFriendPageState extends State<InviteFriendPage> {
                         setState(() {
                           number = number;
                         });
-                        print('On Saved: $number');
                       },
                     ),
                     const SizedBox(height: 20),

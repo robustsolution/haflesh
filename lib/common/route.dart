@@ -1,14 +1,16 @@
 import 'package:flutter/widgets.dart';
-import 'package:the_hafleh/core/blocs/auth/auth_bloc.dart';
-import 'package:the_hafleh/core/blocs/profile/profile_bloc.dart';
-import 'package:the_hafleh/view/auth/signup_page.dart';
-import 'package:the_hafleh/view/info/create_info_page.dart';
-import 'package:the_hafleh/view/profile/create_profile_page.dart';
-import 'package:the_hafleh/view/welcome/welcome_info_page.dart';
-import 'package:the_hafleh/view/auth/signin_page.dart';
-import 'package:the_hafleh/view/welcome/welcome_done_page.dart';
-import 'package:the_hafleh/view/welcome/welcome_page.dart';
-import 'package:the_hafleh/view/welcome/welcome_profile_PAGE.dart';
+import 'package:hafleh/core/blocs/auth/auth_bloc.dart';
+import 'package:hafleh/core/blocs/profile/profile_bloc.dart';
+import 'package:hafleh/view/auth/signup_page.dart';
+import 'package:hafleh/view/invite/invite_friend_page.dart';
+import 'package:hafleh/view/splash/splash_page.dart';
+import 'package:hafleh/view/info/create_info_page.dart';
+import 'package:hafleh/view/profile/create_profile_page.dart';
+import 'package:hafleh/view/welcome/welcome_page.dart';
+import 'package:hafleh/view/welcome/welcome_profile_page.dart';
+import 'package:hafleh/view/welcome/welcome_info_page.dart';
+import 'package:hafleh/view/welcome/welcome_done_page.dart';
+
 
 enum AuthRouteState {
   initializing,
@@ -21,12 +23,33 @@ List<Page<dynamic>> onGenerateAppViewPages(
   AuthRouteState state,
   List<Page<dynamic>> pages,
 ) {
-  return [WelcomePage.page()];
+  if (state == AuthRouteState.initializing) {
+    return [SplashPage.page()];
+  } else if (state == AuthRouteState.authenticated) {
+    return [InviteFriendPage.page()];
+  } else if (state == AuthRouteState.creating) {
+    return [WelcomeProfilePage.page()];
+  } else {
+    return [SignupPage.page(), WelcomePage.page()];
+  }
 }
 
 AuthRouteState getRouteState(
   AuthState authState,
   ProfileState profileState,
 ) {
-  return AuthRouteState.creating;
+  if (authState is AppInitializing) {
+    return AuthRouteState.initializing;
+  } else if (authState is Authenticated &&
+      (profileState.status == ProfileStatus.success ||
+          profileState.status == ProfileStatus.updateLoading)) {
+    return AuthRouteState.authenticated;
+  } else if (authState is Authenticated &&
+      (profileState.status == ProfileStatus.notCreated ||
+          profileState.status == ProfileStatus.created ||
+          profileState.status == ProfileStatus.createLoading)) {
+    return AuthRouteState.creating;
+  } else {
+    return AuthRouteState.unauthenticated;
+  }
 }

@@ -1,4 +1,4 @@
-// ignore_for_file: implementation_imports, unnecessary_this
+// ignore_for_file: implementation_imports, unnecessary_this, constant_identifier_names, annotate_overrides, overridden_fields
 
 import 'dart:async';
 
@@ -15,8 +15,6 @@ import 'package:intl_phone_number_input/src/utils/test/test_helper.dart';
 import 'package:intl_phone_number_input/src/utils/util.dart';
 import 'package:intl_phone_number_input/src/utils/widget_view.dart';
 import './selector_button.dart';
-
-import 'package:the_hafleh/common/values/colors.dart';
 
 /// Enum for [SelectorButton] types.
 ///
@@ -90,7 +88,7 @@ class InternationalPhoneNumberInput extends StatefulWidget {
 
   final List<String>? countries;
 
-  InternationalPhoneNumberInput(
+  const InternationalPhoneNumberInput(
       {Key? key,
       this.selectorConfig = const SelectorConfig(),
       required this.onInputChanged,
@@ -374,7 +372,7 @@ class _InputWidgetView
     extends WidgetView<InternationalPhoneNumberInput, _InputWidgetState> {
   final _InputWidgetState state;
 
-  _InputWidgetView({Key? key, required this.state})
+  const _InputWidgetView({Key? key, required this.state})
       : super(key: key, state: state);
 
   @override

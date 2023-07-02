@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:the_hafleh/common/values/colors.dart';
+import 'package:hafleh/common/values/colors.dart';
 
 TextStyle kStyleDefault = const TextStyle(
   color: ThemeColors.onSecondary,

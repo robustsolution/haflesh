@@ -1,35 +1,27 @@
 class UserModel {
   final String uid;
-  final String? phoneNumber;
-  final String? email;
   final String provider;
-  final bool isDisabled;
+  final String? phoneNumber;
 
   UserModel({
     required this.uid,
-    this.phoneNumber,
-    this.email,
     required this.provider,
-    required this.isDisabled,
+    this.phoneNumber,
   });
 
-  factory UserModel.fromJson(Map<String, dynamic> map) {
+  factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
-      uid: map['uid'],
-      phoneNumber: map['phone_number'],
-      email: map['email'],
-      provider: map['provider'],
-      isDisabled: map['is_disabled'],
+      uid: json['uid'],
+      provider: json['provider'],
+      phoneNumber: json['phone_number'],
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
       'uid': uid,
-      'phone_number': phoneNumber,
-      'email': email,
       'provider': provider,
-      'is_disabled': isDisabled,
+      'phone_number': phoneNumber,
     };
   }
 }

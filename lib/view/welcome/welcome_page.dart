@@ -1,10 +1,8 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:the_hafleh/common/values/colors.dart';
-import 'package:the_hafleh/common/values/custom_text_style.dart';
-import 'package:the_hafleh/common/widgets/button.dart';
-// import 'package:the_hafleh/view/auth/signin_page.dart';
-import 'package:the_hafleh/view/auth/signup_page.dart';
+import 'package:hafleh/common/values/custom_text_style.dart';
+import 'package:hafleh/common/widgets/button.dart';
+import 'package:hafleh/view/auth/signup_page.dart';
 
 class WelcomePage extends StatelessWidget {
   const WelcomePage({
@@ -74,8 +72,8 @@ class WelcomePage extends StatelessWidget {
                                   title: "SIGN IN",
                                   outlined: true,
                                   onPressed: () {
-                                    // Navigator.of(context)
-                                    //     .push<void>(SigninPage.route());
+                                    Navigator.of(context)
+                                        .push<void>(SignupPage.route());
                                   })),
                           const SizedBox(width: 8),
                         ]),

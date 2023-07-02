@@ -1,6 +1,8 @@
+// ignore_for_file: deprecated_member_use_from_same_package, library_private_types_in_public_api
+
 import 'package:flutter/material.dart';
-import 'package:the_hafleh/common/widgets/multi_select/helpers/create_options.dart';
-import 'package:the_hafleh/common/widgets/multi_select/helpers/get_item.dart';
+import 'package:hafleh/common/widgets/multi_select/helpers/create_options.dart';
+import 'package:hafleh/common/widgets/multi_select/helpers/get_item.dart';
 
 import 'helpers/jaro.dart';
 

@@ -2,7 +2,6 @@ import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:the_hafleh/common/values/colors.dart';
 import 'package:pressable/pressable.dart';
 
 class ImagePlaceholderButton extends StatelessWidget {
@@ -10,8 +9,8 @@ class ImagePlaceholderButton extends StatelessWidget {
   final Function onDelete;
   final dynamic image;
 
-  ImagePlaceholderButton(
-      {this.image, required this.onPressed, required this.onDelete});
+  const ImagePlaceholderButton(
+      {super.key, this.image, required this.onPressed, required this.onDelete});
 
   @override
   Widget build(BuildContext context) {
@@ -33,25 +32,25 @@ class ImagePlaceholderButton extends StatelessWidget {
                         ))
                     .toList(),
                 cancelButton: CupertinoActionSheetAction(
-                  child: const Text('Cancel'),
                   isDefaultAction: true,
                   onPressed: () {
                     Navigator.pop(context, 'Cancel');
                   },
+                  child: const Text('Cancel'),
                 )),
           );
         }
       },
-      child: Container(
+      child: SizedBox(
           child: DottedBorder(
               color: image != null
                   ? Colors.transparent
                   : Theme.of(context).colorScheme.primary,
               strokeWidth: 2.5,
-              dashPattern: [8, 8],
-              padding: EdgeInsets.all(0),
+              dashPattern: const [8, 8],
+              padding: const EdgeInsets.all(0),
               borderType: BorderType.RRect,
-              radius: Radius.circular(20),
+              radius: const Radius.circular(20),
               child: Container(
                   height: 110,
                   decoration: BoxDecoration(
@@ -67,11 +66,10 @@ class ImagePlaceholderButton extends StatelessWidget {
                           : null)),
                   child: image == null
                       ? Center(
-                          child: Container(
-                              child: SvgPicture.asset(
+                          child: SvgPicture.asset(
                           "assets/icons/attach.svg",
                           fit: BoxFit.cover,
-                        )))
+                        ))
                       : Stack(children: [
                           Container(),
                           Positioned(

@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:pressable/pressable.dart';
-import 'package:the_hafleh/common/values/colors.dart';
-import 'package:the_hafleh/common/values/custom_text_style.dart';
+import 'package:hafleh/common/values/custom_text_style.dart';
 import './prompt_select_page.dart';
 
 class PromptInput extends StatefulWidget {
@@ -45,7 +44,7 @@ class _PromptInputState extends State<PromptInput>
     super.build(context);
     return Column(
       children: [
-        Container(
+        SizedBox(
             child: DottedBorder(
           color: Theme.of(context).colorScheme.primary,
           strokeWidth: 1,
@@ -60,18 +59,19 @@ class _PromptInputState extends State<PromptInput>
                     prompt: widget.prompts[0], answer: widget.answers[0]),
               ));
             },
-            child: Container(
+            child: SizedBox(
               height: 120,
               width: double.infinity,
               child: widget.prompts[0] != ""
                   ? Stack(children: [
                       Container(
-                        padding: EdgeInsets.all(12),
+                        padding: const EdgeInsets.all(12),
                         child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Container(
-                                padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
+                                padding:
+                                    const EdgeInsets.fromLTRB(10, 5, 10, 5),
                                 child: Text(
                                   widget.prompts[0],
                                   style: CustomTextStyle.getTitleStyle(
@@ -81,7 +81,8 @@ class _PromptInputState extends State<PromptInput>
                                 ),
                               ),
                               Container(
-                                padding: EdgeInsets.fromLTRB(10, 5, 10, 5),
+                                padding:
+                                    const EdgeInsets.fromLTRB(10, 5, 10, 5),
                                 child: Text(
                                   widget.answers[0],
                                   style: CustomTextStyle.getTitleStyle(
@@ -125,19 +126,19 @@ class _PromptInputState extends State<PromptInput>
           ),
         )),
         const SizedBox(height: 12),
-        Container(
+        SizedBox(
             child: DottedBorder(
           color:
               Theme.of(context).colorScheme.primary, //color of dotted/dash line
           strokeWidth: 1, //thickness of dash/dots
-          dashPattern: [10, 6],
+          dashPattern: const [10, 6],
           borderType: BorderType.RRect,
-          radius: Radius.circular(20),
+          radius: const Radius.circular(20),
           child: Pressable.opacity(
             onPressed: () {
               // Navigator.of(context).push<void>(PromptSelectPage.route());
             },
-            child: Container(
+            child: SizedBox(
               height: 120,
               width: double.infinity,
               child: Row(
@@ -161,21 +162,21 @@ class _PromptInputState extends State<PromptInput>
             ),
           ),
         )),
-        SizedBox(height: 12),
-        Container(
+        const SizedBox(height: 12),
+        SizedBox(
             child: DottedBorder(
           color:
               Theme.of(context).colorScheme.primary, //color of dotted/dash line
           strokeWidth: 1, //thickness of dash/dots
-          dashPattern: [10, 6],
+          dashPattern: const [10, 6],
           borderType: BorderType.RRect,
-          radius: Radius.circular(20),
+          radius: const Radius.circular(20),
           child: Pressable.opacity(
             onPressed: () {
               // Navigator.of(context).push<void>(PromptSelectPage.route());
             },
             //inner container
-            child: Container(
+            child: SizedBox(
               height: 120,
               width: double.infinity,
               child: Row(
@@ -199,9 +200,8 @@ class _PromptInputState extends State<PromptInput>
             ),
           ),
         )),
-        SizedBox(height: 34),
-        Container(
-          // width: 361,
+        const SizedBox(height: 34),
+        SizedBox(
           height: 62,
           child: Row(
             mainAxisSize: MainAxisSize.min,
@@ -218,7 +218,7 @@ class _PromptInputState extends State<PromptInput>
                   padding:
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                   decoration: ShapeDecoration(
-                    color: Color(0x0C9D9D9D),
+                    color: const Color(0x0C9D9D9D),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(36),
                     ),

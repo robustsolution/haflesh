@@ -27,6 +27,8 @@ class PhoneSignUpRequested extends AuthEvent {
   PhoneSignUpRequested(this.phoneNumber);
 }
 
+class PhoneCodeSent extends AuthEvent {}
+
 class VerifyOTPRequested extends AuthEvent {
   final String code;
 

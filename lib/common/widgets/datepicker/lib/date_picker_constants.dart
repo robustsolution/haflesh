@@ -1,4 +1,6 @@
 /// Selected value of DatePicker.
+// ignore_for_file: prefer_generic_function_type_aliases, constant_identifier_names
+
 typedef DateValueCallback(DateTime dateTime, List<int> selectedIndex);
 
 /// Pressed cancel callback.

@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "431146169809",
+    "project_id": "the-hafleh-app",
+    "storage_bucket": "the-hafleh-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:431146169809:android:dae9116da3a98b13171cf0",
+        "android_client_info": {
+          "package_name": "app.hafleh"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "431146169809-e0u8sqs42dk3hp1ft141au5f5kcn41ri.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAPHv9WEoY8g5bJ36whd_BY3CK7_5Au_rQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "431146169809-e0u8sqs42dk3hp1ft141au5f5kcn41ri.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "431146169809-jru47dub72fcgo3u4qlgpm6ik21vrc8v.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "app.hafleh"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

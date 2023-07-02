@@ -1,30 +1,31 @@
-// ignore_for_file: implementation_imports, avoid_print
+// ignore_for_file: implementation_imports, library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:the_hafleh/common/values/colors.dart';
-import 'package:the_hafleh/common/values/custom_text_style.dart';
-import 'package:the_hafleh/common/utils/logger.dart';
-import 'package:the_hafleh/common/widgets/button.dart';
-import 'package:the_hafleh/common/widgets/phone_number_input/phone_number_input.dart';
-import 'package:the_hafleh/core/blocs/auth/auth_bloc.dart';
-import 'package:the_hafleh/view/auth/auth_otp_page.dart';
-import 'package:the_hafleh/common/widgets/static_progress_bar.dart';
+import 'package:hafleh/common/values/colors.dart';
+import 'package:hafleh/common/values/custom_text_style.dart';
+import 'package:hafleh/common/utils/logger.dart';
+import 'package:hafleh/common/widgets/button.dart';
+import 'package:hafleh/common/widgets/phone_number_input/phone_number_input.dart';
+import 'package:hafleh/core/blocs/auth/auth_bloc.dart';
+import 'package:hafleh/view/auth/auth_otp_page.dart';
+import 'package:hafleh/common/widgets/static_progress_bar.dart';
 import 'package:intl_phone_number_input/src/utils/phone_number.dart';
 import 'package:intl_phone_number_input/src/utils/selector_config.dart';
 
 class SignupPage extends StatefulWidget {
+  const SignupPage({super.key});
+
   @override
   _SignupPageState createState() => _SignupPageState();
 
-  static Page<void> page() => MaterialPage<void>(child: SignupPage());
+  static Page<void> page() => const MaterialPage<void>(child: SignupPage());
   static Route<void> route() =>
-      MaterialPageRoute<void>(builder: (_) => SignupPage());
+      MaterialPageRoute<void>(builder: (_) => const SignupPage());
 }
 
 class _SignupPageState extends State<SignupPage> {
-  bool isChecked = false;
   final TextEditingController controller = TextEditingController();
   String initialCountry = 'US';
   PhoneNumber number = PhoneNumber(isoCode: 'US');
@@ -32,16 +33,10 @@ class _SignupPageState extends State<SignupPage> {
   bool validated = false;
   bool showError = false;
 
-  void loginWithPhone() {
-    // if (!validated) {
-    //   return;
-    // }
-    // if (!isChecked) {
-    //   setState(() {
-    //     showError = true;
-    //   });
-    //   return;
-    // }
+  void handleSignUpWithPhone() {
+    if (!validated) {
+      return;
+    }
 
     setState(() {
       showError = false;
@@ -94,13 +89,11 @@ class _SignupPageState extends State<SignupPage> {
                     const SizedBox(height: 34),
                     InternationalPhoneNumberInput(
                       onInputChanged: (PhoneNumber number) {
-                        print(number.phoneNumber);
                         setState(() {
                           phoneNumber = number.phoneNumber!;
                         });
                       },
                       onInputValidated: (bool value) {
-                        print("validated $value");
                         setState(() {
                           validated = value;
                         });
@@ -125,7 +118,6 @@ class _SignupPageState extends State<SignupPage> {
                         setState(() {
                           number = number;
                         });
-                        print('On Saved: $number');
                       },
                     ),
                   ],
@@ -146,7 +138,7 @@ class _SignupPageState extends State<SignupPage> {
                           title: "NEXT",
                           flag: true,
                           onPressed: () {
-                            loginWithPhone();
+                            handleSignUpWithPhone();
                           })),
                   const SizedBox(width: 8),
                 ]),
