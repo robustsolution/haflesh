@@ -103,7 +103,7 @@ class WelcomePage extends StatelessWidget {
       textAlign: TextAlign.center,
       text: TextSpan(
         style: CustomTextStyle.getSpanStyle(
-            Theme.of(context).colorScheme.secondary, 12),
+            Theme.of(context).colorScheme.secondary, 13),
         children: <TextSpan>[
           const TextSpan(text: 'By signing up for App, you agree to our '),
           TextSpan(
