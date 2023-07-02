@@ -383,7 +383,6 @@ class PinCodeTextFieldState extends State<PinCodeTextField>
             : null,
         style: const TextStyle(
           height: 0.1, color: Colors.transparent,
-          color: Colors.transparent,
         ),
         decoration: InputDecoration(
           focusedErrorBorder: transparentBorder,
@@ -509,14 +508,13 @@ class PinCodeTextFieldState extends State<PinCodeTextField>
 
                 return Container(
                   key: ValueKey<String>("container$i"),
+                  decoration: boxDecoration,
+                  width: widget.pinBoxWidth,
+                  height: widget.pinBoxHeight,
 
                   child: Center(
                       child: _animatedTextBox(
                           strList[i], i, widget.defaultBorderColor)),
-                  decoration: boxDecoration,
-                  width: widget.pinBoxWidth,
-                  height: widget.pinBoxHeight,
-                  child: Center(child: _animatedTextBox(strList[i], i)),
                 );
               }));
     } else if (widget.highlight && _shouldHighlight(i)) {
@@ -576,15 +574,6 @@ class PinCodeTextFieldState extends State<PinCodeTextField>
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8),
           child: Container(
-
-            child: Center(
-                child: _animatedTextBox(
-                    strList[i],
-                    i,
-                    i < text.length
-                        ? widget.hasTextBorderColor
-                        : widget.defaultBorderColor)),
-
             decoration: widget.hasUnderline
                 ? BoxDecoration(
                     border: Border(
@@ -592,7 +581,13 @@ class PinCodeTextFieldState extends State<PinCodeTextField>
                     ),
                   )
                 : null,
-            child: Center(child: _animatedTextBox(strList[i], i)),
+            child: Center(
+                child: _animatedTextBox(
+                    strList[i],
+                    i,
+                    i < text.length
+                        ? widget.hasTextBorderColor
+                        : widget.defaultBorderColor)),
           ),
         ),
       ),

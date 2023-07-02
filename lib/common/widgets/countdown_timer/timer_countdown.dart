@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api
+
 import 'dart:async';
 import 'package:flutter/widgets.dart';
 import './timer_controller.dart';
@@ -24,7 +26,7 @@ class Countdown extends StatefulWidget {
   ///
   /// Simple countdown timer
   ///
-  Countdown({
+  const Countdown({
     Key? key,
     required this.seconds,
     required this.build,
@@ -73,8 +75,9 @@ class _CountdownState extends State<Countdown> {
   @override
   void didUpdateWidget(Countdown oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (oldWidget.seconds != widget.seconds)
+    if (oldWidget.seconds != widget.seconds) {
       _currentMicroSeconds = widget.seconds * _secondsFactor;
+    }
   }
 
   @override
@@ -145,11 +148,11 @@ class _CountdownState extends State<Countdown> {
 
             if (widget.onFinished != null) {
               widget.onFinished!();
-              this._onFinishedExecuted = true;
+              _onFinishedExecuted = true;
             }
             widget.controller?.isCompleted = true;
           } else {
-            this._onFinishedExecuted = false;
+            _onFinishedExecuted = false;
             setState(() {
               _currentMicroSeconds =
                   _currentMicroSeconds - widget.interval.inMicroseconds;
@@ -157,10 +160,10 @@ class _CountdownState extends State<Countdown> {
           }
         },
       );
-    } else if (!this._onFinishedExecuted) {
+    } else if (!_onFinishedExecuted) {
       if (widget.onFinished != null) {
         widget.onFinished!();
-        this._onFinishedExecuted = true;
+        _onFinishedExecuted = true;
       }
       widget.controller?.isCompleted = true;
     }

@@ -21,7 +21,8 @@ List<String> prompts = [
 class PromptSelectPage extends StatelessWidget {
   final String prompt;
   final String answer;
-  PromptSelectPage({required this.prompt, required this.answer});
+  const PromptSelectPage(
+      {super.key, required this.prompt, required this.answer});
 
   @override
   Widget build(BuildContext context) {

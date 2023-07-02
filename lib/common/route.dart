@@ -4,13 +4,8 @@ import 'package:hafleh/core/blocs/profile/profile_bloc.dart';
 import 'package:hafleh/view/auth/signup_page.dart';
 import 'package:hafleh/view/invite/invite_friend_page.dart';
 import 'package:hafleh/view/splash/splash_page.dart';
-import 'package:hafleh/view/info/create_info_page.dart';
-import 'package:hafleh/view/profile/create_profile_page.dart';
 import 'package:hafleh/view/welcome/welcome_page.dart';
 import 'package:hafleh/view/welcome/welcome_profile_page.dart';
-import 'package:hafleh/view/welcome/welcome_info_page.dart';
-import 'package:hafleh/view/welcome/welcome_done_page.dart';
-
 
 enum AuthRouteState {
   initializing,

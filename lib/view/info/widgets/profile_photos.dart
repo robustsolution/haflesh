@@ -1,13 +1,11 @@
-// ignore_for_file: library_private_types_in_public_api
+// ignore_for_file: library_private_types_in_public_api, no_leading_underscores_for_local_identifiers, dead_code, unused_element
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:hafleh/common/values/custom_text_style.dart';
 import 'package:hafleh/common/widgets/image_placeholder_button.dart';
-import 'package:hafleh/common/values/colors.dart';
 import 'package:hl_image_picker/hl_image_picker.dart';
-
 
 class ProfilePhotos extends StatefulWidget {
   final List<dynamic> profileImages;
@@ -23,42 +21,42 @@ class _ProfilePhotosState extends State<ProfilePhotos> {
   @override
   Widget build(BuildContext context) {
     List<dynamic> images = widget.profileImages;
-    final _picker = HLImagePicker();
-    List<HLPickerItem> _selectedImages = [];
+    final picker = HLImagePicker();
+    List<HLPickerItem> selectedImages = [];
 
-    bool _isCroppingEnabled = true;
-    int _count = 4;
-    MediaType _type = MediaType.all;
-    bool _isExportThumbnail = true;
-    bool _enablePreview = false;
-    bool _usedCameraButton = true;
-    int _numberOfColumn = 3;
-    bool _includePrevSelected = false;
-    CropAspectRatio? _aspectRatio;
-    List<CropAspectRatioPreset>? _aspectRatioPresets;
-    double _compressQuality = 0.9;
-    CroppingStyle _croppingStyle = CroppingStyle.normal;
+    bool isCroppingEnabled = true;
+    int count = 4;
+    MediaType type = MediaType.all;
+    bool isExportThumbnail = true;
+    bool enablePreview = false;
+    bool usedCameraButton = true;
+    int numberOfColumn = 3;
+    bool includePrevSelected = false;
+    CropAspectRatio? aspectRatio;
+    List<CropAspectRatioPreset>? aspectRatioPresets;
+    double compressQuality = 0.9;
+    CroppingStyle croppingStyle = CroppingStyle.normal;
 
     _openCamera() async {
       try {
-        final image = await _picker.openCamera(
-          cropping: _isCroppingEnabled,
+        final image = await picker.openCamera(
+          cropping: isCroppingEnabled,
           cameraOptions: HLCameraOptions(
             cameraType:
-                _type == MediaType.video ? CameraType.video : CameraType.image,
+                type == MediaType.video ? CameraType.video : CameraType.image,
             recordVideoMaxSecond: 40,
-            isExportThumbnail: _isExportThumbnail,
+            isExportThumbnail: isExportThumbnail,
             thumbnailCompressFormat: CompressFormat.jpg,
             thumbnailCompressQuality: 0.9,
           ),
           cropOptions: HLCropOptions(
-            aspectRatio: _aspectRatio,
-            aspectRatioPresets: _aspectRatioPresets,
-            croppingStyle: _croppingStyle,
+            aspectRatio: aspectRatio,
+            aspectRatioPresets: aspectRatioPresets,
+            croppingStyle: croppingStyle,
           ),
         );
         setState(() {
-          _selectedImages = [image];
+          selectedImages = [image];
         });
       } catch (e) {
         debugPrint(e.toString());
@@ -67,32 +65,32 @@ class _ProfilePhotosState extends State<ProfilePhotos> {
 
     _openPicker() async {
       try {
-        final images = await _picker.openPicker(
-          cropping: _isCroppingEnabled,
-          selectedIds: _includePrevSelected
-              ? _selectedImages.map((e) => e.id).toList()
+        final images = await picker.openPicker(
+          cropping: isCroppingEnabled,
+          selectedIds: includePrevSelected
+              ? selectedImages.map((e) => e.id).toList()
               : null,
           pickerOptions: HLPickerOptions(
-            mediaType: _type,
-            enablePreview: _enablePreview,
-            isExportThumbnail: _isExportThumbnail,
+            mediaType: type,
+            enablePreview: enablePreview,
+            isExportThumbnail: isExportThumbnail,
             thumbnailCompressFormat: CompressFormat.jpg,
             thumbnailCompressQuality: 0.9,
             recordVideoMaxSecond: 40,
-            maxSelectedAssets: _isCroppingEnabled ? 1 : _count,
-            usedCameraButton: _usedCameraButton,
-            numberOfColumn: _numberOfColumn,
+            maxSelectedAssets: isCroppingEnabled ? 1 : count,
+            usedCameraButton: usedCameraButton,
+            numberOfColumn: numberOfColumn,
           ),
           cropOptions: HLCropOptions(
-            aspectRatio: _aspectRatio,
-            aspectRatioPresets: _aspectRatioPresets,
-            compressQuality: _compressQuality,
+            aspectRatio: aspectRatio,
+            aspectRatioPresets: aspectRatioPresets,
+            compressQuality: compressQuality,
             compressFormat: CompressFormat.jpg,
-            croppingStyle: _croppingStyle,
+            croppingStyle: croppingStyle,
           ),
         );
         setState(() {
-          _selectedImages = images;
+          selectedImages = images;
         });
       } catch (e) {
         debugPrint(e.toString());
@@ -101,21 +99,21 @@ class _ProfilePhotosState extends State<ProfilePhotos> {
 
     _openCropper() async {
       try {
-        if (_selectedImages.isEmpty) {
+        if (selectedImages.isEmpty) {
           return;
         }
-        final image = await _picker.openCropper(
-          _selectedImages[0].path,
+        final image = await picker.openCropper(
+          selectedImages[0].path,
           cropOptions: HLCropOptions(
-            aspectRatio: _aspectRatio,
-            aspectRatioPresets: _aspectRatioPresets,
-            compressQuality: _compressQuality,
+            aspectRatio: aspectRatio,
+            aspectRatioPresets: aspectRatioPresets,
+            compressQuality: compressQuality,
             compressFormat: CompressFormat.jpg,
-            croppingStyle: _croppingStyle,
+            croppingStyle: croppingStyle,
           ),
         );
         setState(() {
-          _selectedImages = [image];
+          selectedImages = [image];
         });
       } catch (e) {
         debugPrint(e.toString());

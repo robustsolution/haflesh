@@ -81,7 +81,7 @@ class WelcomeDonePage extends StatelessWidget {
                                 child: Column(children: [
                                   Container(
                                     height: 80,
-                                    padding: (time / 86400).toInt() <= 99
+                                    padding: time ~/ 86400 <= 99
                                         ? const EdgeInsets.all(12)
                                         : const EdgeInsets.symmetric(
                                             vertical: 12),
@@ -95,11 +95,11 @@ class WelcomeDonePage extends StatelessWidget {
                                       ),
                                     ),
                                     child: Text(
-                                      (time / 86400).toInt() <= 99
+                                      time ~/ 86400 <= 99
                                           ? NumberFormat('00')
-                                              .format((time / 86400).toInt())
+                                              .format(time ~/ 86400)
                                           : NumberFormat('000')
-                                              .format((time / 86400).toInt()),
+                                              .format(time ~/ 86400),
                                       style: CustomTextStyle.getHeaderStyle(
                                           Theme.of(context)
                                               .colorScheme
@@ -135,8 +135,8 @@ class WelcomeDonePage extends StatelessWidget {
                                       ),
                                     ),
                                     child: Text(
-                                      NumberFormat('00').format(
-                                          ((time % 86400) / 3600).toInt()),
+                                      NumberFormat('00')
+                                          .format((time % 86400) ~/ 3600),
                                       style: CustomTextStyle.getHeaderStyle(
                                           Theme.of(context)
                                               .colorScheme
@@ -173,8 +173,7 @@ class WelcomeDonePage extends StatelessWidget {
                                     ),
                                     child: Text(
                                       NumberFormat('00').format(
-                                          ((((time % 86400) % 3600) / 60)
-                                              .toInt())),
+                                          (((time % 86400) % 3600) ~/ 60)),
                                       style: CustomTextStyle.getHeaderStyle(
                                           Theme.of(context)
                                               .colorScheme
@@ -220,7 +219,7 @@ class WelcomeDonePage extends StatelessWidget {
                                           FontWeight.w700),
                                     ),
                                   ),
-                                  SizedBox(height: 8),
+                                  const SizedBox(height: 8),
                                   Text(
                                     "Sec",
                                     style: CustomTextStyle.getDescStyle(
@@ -378,7 +377,7 @@ class WelcomeDonePage extends StatelessWidget {
                                             FontWeight.w700),
                                       ),
                                     ),
-                                    SizedBox(height: 8),
+                                    const SizedBox(height: 8),
                                     Text(
                                       "Sec",
                                       style: CustomTextStyle.getDescStyle(

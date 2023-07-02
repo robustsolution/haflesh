@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'package:flutter/material.dart';
 import 'package:hafleh/common/widgets/multi_select/constants.dart';
 import 'package:hafleh/common/widgets/multi_select/multi_search_selection.dart';

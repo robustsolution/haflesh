@@ -42,8 +42,8 @@ class CountdownController {
   /// Run timer
   ///
   start() {
-    if (this.onStart != null) {
-      this.onStart!();
+    if (onStart != null) {
+      onStart!();
     }
   }
 
@@ -56,8 +56,8 @@ class CountdownController {
   /// Set timer in pause
   ///
   pause() {
-    if (this.onPause != null) {
-      this.onPause!();
+    if (onPause != null) {
+      onPause!();
     }
   }
 
@@ -70,8 +70,8 @@ class CountdownController {
   /// Resume from pause
   ///
   resume() {
-    if (this.onResume != null) {
-      this.onResume!();
+    if (onResume != null) {
+      onResume!();
     }
   }
 
@@ -84,8 +84,8 @@ class CountdownController {
   /// Restart timer from cold
   ///
   restart() {
-    if (this.onRestart != null) {
-      this.onRestart!();
+    if (onRestart != null) {
+      onRestart!();
     }
   }
 

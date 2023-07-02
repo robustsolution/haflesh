@@ -8,7 +8,7 @@ import 'package:hafleh/common/widgets/button.dart';
 
 class PromptAnswerPage extends StatelessWidget {
   final String value;
-  PromptAnswerPage({required this.value});
+  PromptAnswerPage({super.key, required this.value});
 
   final TextEditingController controller = TextEditingController();
 

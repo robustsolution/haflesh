@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:hafleh/common/values/colors.dart';
 import 'package:hafleh/common/values/custom_text_style.dart';
 import 'package:hafleh/common/widgets/button.dart';
 import 'package:hafleh/view/auth/signup_page.dart';
