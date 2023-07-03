@@ -19,23 +19,23 @@ class ProfilePhotos extends StatefulWidget {
 
 class _ProfilePhotosState extends State<ProfilePhotos> {
   final picker = HLImagePicker();
-  List<HLPickerItem> selectedImages = [];
   List<String> duration = ["", "", "", "", "", ""];
+
   @override
   Widget build(BuildContext context) {
-    List<dynamic> images = [null, null, null, null, null, null];
+    List<dynamic> medias = [null, null, null, null, null, null];
+    List<dynamic> thumbnails = [null, null, null, null, null, null];
 
     for (int i = 0; i < widget.profileImages.length; i++) {
-      images[i] = widget.profileImages[i];
+      thumbnails[i] = widget.profileImages[i];
     }
     bool isCroppingEnabled = true;
     int count = 1;
-    MediaType type = MediaType.video;
+    MediaType type = MediaType.all;
     bool isExportThumbnail = true;
     bool enablePreview = false;
     bool usedCameraButton = true;
     int numberOfColumn = 3;
-    bool includePrevSelected = false;
     CropAspectRatio? aspectRatio;
     List<CropAspectRatioPreset>? aspectRatioPresets;
     double compressQuality = 0.9;
@@ -60,14 +60,14 @@ class _ProfilePhotosState extends State<ProfilePhotos> {
           ),
         );
         setState(() {
-          selectedImages = [media];
-          images[index] = media.path;
           if (media.type == 'video') {
             duration[index] = convTimetoMinSec(media.duration ?? 0.0);
-            images[index] = media.thumbnail;
+            medias[index] = media.path;
+            thumbnails[index] = media.thumbnail;
           } else {
             duration[index] == "";
-            images[index] = media.path;
+            medias[index] = media.path;
+            thumbnails[index] = media.path;
           }
         });
       } catch (e) {
@@ -79,9 +79,6 @@ class _ProfilePhotosState extends State<ProfilePhotos> {
       try {
         final media = await picker.openPicker(
           cropping: isCroppingEnabled,
-          selectedIds: includePrevSelected
-              ? selectedImages.map((e) => e.id).toList()
-              : null,
           pickerOptions: HLPickerOptions(
             mediaType: type,
             enablePreview: enablePreview,
@@ -102,13 +99,14 @@ class _ProfilePhotosState extends State<ProfilePhotos> {
           ),
         );
         setState(() {
-          selectedImages = media;
           if (media[0].type == 'video') {
             duration[index] = convTimetoMinSec(media[0].duration ?? 0.0);
-            images[index] = media[0].thumbnail;
+            medias[index] = media[0].path;
+            thumbnails[index] = media[0].thumbnail;
           } else {
             duration[index] == "";
-            images[index] = media[0].path;
+            medias[index] = media[0].path;
+            thumbnails[index] = media[0].path;
           }
         });
       } catch (e) {
@@ -126,14 +124,16 @@ class _ProfilePhotosState extends State<ProfilePhotos> {
           break;
         default:
           _openPicker(index);
+          break;
       }
-      widget.onChange(images);
+      widget.onChange(thumbnails);
     }
 
     void onDelete(int index) {
       setState(() {
-        images[index] = null;
-        widget.onChange(images);
+        medias[index] = null;
+        thumbnails[index] = null;
+        widget.onChange(medias);
       });
     }
 
@@ -147,7 +147,7 @@ class _ProfilePhotosState extends State<ProfilePhotos> {
               Expanded(
                 flex: 1,
                 child: ImagePlaceholderButton(
-                    image: images[0],
+                    image: thumbnails[0],
                     duration: duration[0],
                     onDelete: () {
                       onDelete(0);
@@ -160,7 +160,7 @@ class _ProfilePhotosState extends State<ProfilePhotos> {
               Expanded(
                   flex: 1,
                   child: ImagePlaceholderButton(
-                      image: images[1],
+                      image: thumbnails[1],
                       duration: duration[1],
                       onDelete: () {
                         onDelete(1);
@@ -172,7 +172,7 @@ class _ProfilePhotosState extends State<ProfilePhotos> {
               Expanded(
                   flex: 1,
                   child: ImagePlaceholderButton(
-                      image: images[2],
+                      image: thumbnails[2],
                       duration: duration[2],
                       onDelete: () {
                         onDelete(2);
@@ -191,7 +191,7 @@ class _ProfilePhotosState extends State<ProfilePhotos> {
               Expanded(
                 flex: 1,
                 child: ImagePlaceholderButton(
-                    image: images[3],
+                    image: thumbnails[3],
                     duration: duration[3],
                     onDelete: () {
                       onDelete(3);
@@ -204,7 +204,7 @@ class _ProfilePhotosState extends State<ProfilePhotos> {
               Expanded(
                   flex: 1,
                   child: ImagePlaceholderButton(
-                      image: images[4],
+                      image: thumbnails[4],
                       duration: duration[4],
                       onDelete: () {
                         onDelete(4);
@@ -216,7 +216,7 @@ class _ProfilePhotosState extends State<ProfilePhotos> {
               Expanded(
                   flex: 1,
                   child: ImagePlaceholderButton(
-                      image: images[5],
+                      image: thumbnails[5],
                       duration: duration[5],
                       onDelete: () {
                         onDelete(5);

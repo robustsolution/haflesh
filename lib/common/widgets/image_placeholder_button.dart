@@ -21,7 +21,6 @@ class ImagePlaceholderButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(duration.length);
     List<String> options = [
       'Choose From library',
       'Take Photo',
