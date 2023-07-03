@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -8,14 +10,23 @@ class ImagePlaceholderButton extends StatelessWidget {
   final Function onPressed;
   final Function onDelete;
   final dynamic image;
+  final String duration;
 
   const ImagePlaceholderButton(
-      {super.key, this.image, required this.onPressed, required this.onDelete});
+      {super.key,
+      this.image,
+      required this.duration,
+      required this.onPressed,
+      required this.onDelete});
 
   @override
   Widget build(BuildContext context) {
-    List<String> options = ['Choose From library', 'Take Photo'];
-
+    print(duration.length);
+    List<String> options = [
+      'Choose From library',
+      'Take Photo',
+      'Record Video'
+    ];
     return Pressable.opacity(
       onPressed: () {
         if (image == null) {
@@ -45,7 +56,7 @@ class ImagePlaceholderButton extends StatelessWidget {
           child: DottedBorder(
               color: image != null
                   ? Colors.transparent
-                  : Theme.of(context).colorScheme.primary,
+                  : Theme.of(context).colorScheme.onSurface,
               strokeWidth: 2.5,
               dashPattern: const [8, 8],
               padding: const EdgeInsets.all(0),
@@ -61,7 +72,9 @@ class ImagePlaceholderButton extends StatelessWidget {
                               ? DecorationImage(
                                   image: image!, fit: BoxFit.cover)
                               : DecorationImage(
-                                  image: NetworkImage(image!),
+                                  image:
+                                      Image.file(File(image), fit: BoxFit.cover)
+                                          .image,
                                   fit: BoxFit.cover))
                           : null)),
                   child: image == null
@@ -71,7 +84,15 @@ class ImagePlaceholderButton extends StatelessWidget {
                           fit: BoxFit.cover,
                         ))
                       : Stack(children: [
-                          Container(),
+                          Container(
+                            alignment: Alignment.bottomCenter,
+                            child: Text(
+                              duration,
+                              style: TextStyle(
+                                  color:
+                                      Theme.of(context).colorScheme.secondary),
+                            ),
+                          ),
                           Positioned(
                             right: 0,
                             top: 0,
@@ -83,7 +104,7 @@ class ImagePlaceholderButton extends StatelessWidget {
                                   "assets/icons/close.svg",
                                   fit: BoxFit.cover,
                                 )),
-                          )
+                          ),
                         ])))),
     );
   }

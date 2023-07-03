@@ -42,7 +42,7 @@ class CreateInfoPage extends StatefulWidget {
 }
 
 class _CreateInfoPageState extends State<CreateInfoPage> {
-  List<ImageProvider?> profileImages = [null, null, null, null, null, null];
+  List<dynamic> profileImages = [null, null, null, null, null, null];
   int _currentPage = 0;
 
   @override

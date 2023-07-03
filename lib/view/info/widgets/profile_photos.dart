@@ -1,7 +1,7 @@
 // ignore_for_file: library_private_types_in_public_api, no_leading_underscores_for_local_identifiers, dead_code, unused_element
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hafleh/common/utils/convTime.dart';
 
 import 'package:hafleh/common/values/custom_text_style.dart';
 import 'package:hafleh/common/widgets/image_placeholder_button.dart';
@@ -18,15 +18,19 @@ class ProfilePhotos extends StatefulWidget {
 }
 
 class _ProfilePhotosState extends State<ProfilePhotos> {
+  final picker = HLImagePicker();
+  List<HLPickerItem> selectedImages = [];
+  List<String> duration = ["", "", "", "", "", ""];
   @override
   Widget build(BuildContext context) {
-    List<dynamic> images = widget.profileImages;
-    final picker = HLImagePicker();
-    List<HLPickerItem> selectedImages = [];
+    List<dynamic> images = [null, null, null, null, null, null];
 
+    for (int i = 0; i < widget.profileImages.length; i++) {
+      images[i] = widget.profileImages[i];
+    }
     bool isCroppingEnabled = true;
-    int count = 4;
-    MediaType type = MediaType.all;
+    int count = 1;
+    MediaType type = MediaType.video;
     bool isExportThumbnail = true;
     bool enablePreview = false;
     bool usedCameraButton = true;
@@ -37,14 +41,14 @@ class _ProfilePhotosState extends State<ProfilePhotos> {
     double compressQuality = 0.9;
     CroppingStyle croppingStyle = CroppingStyle.normal;
 
-    _openCamera() async {
+    _openCamera(int index, MediaType type) async {
       try {
-        final image = await picker.openCamera(
+        final media = await picker.openCamera(
           cropping: isCroppingEnabled,
           cameraOptions: HLCameraOptions(
             cameraType:
                 type == MediaType.video ? CameraType.video : CameraType.image,
-            recordVideoMaxSecond: 40,
+            recordVideoMaxSecond: 300,
             isExportThumbnail: isExportThumbnail,
             thumbnailCompressFormat: CompressFormat.jpg,
             thumbnailCompressQuality: 0.9,
@@ -56,16 +60,24 @@ class _ProfilePhotosState extends State<ProfilePhotos> {
           ),
         );
         setState(() {
-          selectedImages = [image];
+          selectedImages = [media];
+          images[index] = media.path;
+          if (media.type == 'video') {
+            duration[index] = convTimetoMinSec(media.duration ?? 0.0);
+            images[index] = media.thumbnail;
+          } else {
+            duration[index] == "";
+            images[index] = media.path;
+          }
         });
       } catch (e) {
         debugPrint(e.toString());
       }
     }
 
-    _openPicker() async {
+    _openPicker(int index) async {
       try {
-        final images = await picker.openPicker(
+        final media = await picker.openPicker(
           cropping: isCroppingEnabled,
           selectedIds: includePrevSelected
               ? selectedImages.map((e) => e.id).toList()
@@ -76,7 +88,7 @@ class _ProfilePhotosState extends State<ProfilePhotos> {
             isExportThumbnail: isExportThumbnail,
             thumbnailCompressFormat: CompressFormat.jpg,
             thumbnailCompressQuality: 0.9,
-            recordVideoMaxSecond: 40,
+            recordVideoMaxSecond: 300,
             maxSelectedAssets: isCroppingEnabled ? 1 : count,
             usedCameraButton: usedCameraButton,
             numberOfColumn: numberOfColumn,
@@ -90,30 +102,14 @@ class _ProfilePhotosState extends State<ProfilePhotos> {
           ),
         );
         setState(() {
-          selectedImages = images;
-        });
-      } catch (e) {
-        debugPrint(e.toString());
-      }
-    }
-
-    _openCropper() async {
-      try {
-        if (selectedImages.isEmpty) {
-          return;
-        }
-        final image = await picker.openCropper(
-          selectedImages[0].path,
-          cropOptions: HLCropOptions(
-            aspectRatio: aspectRatio,
-            aspectRatioPresets: aspectRatioPresets,
-            compressQuality: compressQuality,
-            compressFormat: CompressFormat.jpg,
-            croppingStyle: croppingStyle,
-          ),
-        );
-        setState(() {
-          selectedImages = [image];
+          selectedImages = media;
+          if (media[0].type == 'video') {
+            duration[index] = convTimetoMinSec(media[0].duration ?? 0.0);
+            images[index] = media[0].thumbnail;
+          } else {
+            duration[index] == "";
+            images[index] = media[0].path;
+          }
         });
       } catch (e) {
         debugPrint(e.toString());
@@ -121,12 +117,24 @@ class _ProfilePhotosState extends State<ProfilePhotos> {
     }
 
     void onImageButtonClicked(String type, int index) async {
-      if (type == 'Take Photo') {
-        _openCamera();
-      } else {
-        _openPicker();
+      switch (type) {
+        case "Take Photo":
+          _openCamera(index, MediaType.image);
+          break;
+        case "Record Video":
+          _openCamera(index, MediaType.video);
+          break;
+        default:
+          _openPicker(index);
       }
       widget.onChange(images);
+    }
+
+    void onDelete(int index) {
+      setState(() {
+        images[index] = null;
+        widget.onChange(images);
+      });
     }
 
     return Column(
@@ -140,8 +148,9 @@ class _ProfilePhotosState extends State<ProfilePhotos> {
                 flex: 1,
                 child: ImagePlaceholderButton(
                     image: images[0],
+                    duration: duration[0],
                     onDelete: () {
-                      // onDelete(0);
+                      onDelete(0);
                     },
                     onPressed: (e) {
                       onImageButtonClicked(e, 0);
@@ -152,22 +161,24 @@ class _ProfilePhotosState extends State<ProfilePhotos> {
                   flex: 1,
                   child: ImagePlaceholderButton(
                       image: images[1],
+                      duration: duration[1],
                       onDelete: () {
-                        // onDelete(1);
+                        onDelete(1);
                       },
                       onPressed: (e) {
-                        // onImageButtonClicked(e, 1);
+                        onImageButtonClicked(e, 1);
                       })),
               const SizedBox(width: 17),
               Expanded(
                   flex: 1,
                   child: ImagePlaceholderButton(
                       image: images[2],
+                      duration: duration[2],
                       onDelete: () {
-                        // onDelete(2);
+                        onDelete(2);
                       },
                       onPressed: (e) {
-                        // onImageButtonClicked(e, 2);
+                        onImageButtonClicked(e, 2);
                       }))
             ],
           ),
@@ -181,11 +192,12 @@ class _ProfilePhotosState extends State<ProfilePhotos> {
                 flex: 1,
                 child: ImagePlaceholderButton(
                     image: images[3],
+                    duration: duration[3],
                     onDelete: () {
-                      // onDelete(3);
+                      onDelete(3);
                     },
                     onPressed: (e) {
-                      // onImageButtonClicked(e, 3);
+                      onImageButtonClicked(e, 3);
                     }),
               ),
               const SizedBox(width: 17),
@@ -193,22 +205,24 @@ class _ProfilePhotosState extends State<ProfilePhotos> {
                   flex: 1,
                   child: ImagePlaceholderButton(
                       image: images[4],
+                      duration: duration[4],
                       onDelete: () {
-                        // onDelete(4);
+                        onDelete(4);
                       },
                       onPressed: (e) {
-                        // onImageButtonClicked(e, 4);
+                        onImageButtonClicked(e, 4);
                       })),
               const SizedBox(width: 17),
               Expanded(
                   flex: 1,
                   child: ImagePlaceholderButton(
                       image: images[5],
+                      duration: duration[5],
                       onDelete: () {
-                        // onDelete(5);
+                        onDelete(5);
                       },
                       onPressed: (e) {
-                        // onImageButtonClicked(e, 5);
+                        onImageButtonClicked(e, 5);
                       }))
             ],
           ),
