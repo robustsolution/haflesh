@@ -1,16 +1,76 @@
-// ignore_for_file: library_private_types_in_public_api
+// ignore_for_file: must_be_immutable, library_private_types_in_public_api, unnecessary_null_comparison
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hafleh/common/values/colors.dart';
 import 'package:hafleh/common/values/custom_text_style.dart';
 import 'package:hafleh/common/widgets/button.dart';
+import 'package:hafleh/core/blocs/info/info_bloc.dart';
+import 'package:hafleh/core/models/info_model.dart';
 
-class PromptAnswerPage extends StatelessWidget {
-  final String value;
-  PromptAnswerPage({super.key, required this.value});
+class PromptAnswerPage extends StatefulWidget {
+  String prompt;
+  String answer;
+  int index;
 
-  final TextEditingController controller = TextEditingController();
+  PromptAnswerPage(
+      {super.key,
+      required this.prompt,
+      required this.answer,
+      required this.index});
+
+  static Route<void> route(
+          {required prompt, required answer, required index}) =>
+      MaterialPageRoute<void>(
+          builder: (_) =>
+              PromptAnswerPage(prompt: prompt, answer: answer, index: index));
+
+  @override
+  _PromptAnswerPageState createState() => _PromptAnswerPageState();
+}
+
+class _PromptAnswerPageState extends State<PromptAnswerPage> {
+  final TextEditingController _controller = TextEditingController();
+  bool _isValid = true;
+  List<String>? prompts;
+  List<String>? answers;
+
+  void changeAnswer() {
+    bool validResult = true;
+    if (answers![widget.index] != null) {
+      validResult = false;
+    }
+    if (answers![widget.index] == "") {
+      validResult = true;
+    }
+
+    setState(() {
+      _isValid = validResult;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    InfoModel info = context.read<InfoBloc>().state.info;
+    if (info.prompts == null) {
+      prompts = ["", "", ""];
+    } else {
+      prompts = info.prompts;
+    }
+    if (info.answers == null) {
+      answers = ["", "", ""];
+    } else {
+      answers = info.answers;
+    }
+
+    prompts![widget.index] = widget.prompt;
+    answers![widget.index] = widget.answer;
+    _controller.text = widget.answer;
+    context.read<InfoBloc>().add(InfoUpdated(info.copyWith(prompts: prompts)));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +93,7 @@ class PromptAnswerPage extends StatelessWidget {
                     Text('Write an answer',
                         style: CustomTextStyle.getTitleStyle()),
                     const SizedBox(height: 12),
-                    Text(value,
+                    Text(widget.prompt,
                         textAlign: TextAlign.center,
                         style: CustomTextStyle.getTitleStyle(
                             Theme.of(context).colorScheme.onSecondary,
@@ -48,8 +108,9 @@ class PromptAnswerPage extends StatelessWidget {
                           borderRadius: BorderRadius.circular(15.0)),
                       padding: const EdgeInsets.all(12),
                       child: TextField(
-                        maxLength: 90,
+                        maxLength: 100,
                         maxLines: 5,
+                        controller: _controller,
                         decoration: const InputDecoration(
                           hintText: "Write your answer here",
                           border: InputBorder.none,
@@ -61,7 +122,13 @@ class PromptAnswerPage extends StatelessWidget {
                         ),
                         style: const TextStyle(
                             color: ThemeColors.onSecondary, fontSize: 15),
-                        onChanged: (value) {},
+                        onChanged: (answer) {
+                          answers![widget.index] = answer;
+                          InfoModel info = context.read<InfoBloc>().state.info;
+                          context.read<InfoBloc>().add(
+                              InfoUpdated(info.copyWith(answers: answers)));
+                          changeAnswer();
+                        },
                       ),
                     ),
                   ],
@@ -78,8 +145,14 @@ class PromptAnswerPage extends StatelessWidget {
                           })),
                   const SizedBox(width: 8),
                   Expanded(
-                      child:
-                          Button(title: "NEXT", flag: true, onPressed: () {})),
+                      child: Button(
+                          title: "NEXT",
+                          disabled: _isValid,
+                          flag: true,
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                            Navigator.of(context).pop();
+                          })),
                   const SizedBox(width: 8),
                 ]),
                 const SizedBox(height: 16),

@@ -44,6 +44,7 @@ class CreateInfoPage extends StatefulWidget {
 class _CreateInfoPageState extends State<CreateInfoPage> {
   List<dynamic> profileImages = [null, null, null, null, null, null];
   int _currentPage = 0;
+  bool _isValid = true;
 
   @override
   void initState() {
@@ -51,8 +52,31 @@ class _CreateInfoPageState extends State<CreateInfoPage> {
     context.read<InfoBloc>();
   }
 
+  void validate(InfoModel info) {
+    bool validResult = true;
+
+    if (_currentPage == 0) {
+      validResult = false;
+    }
+    if (info.bio != null && _currentPage == 1) {
+      validResult = false;
+    }
+    if (info.bio == "" && _currentPage == 1) {
+      validResult = true;
+    }
+    if (_currentPage == 2) {
+      validResult = false;
+    }
+
+    setState(() {
+      _isValid = validResult;
+    });
+  }
+
   Widget _activePage() {
     InfoModel info = context.read<InfoBloc>().state.info;
+    validate(info);
+
     switch (_currentPage) {
       case 0:
         return step1(info);
@@ -65,7 +89,7 @@ class _CreateInfoPageState extends State<CreateInfoPage> {
     }
   }
 
-  void createAccount() async {
+  void createInfo() async {
     try {
       User? authedUser = FirebaseAuth.instance.currentUser;
       InfoModel info = context.read<InfoBloc>().state.info;
@@ -180,13 +204,14 @@ class _CreateInfoPageState extends State<CreateInfoPage> {
                           child: Button(
                               title: "NEXT",
                               flag: true,
+                              disabled: _isValid,
                               onPressed: () {
                                 setState(() {
                                   _currentPage++;
                                 });
                                 if (_currentPage >= 3) {
                                   _currentPage = 2;
-                                  createAccount();
+                                  createInfo();
                                 }
                               })),
                       const SizedBox(width: 24),
@@ -217,18 +242,7 @@ class _CreateInfoPageState extends State<CreateInfoPage> {
 
   Widget step3(InfoModel info) {
     return PromptInput(
-      prompts: info.prompts ?? ["", "", ""],
-      answers: info.answers ?? ["", "", ""],
-      onChangePrompts: (value) {
-        context
-            .read<InfoBloc>()
-            .add(InfoUpdated(info.copyWith(prompts: value)));
-      },
-      onChangeAnswers: (value) {
-        context
-            .read<InfoBloc>()
-            .add(InfoUpdated(info.copyWith(answers: value)));
-      },
-    );
+        prompts: info.prompts ?? ["", "", ""],
+        answers: info.answers ?? ["", "", ""]);
   }
 }

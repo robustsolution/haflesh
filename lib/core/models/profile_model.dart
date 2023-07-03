@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 class ProfileModel {
   final String? firstname;
   final String? lastname;
@@ -81,33 +79,33 @@ class ProfileModel {
         drugVisibility: drugVisibility ?? this.drugVisibility);
   }
 
-  factory ProfileModel.fromSnapshot(Map<String, dynamic> snapsot) {
+  factory ProfileModel.fromSnapshot(Map<String, dynamic> snapshot) {
     return ProfileModel(
-        firstname: snapsot['firstname'],
-        lastname: snapsot['lastname'],
-        birthday: snapsot['birthday'] != null
-            ? DateTime.parse(snapsot['birthday'])
+        firstname: snapshot['firstname'],
+        lastname: snapshot['lastname'],
+        birthday: snapshot['birthday'] != null
+            ? DateTime.parse(snapshot['birthday'])
             : null,
-        gender: snapsot['gender'],
-        genderVisibility: snapsot['gender_visibility'],
-        town: snapsot['town'],
-        townVisibility: snapsot['town_visibility'],
-        nation: List<String>.from(jsonDecode(snapsot['nation']) ?? []),
-        nationVisibility: snapsot['nation_visibility'],
-        religious: snapsot['religious'],
-        religiousVisibility: snapsot['religious_visibility'],
-        smoke: snapsot['smoke'],
-        smokeVisibility: snapsot['smoke_visibility'],
-        drink: snapsot['drink'],
-        drinkVisibility: snapsot['drink_visibility'],
-        drug: snapsot['drug'],
-        drugVisibility: snapsot['drug_visibility']);
+        gender: snapshot['gender'],
+        genderVisibility: snapshot['gender_visibility'],
+        town: snapshot['town'],
+        townVisibility: snapshot['town_visibility'],
+        nation: List<String>.from(snapshot['nation'] ?? []),
+        nationVisibility: snapshot['nation_visibility'],
+        religious: snapshot['religious'],
+        religiousVisibility: snapshot['religious_visibility'],
+        smoke: snapshot['smoke'],
+        smokeVisibility: snapshot['smoke_visibility'],
+        drink: snapshot['drink'],
+        drinkVisibility: snapshot['drink_visibility'],
+        drug: snapshot['drug'],
+        drugVisibility: snapshot['drug_visibility']);
   }
 
   Map<String, dynamic> toMap() => {
         'firstname': firstname,
         'lastname': lastname,
-        'birthday': birthday?.toString(),
+        'birthday': birthday?.toString() ?? DateTime.now().toString(),
         'gender': gender,
         'gender_visibility': genderVisibility ?? false,
         'town': town,
