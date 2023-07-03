@@ -101,7 +101,6 @@ class _CreateInfoPageState extends State<CreateInfoPage> {
         backgroundColor: Theme.of(context).colorScheme.secondary,
         body: BlocListener<ProfileBloc, ProfileState>(
             listener: (context, profileState) {
-              print("ProfileState ${profileState.status}");
               if (profileState.status == ProfileStatus.createLoading) {
                 context.loaderOverlay.show();
               } else {
@@ -111,7 +110,6 @@ class _CreateInfoPageState extends State<CreateInfoPage> {
             },
             child: BlocListener<InfoBloc, InfoState>(
                 listener: (context, infoState) {
-                  print("InfoState ${infoState.status}");
                   if (infoState.status == InfoStatus.createLoading) {
                     context.loaderOverlay.show();
                   } else {
