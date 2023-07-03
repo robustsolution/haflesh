@@ -51,9 +51,7 @@ class _NationalityChooseState extends State<NationalityChoose>
               if (count < 2) {
                 count++;
                 nations.add(c.name);
-              } else {
-                print(nations);
-              }
+              } else {}
             },
             showClearSearchFieldButton: true,
             items: countries,

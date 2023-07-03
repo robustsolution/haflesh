@@ -1,5 +1,6 @@
+import 'dart:convert';
+
 class ProfileModel {
-  final String? uid; // firebase auth uid will be primary key
   final String? firstname;
   final String? lastname;
   final DateTime? birthday;
@@ -19,7 +20,6 @@ class ProfileModel {
   final bool? drugVisibility;
 
   ProfileModel({
-    this.uid,
     this.firstname,
     this.lastname,
     this.birthday,
@@ -40,8 +40,7 @@ class ProfileModel {
   });
 
   ProfileModel copyWith(
-      {String? uid,
-      String? firstname,
+      {String? firstname,
       String? lastname,
       DateTime? birthday,
       String? gender,
@@ -63,7 +62,6 @@ class ProfileModel {
       int? height,
       bool? heightVisibility}) {
     return ProfileModel(
-        uid: uid ?? this.uid,
         firstname: firstname ?? this.firstname,
         lastname: lastname ?? this.lastname,
         birthday: birthday ?? this.birthday,
@@ -83,47 +81,46 @@ class ProfileModel {
         drugVisibility: drugVisibility ?? this.drugVisibility);
   }
 
-  factory ProfileModel.fromJson(Map<String, dynamic> map) {
+  factory ProfileModel.fromSnapshot(Map<String, dynamic> snapsot) {
     return ProfileModel(
-        uid: map['uid'],
-        firstname: map['firstname'],
-        lastname: map['lastname'],
-        birthday:
-            map['birthday'] != null ? DateTime.parse(map['birthday']) : null,
-        gender: map['gender'],
-        genderVisibility: map['gender_visibility'],
-        town: map['town'],
-        townVisibility: map['town_visibility'],
-        nation: map['nation'],
-        nationVisibility: map['nation_visibility'],
-        religious: map['religious'],
-        religiousVisibility: map['religious_visibility'],
-        smoke: map['smoke'],
-        smokeVisibility: map['smoke_visibility'],
-        drink: map['drink'],
-        drinkVisibility: map['drink_visibility'],
-        drug: map['drug'],
-        drugVisibility: map['drug_visibility']);
+        firstname: snapsot['firstname'],
+        lastname: snapsot['lastname'],
+        birthday: snapsot['birthday'] != null
+            ? DateTime.parse(snapsot['birthday'])
+            : null,
+        gender: snapsot['gender'],
+        genderVisibility: snapsot['gender_visibility'],
+        town: snapsot['town'],
+        townVisibility: snapsot['town_visibility'],
+        nation: List<String>.from(jsonDecode(snapsot['nation']) ?? []),
+        nationVisibility: snapsot['nation_visibility'],
+        religious: snapsot['religious'],
+        religiousVisibility: snapsot['religious_visibility'],
+        smoke: snapsot['smoke'],
+        smokeVisibility: snapsot['smoke_visibility'],
+        drink: snapsot['drink'],
+        drinkVisibility: snapsot['drink_visibility'],
+        drug: snapsot['drug'],
+        drugVisibility: snapsot['drug_visibility']);
   }
 
-  Map<String, dynamic> toJson() => {
-        'uid': uid,
+  Map<String, dynamic> toMap() => {
         'firstname': firstname,
         'lastname': lastname,
         'birthday': birthday?.toString(),
         'gender': gender,
-        'gender_visibility': genderVisibility,
+        'gender_visibility': genderVisibility ?? false,
         'town': town,
-        'town_visibility': townVisibility,
+        'town_visibility': townVisibility ?? false,
         'nation': nation,
-        'nation_visibility': nationVisibility,
+        'nation_visibility': nationVisibility ?? false,
         'religious': religious,
-        'religious_visibility': religiousVisibility,
+        'religious_visibility': religiousVisibility ?? false,
         'smoke': smoke,
-        'smoke_visibility': smokeVisibility,
+        'smoke_visibility': smokeVisibility ?? false,
         'drink': drink,
-        'drink_visibility': drinkVisibility,
+        'drink_visibility': drinkVisibility ?? false,
         'drug': drug,
-        'drug_visibility': drugVisibility
+        'drug_visibility': drugVisibility ?? false
       };
 }

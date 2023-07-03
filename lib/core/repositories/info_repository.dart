@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hafleh/core/models/info_model.dart';
+import 'package:hafleh/core/repositories/firestore_service.dart';
 
 class InfoRepository {
-  final infoModel = InfoModel();
+  final authedUser = FirebaseAuth.instance.currentUser;
   final CollectionReference infoCollection =
       FirebaseFirestore.instance.collection('infos');
 
@@ -11,7 +13,7 @@ class InfoRepository {
       DocumentSnapshot snapshot = await infoCollection.doc(uid).get();
       if (snapshot.exists) {
         Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
-        return InfoModel.fromJson(data);
+        return InfoModel.fromSnapsot(data);
       } else {
         return null;
       }
@@ -21,8 +23,14 @@ class InfoRepository {
   }
 
   Future<InfoModel> createInfo(InfoModel info) async {
-    // insert new info into firebase database;
-    return infoModel;
+    bool exists = await isCollectionExists('infos');
+    if (exists) {
+    } else {
+      await createCollection("infos");
+    }
+
+    await infoCollection.doc(authedUser!.uid).set(info.toMap());
+    return info;
   }
 
   Future<void> updateInfo(InfoModel info) async {

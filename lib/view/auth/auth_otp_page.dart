@@ -208,8 +208,6 @@ class _AuthOTPPageState extends State<AuthOTPPage> {
                               flag: true,
                               onPressed: () {
                                 onNextProcess();
-                                // Navigator.of(context)
-                                //     .push<void>(WelcomeProfilePage.route());
                               })),
                       const SizedBox(width: 8),
                     ]),
