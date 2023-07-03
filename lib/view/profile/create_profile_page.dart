@@ -130,8 +130,7 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
     try {
       User? authedUser = FirebaseAuth.instance.currentUser;
       if (authedUser != null) {
-        // context.read<ProfileBloc>().add(const ProfileCreateRequested());
-        Navigator.of(context).push<void>(WelcomeInfoPage.route());
+        context.read<ProfileBloc>().add(const ProfileCreateRequested());
       }
     } catch (e) {
       logger.e("create account error $e");
@@ -149,104 +148,91 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    context.watch<ProfileBloc>();
-
     return Scaffold(
         backgroundColor: Theme.of(context).colorScheme.secondary,
-        body: BlocListener<ProfileBloc, ProfileState>(
-            listener: (context, state) {
-              // if the profile successfully created, show welcome modal
-              if (state.status == ProfileStatus.created) {
-                // WelcomeDialog.showWelcomeDialog(context, onButtonPressed: () {
-                //   context
-                //       .read<ProfileBloc>()
-                //       .add(// after click ok button, move to main page
-                //           ProfileWelcomeClicked());
-                // });
-              }
-            },
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                    child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 16, vertical: 8),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Row(children: <Widget>[
-                              const SizedBox(width: 8),
-                              Expanded(
-                                child: StaticProgressBar(
-                                    count: 9, current: _currentPage + 1),
-                              ),
-                              const SizedBox(width: 8),
-                            ]),
-                            const SizedBox(height: 12),
-                            SvgPicture.asset(
-                              "assets/icons/${icons[_currentPage]}",
-                              fit: BoxFit.cover,
-                            ),
-                            const SizedBox(
-                              height: 12,
-                            ),
-                            Text(headings[_currentPage],
-                                textAlign: TextAlign.left,
-                                style: CustomTextStyle.getTitleStyle(
-                                    Theme.of(context).colorScheme.onSecondary)),
-                            const SizedBox(
-                              height: 24,
-                            ),
-                            Expanded(
-                              child: SingleChildScrollView(
-                                child: _activePage(),
-                              ),
-                            )
-                          ],
-                        ))),
-                Row(children: <Widget>[
-                  const SizedBox(width: 18),
-                  Expanded(
-                    child: _visibleProfilePage(),
-                  ),
-                  const SizedBox(width: 24),
-                ]),
-                Row(children: <Widget>[
-                  const SizedBox(width: 24),
-                  Expanded(
-                      child: Button(
-                          title: "BACK",
-                          flag: true,
-                          outlined: true,
-                          onPressed: () {
-                            setState(() {
-                              _currentPage--;
-                            });
-                            if (_currentPage < 0) {
-                              _currentPage = 0;
-                              Navigator.of(context).pop();
-                            }
-                          })),
-                  const SizedBox(width: 8),
-                  Expanded(
-                      child: Button(
-                          title: "NEXT",
-                          flag: true,
-                          onPressed: () {
-                            setState(() {
-                              _currentPage++;
-                            });
-                            if (_currentPage >= 9) {
-                              _currentPage = 8;
-                              createAccount();
-                            }
-                          })),
-                  const SizedBox(width: 24),
-                ]),
-                const SizedBox(height: 16),
-              ],
-            )));
+        body: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+                child: Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Row(children: <Widget>[
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: StaticProgressBar(
+                                count: 9, current: _currentPage + 1),
+                          ),
+                          const SizedBox(width: 8),
+                        ]),
+                        const SizedBox(height: 12),
+                        SvgPicture.asset(
+                          "assets/icons/${icons[_currentPage]}",
+                          fit: BoxFit.cover,
+                        ),
+                        const SizedBox(
+                          height: 12,
+                        ),
+                        Text(headings[_currentPage],
+                            textAlign: TextAlign.left,
+                            style: CustomTextStyle.getTitleStyle(
+                                Theme.of(context).colorScheme.onSecondary)),
+                        const SizedBox(
+                          height: 24,
+                        ),
+                        Expanded(
+                          child: SingleChildScrollView(
+                            child: _activePage(),
+                          ),
+                        )
+                      ],
+                    ))),
+            Row(children: <Widget>[
+              const SizedBox(width: 18),
+              Expanded(
+                child: _visibleProfilePage(),
+              ),
+              const SizedBox(width: 24),
+            ]),
+            Row(children: <Widget>[
+              const SizedBox(width: 24),
+              Expanded(
+                  child: Button(
+                      title: "BACK",
+                      flag: true,
+                      outlined: true,
+                      onPressed: () {
+                        setState(() {
+                          _currentPage--;
+                        });
+                        if (_currentPage < 0) {
+                          _currentPage = 0;
+                          Navigator.of(context).pop();
+                        }
+                      })),
+              const SizedBox(width: 8),
+              Expanded(
+                  child: Button(
+                      title: "NEXT",
+                      flag: true,
+                      onPressed: () {
+                        setState(() {
+                          _currentPage++;
+                        });
+                        if (_currentPage >= 9) {
+                          _currentPage = 8;
+                          Navigator.of(context)
+                              .push<void>(WelcomeInfoPage.route());
+                        }
+                      })),
+              const SizedBox(width: 24),
+            ]),
+            const SizedBox(height: 16),
+          ],
+        ));
   }
 
   Widget step1(ProfileModel profile) {

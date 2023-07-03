@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:hafleh/core/models/profile_model.dart';
+import 'package:hafleh/core/repositories/firestore_service.dart';
 
 class ProfileRepository {
-  final profileModel = ProfileModel();
+  final authedUser = FirebaseAuth.instance.currentUser;
   final CollectionReference profileCollection =
       FirebaseFirestore.instance.collection('profiles');
 
@@ -11,7 +13,7 @@ class ProfileRepository {
       DocumentSnapshot snapshot = await profileCollection.doc(uid).get();
       if (snapshot.exists) {
         Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
-        return ProfileModel.fromJson(data);
+        return ProfileModel.fromSnapshot(data);
       } else {
         return null;
       }
@@ -21,8 +23,14 @@ class ProfileRepository {
   }
 
   Future<ProfileModel> createProfile(ProfileModel profile) async {
-    // insert new profile into firebase database;
-    return profileModel;
+    bool exists = await isCollectionExists('profiles');
+    if (exists) {
+    } else {
+      await createCollection("profiles");
+    }
+
+    await profileCollection.doc(authedUser!.uid).set(profile.toMap());
+    return profile;
   }
 
   Future<void> updateProfile(ProfileModel profile) async {
