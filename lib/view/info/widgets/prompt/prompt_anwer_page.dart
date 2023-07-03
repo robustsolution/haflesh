@@ -54,6 +54,8 @@ class _PromptAnswerPageState extends State<PromptAnswerPage> {
   void initState() {
     super.initState();
 
+    _controller.text = widget.answer;
+
     InfoModel info = context.read<InfoBloc>().state.info;
     if (info.prompts == null) {
       prompts = ["", "", ""];
@@ -68,8 +70,13 @@ class _PromptAnswerPageState extends State<PromptAnswerPage> {
 
     prompts![widget.index] = widget.prompt;
     answers![widget.index] = widget.answer;
-    _controller.text = widget.answer;
     context.read<InfoBloc>().add(InfoUpdated(info.copyWith(prompts: prompts)));
+
+    if (answers![widget.index] != null && answers![widget.index] != "") {
+      setState(() {
+        _isValid = false;
+      });
+    }
   }
 
   @override

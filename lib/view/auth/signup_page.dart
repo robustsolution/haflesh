@@ -137,6 +137,7 @@ class _SignupPageState extends State<SignupPage> {
                       child: Button(
                           title: "NEXT",
                           flag: true,
+                          disabled: !validated,
                           onPressed: () {
                             handleSignUpWithPhone();
                           })),

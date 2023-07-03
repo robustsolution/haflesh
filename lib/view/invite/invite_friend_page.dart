@@ -1,4 +1,4 @@
-// ignore_for_file: implementation_imports, library_private_types_in_public_api
+// ignore_for_file: implementation_imports, library_private_types_in_public_api, avoid_print
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -35,16 +35,6 @@ class _InviteFriendPageState extends State<InviteFriendPage> {
   bool showError = false;
 
   void loginWithPhone() {
-    // if (!validated) {
-    //   return;
-    // }
-    // if (!isChecked) {
-    //   setState(() {
-    //     showError = true;
-    //   });
-    //   return;
-    // }
-
     setState(() {
       showError = false;
     });
@@ -138,8 +128,12 @@ class _InviteFriendPageState extends State<InviteFriendPage> {
                           })),
                   const SizedBox(width: 8),
                   Expanded(
-                      child:
-                          Button(title: "NEXT", flag: true, onPressed: () {})),
+                      child: Button(
+                          title: "NEXT",
+                          flag: true,
+                          onPressed: () {
+                            print("Invite my friend.");
+                          })),
                   const SizedBox(width: 8),
                 ]),
                 const SizedBox(height: 16),
