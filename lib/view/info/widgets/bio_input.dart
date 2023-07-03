@@ -1,4 +1,4 @@
-// ignore_for_file: unnecessary_new
+// ignore_for_file: unnecessary_new, library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
 import 'package:hafleh/common/values/colors.dart';
@@ -6,6 +6,7 @@ import 'package:hafleh/common/values/colors.dart';
 class BioInput extends StatefulWidget {
   final String bio;
   final Function onChange;
+
   const BioInput({
     super.key,
     required this.bio,
@@ -13,13 +14,12 @@ class BioInput extends StatefulWidget {
   });
 
   @override
-  // ignore: library_private_types_in_public_api
   _BioInputState createState() => _BioInputState();
 }
 
 class _BioInputState extends State<BioInput>
     with AutomaticKeepAliveClientMixin<BioInput> {
-  final TextEditingController _bioEditingController = TextEditingController();
+  final TextEditingController _controller = TextEditingController();
 
   @override
   bool get wantKeepAlive => true;
@@ -27,12 +27,12 @@ class _BioInputState extends State<BioInput>
   @override
   void initState() {
     super.initState();
-    _bioEditingController.text = widget.bio;
+    _controller.text = widget.bio;
   }
 
   @override
   void dispose() {
-    _bioEditingController.dispose();
+    _controller.dispose();
     super.dispose();
   }
 
@@ -46,7 +46,7 @@ class _BioInputState extends State<BioInput>
           borderRadius: new BorderRadius.circular(15.0)),
       padding: const EdgeInsets.all(12),
       child: TextField(
-        controller: _bioEditingController,
+        controller: _controller,
         maxLength: 200,
         maxLines: 10,
         decoration: const InputDecoration(
@@ -58,8 +58,6 @@ class _BioInputState extends State<BioInput>
           disabledBorder: InputBorder.none,
           contentPadding: EdgeInsets.zero,
         ),
-        // keyboardType: TextInputType.text,
-        // inputFormatters: [LengthLimitingTextInputFormatter(120)],
         style: const TextStyle(color: ThemeColors.onSecondary, fontSize: 15),
         onChanged: (value) {
           widget.onChange(value);

@@ -1,7 +1,10 @@
-// ignore_for_file: unnecessary_new
+// ignore_for_file: unnecessary_new, library_private_types_in_public_api
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:dotted_border/dotted_border.dart';
+import 'package:hafleh/core/blocs/info/info_bloc.dart';
+import 'package:hafleh/core/models/info_model.dart';
 import 'package:pressable/pressable.dart';
 import 'package:hafleh/common/values/custom_text_style.dart';
 import './prompt_select_page.dart';
@@ -9,18 +12,14 @@ import './prompt_select_page.dart';
 class PromptInput extends StatefulWidget {
   final List<String> prompts;
   final List<String> answers;
-  final Function onChangePrompts;
-  final Function onChangeAnswers;
+
   const PromptInput({
     super.key,
     required this.prompts,
     required this.answers,
-    required this.onChangePrompts,
-    required this.onChangeAnswers,
   });
 
   @override
-  // ignore: library_private_types_in_public_api
   _PromptInputState createState() => _PromptInputState();
 }
 
@@ -28,6 +27,18 @@ class _PromptInputState extends State<PromptInput>
     with AutomaticKeepAliveClientMixin<PromptInput> {
   @override
   bool get wantKeepAlive => true;
+
+  void popPrompt(index) {
+    InfoModel info = context.read<InfoBloc>().state.info;
+    info.answers![index] = "";
+    info.prompts![index] = "";
+    context
+        .read<InfoBloc>()
+        .add(InfoUpdated(info.copyWith(answers: info.answers)));
+    context
+        .read<InfoBloc>()
+        .add(InfoUpdated(info.copyWith(answers: info.answers)));
+  }
 
   @override
   void initState() {
@@ -56,7 +67,9 @@ class _PromptInputState extends State<PromptInput>
             onPressed: () {
               Navigator.of(context).push<void>(MaterialPageRoute(
                 builder: (context) => PromptSelectPage(
-                    prompt: widget.prompts[0], answer: widget.answers[0]),
+                    prompt: widget.prompts[0],
+                    answer: widget.answers[0],
+                    index: 0),
               ));
             },
             child: SizedBox(
@@ -97,7 +110,9 @@ class _PromptInputState extends State<PromptInput>
                         right: -2.5,
                         top: 0,
                         child: GestureDetector(
-                            onTap: () {},
+                            onTap: () {
+                              popPrompt(0);
+                            },
                             child: SvgPicture.asset(
                               "assets/icons/close.svg",
                               fit: BoxFit.fitWidth,
@@ -128,75 +143,172 @@ class _PromptInputState extends State<PromptInput>
         const SizedBox(height: 12),
         SizedBox(
             child: DottedBorder(
-          color:
-              Theme.of(context).colorScheme.primary, //color of dotted/dash line
-          strokeWidth: 1, //thickness of dash/dots
-          dashPattern: const [10, 6],
+          color: Theme.of(context).colorScheme.primary,
+          strokeWidth: 1,
+          dashPattern: widget.prompts[1] != "" ? [1, 0] : [10, 6],
           borderType: BorderType.RRect,
           radius: const Radius.circular(20),
+          padding: const EdgeInsets.all(0),
           child: Pressable.opacity(
             onPressed: () {
-              // Navigator.of(context).push<void>(PromptSelectPage.route());
+              Navigator.of(context).push<void>(MaterialPageRoute(
+                builder: (context) => PromptSelectPage(
+                    prompt: widget.prompts[1],
+                    answer: widget.answers[1],
+                    index: 1),
+              ));
             },
             child: SizedBox(
               height: 120,
               width: double.infinity,
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const Text(
-                    'Select a prompt',
-                    style: TextStyle(
-                      color: Color(0xFF828282),
-                      fontSize: 16,
-                      fontFamily: 'Noto Sans',
-                      fontWeight: FontWeight.w400,
+              child: widget.prompts[1] != ""
+                  ? Stack(children: [
+                      Container(
+                        padding: const EdgeInsets.all(12),
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                padding:
+                                    const EdgeInsets.fromLTRB(10, 5, 10, 5),
+                                child: Text(
+                                  widget.prompts[1],
+                                  style: CustomTextStyle.getTitleStyle(
+                                      Theme.of(context).colorScheme.onSecondary,
+                                      16,
+                                      FontWeight.w700),
+                                ),
+                              ),
+                              Container(
+                                padding:
+                                    const EdgeInsets.fromLTRB(10, 5, 10, 5),
+                                child: Text(
+                                  widget.answers[1],
+                                  style: CustomTextStyle.getTitleStyle(
+                                      Theme.of(context).colorScheme.onSecondary,
+                                      16,
+                                      FontWeight.w400),
+                                ),
+                              ),
+                            ]),
+                      ),
+                      Positioned(
+                        right: -2.5,
+                        top: 0,
+                        child: GestureDetector(
+                            onTap: () {
+                              popPrompt(1);
+                            },
+                            child: SvgPicture.asset(
+                              "assets/icons/close.svg",
+                              fit: BoxFit.fitWidth,
+                            )),
+                      )
+                    ])
+                  : Row(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const Text(
+                          'Select a prompt',
+                          style: TextStyle(
+                            color: Color(0xFF828282),
+                            fontSize: 16,
+                            fontFamily: 'Noto Sans',
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        const SizedBox(width: 4),
+                        SvgPicture.asset("assets/icons/add.svg"),
+                      ],
                     ),
-                  ),
-                  const SizedBox(width: 4),
-                  SvgPicture.asset("assets/icons/add.svg"),
-                ],
-              ),
             ),
           ),
         )),
         const SizedBox(height: 12),
         SizedBox(
             child: DottedBorder(
-          color:
-              Theme.of(context).colorScheme.primary, //color of dotted/dash line
-          strokeWidth: 1, //thickness of dash/dots
-          dashPattern: const [10, 6],
+          color: Theme.of(context).colorScheme.primary,
+          strokeWidth: 1,
+          dashPattern: widget.prompts[2] != "" ? [1, 0] : [10, 6],
           borderType: BorderType.RRect,
           radius: const Radius.circular(20),
+          padding: const EdgeInsets.all(0),
           child: Pressable.opacity(
             onPressed: () {
-              // Navigator.of(context).push<void>(PromptSelectPage.route());
+              Navigator.of(context).push<void>(MaterialPageRoute(
+                builder: (context) => PromptSelectPage(
+                    prompt: widget.prompts[2],
+                    answer: widget.answers[2],
+                    index: 2),
+              ));
             },
-            //inner container
             child: SizedBox(
               height: 120,
               width: double.infinity,
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const Text(
-                    'Select a prompt',
-                    style: TextStyle(
-                      color: Color(0xFF828282),
-                      fontSize: 16,
-                      fontFamily: 'Noto Sans',
-                      fontWeight: FontWeight.w400,
+              child: widget.prompts[2] != ""
+                  ? Stack(children: [
+                      Container(
+                        padding: const EdgeInsets.all(12),
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                padding:
+                                    const EdgeInsets.fromLTRB(10, 5, 10, 5),
+                                child: Text(
+                                  widget.prompts[2],
+                                  style: CustomTextStyle.getTitleStyle(
+                                      Theme.of(context).colorScheme.onSecondary,
+                                      16,
+                                      FontWeight.w700),
+                                ),
+                              ),
+                              Container(
+                                padding:
+                                    const EdgeInsets.fromLTRB(10, 5, 10, 5),
+                                child: Text(
+                                  widget.answers[2],
+                                  style: CustomTextStyle.getTitleStyle(
+                                      Theme.of(context).colorScheme.onSecondary,
+                                      16,
+                                      FontWeight.w400),
+                                ),
+                              ),
+                            ]),
+                      ),
+                      Positioned(
+                        right: -2.5,
+                        top: 0,
+                        child: GestureDetector(
+                            onTap: () {
+                              popPrompt(2);
+                            },
+                            child: SvgPicture.asset(
+                              "assets/icons/close.svg",
+                              fit: BoxFit.fitWidth,
+                            )),
+                      )
+                    ])
+                  : Row(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        const Text(
+                          'Select a prompt',
+                          style: TextStyle(
+                            color: Color(0xFF828282),
+                            fontSize: 16,
+                            fontFamily: 'Noto Sans',
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        const SizedBox(width: 4),
+                        SvgPicture.asset("assets/icons/add.svg"),
+                      ],
                     ),
-                  ),
-                  const SizedBox(width: 4),
-                  SvgPicture.asset("assets/icons/add.svg"),
-                ],
-              ),
             ),
           ),
         )),

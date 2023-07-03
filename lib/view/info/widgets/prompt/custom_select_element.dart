@@ -5,11 +5,15 @@ import './prompt_anwer_page.dart';
 import 'package:pressable/pressable.dart';
 
 class CustomSelectElement extends StatefulWidget {
-  final String value;
-  const CustomSelectElement({
-    super.key,
-    required this.value,
-  });
+  final String prompt;
+  final String answer;
+  final int index;
+
+  const CustomSelectElement(
+      {super.key,
+      required this.prompt,
+      required this.answer,
+      required this.index});
 
   @override
   _CustomSelectElementState createState() => _CustomSelectElementState();
@@ -22,9 +26,10 @@ class _CustomSelectElementState extends State<CustomSelectElement> {
       children: [
         Pressable.opacity(
           onPressed: () {
-            Navigator.of(context).push<void>(MaterialPageRoute(
-              builder: (context) => PromptAnswerPage(value: widget.value),
-            ));
+            Navigator.of(context).push(PromptAnswerPage.route(
+                prompt: widget.prompt,
+                answer: widget.answer,
+                index: widget.index));
           },
           child: Container(
               width: double.infinity,
@@ -41,7 +46,7 @@ class _CustomSelectElementState extends State<CustomSelectElement> {
                   Expanded(
                     child: SizedBox(
                       child: Text(
-                        widget.value,
+                        widget.prompt,
                         style: TextStyle(
                           color: Color(0xFF212325),
                           fontSize: 20,

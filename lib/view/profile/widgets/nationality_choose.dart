@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
 import 'package:hafleh/common/widgets/multi_select/constants.dart';
@@ -14,7 +14,6 @@ class NationalityChoose extends StatefulWidget {
   });
 
   @override
-  // ignore: library_private_types_in_public_api
   _NationalityChooseState createState() => _NationalityChooseState();
 }
 
@@ -51,6 +50,7 @@ class _NationalityChooseState extends State<NationalityChoose>
               if (count < 2) {
                 count++;
                 nations.add(c.name);
+                widget.onChange(nations);
               } else {}
             },
             showClearSearchFieldButton: true,
@@ -60,7 +60,7 @@ class _NationalityChooseState extends State<NationalityChoose>
             },
             itemBuilder: (country, index) {
               return Padding(
-                padding: const EdgeInsets.all(6.0),
+                padding: const EdgeInsets.all(6),
                 child: Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(6),
@@ -68,7 +68,7 @@ class _NationalityChooseState extends State<NationalityChoose>
                   ),
                   child: Padding(
                     padding: const EdgeInsets.symmetric(
-                      vertical: 20.0,
+                      vertical: 4,
                       horizontal: 12,
                     ),
                     child: Text(country.name),
@@ -94,7 +94,7 @@ class _NationalityChooseState extends State<NationalityChoose>
             fuzzySearch: FuzzySearch.none,
             itemsVisibility: ShowedItemsVisibility.alwaysOn,
             showSelectAllButton: true,
-            maximumShowItemsHeight: 200,
+            maximumShowItemsHeight: 416,
           ),
         ),
       ],

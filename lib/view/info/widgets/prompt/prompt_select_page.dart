@@ -21,8 +21,13 @@ List<String> prompts = [
 class PromptSelectPage extends StatelessWidget {
   final String prompt;
   final String answer;
+  final int index;
+
   const PromptSelectPage(
-      {super.key, required this.prompt, required this.answer});
+      {super.key,
+      required this.prompt,
+      required this.answer,
+      required this.index});
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +57,10 @@ class PromptSelectPage extends StatelessWidget {
                             decoration: const BoxDecoration(
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(4.0))),
-                            child: CustomSelector(options: prompts)),
+                            child: CustomSelector(
+                                prompts: prompts,
+                                answer: answer,
+                                index: index)),
                       ),
                     )
                   ],

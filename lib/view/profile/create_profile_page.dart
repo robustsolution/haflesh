@@ -9,8 +9,10 @@ import 'package:hafleh/common/widgets/button.dart';
 import 'package:hafleh/common/widgets/static_progress_bar.dart';
 import 'package:hafleh/common/utils/logger.dart';
 import 'package:hafleh/core/blocs/auth/auth_bloc.dart';
+import 'package:hafleh/core/blocs/info/info_bloc.dart';
 import 'package:hafleh/core/blocs/profile/profile_bloc.dart';
 import 'package:hafleh/core/models/profile_model.dart';
+import 'package:hafleh/view/welcome/welcome_done_page.dart';
 import 'package:hafleh/view/welcome/welcome_info_page.dart';
 import 'package:hafleh/view/profile/widgets/name_input.dart';
 import 'package:hafleh/view/profile/widgets/birthday_choose.dart';
@@ -61,6 +63,7 @@ class CreateProfilePage extends StatefulWidget {
 class _CreateProfilePageState extends State<CreateProfilePage> {
   List<ImageProvider?> profileImages = [null, null, null, null];
   int _currentPage = 0;
+  bool _isValid = true;
 
   @override
   void initState() {
@@ -68,8 +71,44 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
     context.read<ProfileBloc>();
   }
 
+  void validate(ProfileModel profile) {
+    bool validResult = true;
+
+    if ((profile.firstname == null && _currentPage == 0) ||
+        (profile.firstname?.isEmpty ?? true && _currentPage == 0)) {
+      validResult = false;
+    } else if ((profile.gender == null && _currentPage == 2) ||
+        (profile.gender?.isEmpty ?? true && _currentPage == 2)) {
+      validResult = false;
+    } else if ((profile.town == null && _currentPage == 3) ||
+        (profile.town?.isEmpty ?? true && _currentPage == 3)) {
+      validResult = false;
+    } else if ((profile.nation == null && _currentPage == 4) ||
+        (profile.nation?.isEmpty ?? true && _currentPage == 4)) {
+      validResult = false;
+    } else if ((profile.religious == null && _currentPage == 5) ||
+        (profile.religious?.isEmpty ?? true && _currentPage == 5)) {
+      validResult = false;
+    } else if ((profile.smoke == null && _currentPage == 6) ||
+        (profile.smoke?.isEmpty ?? true && _currentPage == 6)) {
+      validResult = false;
+    } else if ((profile.drink == null && _currentPage == 7) ||
+        (profile.drink?.isEmpty ?? true && _currentPage == 7)) {
+      validResult = false;
+    } else if ((profile.drug == null && _currentPage == 8) ||
+        (profile.drug?.isEmpty ?? true && _currentPage == 8)) {
+      validResult = false;
+    }
+
+    setState(() {
+      _isValid = validResult;
+    });
+  }
+
   Widget _activePage() {
     ProfileModel profile = context.read<ProfileBloc>().state.profile;
+    validate(profile);
+
     switch (_currentPage) {
       case 0:
         return step1(profile);
@@ -126,7 +165,7 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
     }
   }
 
-  void createAccount() async {
+  void createProfile() async {
     try {
       User? authedUser = FirebaseAuth.instance.currentUser;
       if (authedUser != null) {
@@ -218,14 +257,22 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
                   child: Button(
                       title: "NEXT",
                       flag: true,
+                      disabled: !_isValid,
                       onPressed: () {
                         setState(() {
                           _currentPage++;
                         });
                         if (_currentPage >= 9) {
                           _currentPage = 8;
-                          Navigator.of(context)
-                              .push<void>(WelcomeInfoPage.route());
+                          if (context.read<InfoBloc>().state.status ==
+                              InfoStatus.success) {
+                            createProfile();
+                            Navigator.of(context)
+                                .push<void>(WelcomeDonePage.route());
+                          } else {
+                            Navigator.of(context)
+                                .push<void>(WelcomeInfoPage.route());
+                          }
                         }
                       })),
               const SizedBox(width: 24),

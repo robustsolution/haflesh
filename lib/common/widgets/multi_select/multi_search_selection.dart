@@ -97,7 +97,7 @@ class MultipleSearchSelection<T> extends StatefulWidget {
     bool? caseSensitiveSearch,
     TextEditingController? searchFieldTextEditingController,
     FocusNode? textFieldFocus,
-    String hintText = 'Type here to search',
+    String hintText = '    Type here to search',
     double? showedItemExtent,
   }) =>
       MultipleSearchSelection._(
