@@ -59,7 +59,6 @@ class CreateProfilePage extends StatefulWidget {
 }
 
 class _CreateProfilePageState extends State<CreateProfilePage> {
-  List<ImageProvider?> profileImages = [null, null, null, null];
   int _currentPage = 0;
 
   @override
