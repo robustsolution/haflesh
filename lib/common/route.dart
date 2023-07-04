@@ -30,7 +30,6 @@ List<Page<dynamic>> onGenerateAppViewPages(
   } else if (state == AuthRouteState.creatingInfo) {
     return [WelcomeInfoPage.page()];
   } else {
-    // return [SignupPage.page(), WelcomePage.page()];
     return [WelcomePage.page(), WelcomePage.page()];
   }
 }
