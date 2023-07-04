@@ -133,7 +133,8 @@ class _ProfilePhotosState extends State<ProfilePhotos> {
       setState(() {
         medias[index] = null;
         thumbnails[index] = null;
-        widget.onChange(medias);
+        duration[index] = "";
+        widget.onChange(thumbnails);
       });
     }
 
