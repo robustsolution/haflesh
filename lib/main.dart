@@ -3,11 +3,12 @@ import 'package:flow_builder/flow_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:hafleh/common/values/colors.dart';
 import 'package:hafleh/core/blocs/info/info_bloc.dart';
 import 'package:hafleh/core/repositories/info_repository.dart';
 import 'package:loader_overlay/loader_overlay.dart';
 import 'package:overlay_support/overlay_support.dart';
-import 'package:hafleh/common/values/app_strings.dart';
 import 'package:hafleh/common/values/theme.dart';
 import 'package:hafleh/common/route.dart';
 import 'package:device_preview/device_preview.dart';
@@ -90,7 +91,7 @@ class AppView extends StatelessWidget implements TickerProvider {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: AppTheme.lightTheme(),
-        title: AppStrings.appName,
+        title: "Hafleh",
         home: MultiBlocListener(
           listeners: [
             BlocListener<AuthBloc, AuthState>(
@@ -113,14 +114,21 @@ class AppView extends StatelessWidget implements TickerProvider {
             )
           ],
           child: LoaderOverlay(
+              useDefaultLoading: false,
+              overlayWidget: const Center(
+                child: SpinKitCubeGrid(
+                  color: ThemeColors.primary,
+                  size: 50.0,
+                ),
+              ),
               child: FlowBuilder<AuthRouteState>(
-            state: getRouteState(
-              context.select((AuthBloc bloc) => bloc.state),
-              context.select((ProfileBloc bloc) => bloc.state),
-              context.select((InfoBloc bloc) => bloc.state),
-            ),
-            onGeneratePages: onGenerateAppViewPages,
-          )),
+                state: getRouteState(
+                  context.select((AuthBloc bloc) => bloc.state),
+                  context.select((ProfileBloc bloc) => bloc.state),
+                  context.select((InfoBloc bloc) => bloc.state),
+                ),
+                onGeneratePages: onGenerateAppViewPages,
+              )),
         ));
   }
 }

@@ -4,7 +4,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lottie/lottie.dart';
+import 'package:hafleh/common/values/colors.dart';
 import 'package:hafleh/core/blocs/auth/auth_bloc.dart';
 
 class SplashPage extends StatefulWidget {
@@ -28,17 +28,20 @@ class _SplashPageState extends State<SplashPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        backgroundColor: const Color.fromARGB(255, 0, 0, 0),
-        body: Center(
-            child: SizedBox(
-                height: 121,
-                width: 121,
-                child: Lottie.asset(
-                  'assets/lottie/loading.json',
-                  width: 200,
-                  height: 200,
-                  fit: BoxFit.fill,
-                ))));
+    return Container(
+      decoration: const BoxDecoration(gradient: ThemeColors.gradient),
+      width: double.infinity,
+      height: double.infinity,
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: const <Widget>[
+          CircularProgressIndicator(
+            backgroundColor: ThemeColors.border,
+          ),
+        ],
+      ),
+    );
   }
 }

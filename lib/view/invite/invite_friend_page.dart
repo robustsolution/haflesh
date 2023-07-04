@@ -43,7 +43,6 @@ class _InviteFriendPageState extends State<InviteFriendPage> {
     });
 
     // sent notification to my friend phone
-    print(phoneNumber);
   }
 
   void doSocialAuth(String type) async {
