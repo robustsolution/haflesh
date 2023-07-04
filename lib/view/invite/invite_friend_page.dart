@@ -35,13 +35,16 @@ class _InviteFriendPageState extends State<InviteFriendPage> {
   bool showError = false;
 
   void loginWithPhone() {
+    if (!validated) {
+      return;
+    }
+
     setState(() {
       showError = false;
     });
 
-    context.read<AuthBloc>().add(PhoneSignInRequested(phoneNumber));
-    Navigator.of(context)
-        .push(AuthOTPPage.route(phoneNumber: phoneNumber, type: 'invite'));
+    // sent notification to my friend phone
+    print(phoneNumber);
   }
 
   void doSocialAuth(String type) async {
@@ -131,8 +134,9 @@ class _InviteFriendPageState extends State<InviteFriendPage> {
                       child: Button(
                           title: "NEXT",
                           flag: true,
+                          disabled: !validated,
                           onPressed: () {
-                            print("Invite my friend.");
+                            loginWithPhone();
                           })),
                   const SizedBox(width: 8),
                 ]),

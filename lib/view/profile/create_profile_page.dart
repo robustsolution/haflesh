@@ -23,6 +23,7 @@ import 'package:hafleh/view/profile/widgets/religious_choose.dart';
 import 'package:hafleh/view/profile/widgets/smoke_choose.dart';
 import 'package:hafleh/view/profile/widgets/drink_choose.dart';
 import 'package:hafleh/view/profile/widgets/drug_choose.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 
 List<String> headings = [
   "What's your name?",
@@ -186,99 +187,110 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        backgroundColor: Theme.of(context).colorScheme.secondary,
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(
-                child: Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Row(children: <Widget>[
-                          const SizedBox(width: 8),
-                          Expanded(
-                            child: StaticProgressBar(
-                                count: 9, current: _currentPage + 1),
-                          ),
-                          const SizedBox(width: 8),
-                        ]),
-                        const SizedBox(height: 12),
-                        SvgPicture.asset(
-                          "assets/icons/${icons[_currentPage]}",
-                          fit: BoxFit.cover,
-                        ),
-                        const SizedBox(
-                          height: 12,
-                        ),
-                        Text(headings[_currentPage],
-                            textAlign: TextAlign.left,
-                            style: CustomTextStyle.getTitleStyle(
-                                Theme.of(context).colorScheme.onSecondary)),
-                        const SizedBox(
-                          height: 24,
-                        ),
-                        Expanded(
-                          child: SingleChildScrollView(
-                            child: _activePage(),
-                          ),
-                        )
-                      ],
-                    ))),
-            Row(children: <Widget>[
-              const SizedBox(width: 18),
-              Expanded(
-                child: _visibleProfilePage(),
-              ),
-              const SizedBox(width: 24),
-            ]),
-            Row(children: <Widget>[
-              const SizedBox(width: 24),
-              Expanded(
-                  child: Button(
-                      title: "BACK",
-                      flag: true,
-                      outlined: true,
-                      onPressed: () {
-                        setState(() {
-                          _currentPage--;
-                        });
-                        if (_currentPage < 0) {
-                          _currentPage = 0;
-                          Navigator.of(context).pop();
-                        }
-                      })),
-              const SizedBox(width: 8),
-              Expanded(
-                  child: Button(
-                      title: "NEXT",
-                      flag: true,
-                      disabled: _isValid,
-                      onPressed: () {
-                        setState(() {
-                          _currentPage++;
-                        });
-                        if (_currentPage >= 9) {
-                          _currentPage = 8;
-                          if (context.read<InfoBloc>().state.status ==
-                              InfoStatus.success) {
-                            createProfile();
-                            Navigator.of(context)
-                                .push<void>(WelcomeDonePage.route());
-                          } else {
-                            Navigator.of(context)
-                                .push<void>(WelcomeInfoPage.route());
-                          }
-                        }
-                      })),
-              const SizedBox(width: 24),
-            ]),
-            const SizedBox(height: 16),
-          ],
-        ));
+    return BlocListener<ProfileBloc, ProfileState>(
+        listener: ((context, profileState) {
+          if (profileState.status == ProfileStatus.createLoading) {
+            context.loaderOverlay.show();
+          }
+          if (profileState.status == ProfileStatus.created ||
+              profileState.status == ProfileStatus.success) {
+            context.loaderOverlay.hide();
+            Navigator.of(context).push<void>(WelcomeDonePage.route());
+          }
+        }),
+        child: Scaffold(
+            backgroundColor: Theme.of(context).colorScheme.secondary,
+            body: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                    child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 8),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Row(children: <Widget>[
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: StaticProgressBar(
+                                    count: 9, current: _currentPage + 1),
+                              ),
+                              const SizedBox(width: 8),
+                            ]),
+                            const SizedBox(height: 12),
+                            SvgPicture.asset(
+                              "assets/icons/${icons[_currentPage]}",
+                              fit: BoxFit.cover,
+                            ),
+                            const SizedBox(
+                              height: 12,
+                            ),
+                            Text(headings[_currentPage],
+                                textAlign: TextAlign.left,
+                                style: CustomTextStyle.getTitleStyle(
+                                    Theme.of(context).colorScheme.onSecondary)),
+                            const SizedBox(
+                              height: 24,
+                            ),
+                            Expanded(
+                              child: SingleChildScrollView(
+                                child: _activePage(),
+                              ),
+                            )
+                          ],
+                        ))),
+                Row(children: <Widget>[
+                  const SizedBox(width: 18),
+                  Expanded(
+                    child: _visibleProfilePage(),
+                  ),
+                  const SizedBox(width: 24),
+                ]),
+                Row(children: <Widget>[
+                  const SizedBox(width: 24),
+                  Expanded(
+                      child: Button(
+                          title: "BACK",
+                          flag: true,
+                          outlined: true,
+                          onPressed: () {
+                            setState(() {
+                              _currentPage--;
+                            });
+                            if (_currentPage < 0) {
+                              _currentPage = 0;
+                              Navigator.of(context).pop();
+                            }
+                          })),
+                  const SizedBox(width: 8),
+                  Expanded(
+                      child: Button(
+                          title: "NEXT",
+                          flag: true,
+                          disabled: _isValid,
+                          onPressed: () {
+                            setState(() {
+                              _currentPage++;
+                            });
+                            if (_currentPage >= 9) {
+                              _currentPage = 8;
+                              if (context.read<InfoBloc>().state.status ==
+                                  InfoStatus.success) {
+                                createProfile();
+                              }
+                              if (context.read<InfoBloc>().state.status ==
+                                  InfoStatus.notCreated) {
+                                Navigator.of(context)
+                                    .push<void>(WelcomeInfoPage.route());
+                              }
+                            }
+                          })),
+                  const SizedBox(width: 24),
+                ]),
+                const SizedBox(height: 16),
+              ],
+            )));
   }
 
   Widget step1(ProfileModel profile) {

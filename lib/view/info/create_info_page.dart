@@ -129,15 +129,17 @@ class _CreateInfoPageState extends State<CreateInfoPage> {
                 context.loaderOverlay.show();
               } else {
                 context.loaderOverlay.hide();
-                Navigator.of(context).push<void>(WelcomeDonePage.route());
               }
             },
             child: BlocListener<InfoBloc, InfoState>(
                 listener: (context, infoState) {
                   if (infoState.status == InfoStatus.createLoading) {
                     context.loaderOverlay.show();
-                  } else {
+                  }
+                  if (infoState.status == ProfileStatus.created ||
+                      infoState.status == ProfileStatus.success) {
                     context.loaderOverlay.hide();
+                    Navigator.of(context).push<void>(WelcomeDonePage.route());
                   }
                 },
                 child: Column(
