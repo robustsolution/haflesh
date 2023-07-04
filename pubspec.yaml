@@ -62,6 +62,7 @@ dependencies:
   flutter_countdown_timer: ^4.1.0
   timer_count_down: ^2.2.2
   hl_image_picker: ^1.2.0
+  indexed: ^0.0.8
 
 
 dev_dependencies:

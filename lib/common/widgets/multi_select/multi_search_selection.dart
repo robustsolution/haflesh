@@ -35,6 +35,7 @@ class MultipleSearchSelection<T> extends StatefulWidget {
     ShowedItemsVisibility? itemsVisibility,
     List<T>? initialPickedItems,
     Widget? title,
+    int? maxCount,
     BoxDecoration? searchFieldBoxDecoration,
     @Deprecated(
       'Use pickedItemsBoxDecoration instead. This will be removed in the next major version.',
@@ -103,6 +104,7 @@ class MultipleSearchSelection<T> extends StatefulWidget {
       MultipleSearchSelection._(
         items: items,
         title: title,
+        maxCount: maxCount,
         isCreatable: false,
         key: key ?? ValueKey(items.hashCode),
         clearSearchFieldOnSelect: clearSearchFieldOnSelect ?? false,
@@ -191,6 +193,7 @@ class MultipleSearchSelection<T> extends StatefulWidget {
     ShowedItemsVisibility? itemsVisibility,
     List<T>? initialPickedItems,
     Widget? title,
+    int? maxCount,
     BoxDecoration? searchFieldBoxDecoration,
     @Deprecated(
       'Use pickedItemsBoxDecoration instead. This will be removed in the next major version.',
@@ -258,6 +261,7 @@ class MultipleSearchSelection<T> extends StatefulWidget {
       MultipleSearchSelection._(
         items: items,
         title: title,
+        maxCount: maxCount,
         isCreatable: true,
         createOptions: createOptions,
         key: key ?? ValueKey(items.hashCode),
@@ -346,6 +350,7 @@ class MultipleSearchSelection<T> extends StatefulWidget {
     this.onItemRemoved,
     this.onTapShowedItem,
     this.title,
+    this.maxCount,
     this.maximumShowItemsHeight = 150,
     this.showClearAllButton = true,
     this.showSelectAllButton = true,
@@ -412,6 +417,7 @@ class MultipleSearchSelection<T> extends StatefulWidget {
 
   /// The title widget on top of the picked items.
   final Widget? title;
+  final int? maxCount;
 
   /// The border color of the picked items container.
   @Deprecated(
@@ -910,16 +916,19 @@ class _MultipleSearchSelectionState<T>
         return GestureDetector(
           behavior: HitTestBehavior.opaque,
           onTap: () {
-            _onAddItem(item);
-            if (widget.clearSearchFieldOnSelect ?? false) {
-              if (widget.itemsVisibility == ShowedItemsVisibility.onType) {
-                expanded = false;
+            int count = pickedItems.length;
+            if (count < 2) {
+              _onAddItem(item);
+              if (widget.clearSearchFieldOnSelect ?? false) {
+                if (widget.itemsVisibility == ShowedItemsVisibility.onType) {
+                  expanded = false;
+                }
+                widget.searchFieldTextEditingController.clear();
+                showedItems = allItems;
               }
-              widget.searchFieldTextEditingController.clear();
-              showedItems = allItems;
-            }
 
-            setState(() {});
+              setState(() {});
+            }
           },
           child: IgnorePointer(
             child: widget.itemBuilder(
