@@ -63,6 +63,7 @@ dependencies:
   timer_count_down: ^2.2.2
   hl_image_picker: ^1.2.0
   indexed: ^0.0.8
+  loading_animation_widget: ^1.2.0+4
 
 
 dev_dependencies:
