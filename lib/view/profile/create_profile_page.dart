@@ -368,7 +368,7 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
 
   Widget step5(ProfileModel profile) {
     return NationalityChoose(
-      nation: profile.nation ?? ["", ""],
+      nation: profile.nation ?? [],
       onChange: (value) {
         context
             .read<ProfileBloc>()

@@ -21,6 +21,7 @@ class _NationalityChooseState extends State<NationalityChoose>
     with AutomaticKeepAliveClientMixin<NationalityChoose> {
   @override
   bool get wantKeepAlive => true;
+  List<String> selectedCountryNames = [];
 
   @override
   void initState() {
@@ -34,8 +35,28 @@ class _NationalityChooseState extends State<NationalityChoose>
 
   @override
   Widget build(BuildContext context) {
-    int count = 0;
-    List<String> nations = [];
+    selectedCountryNames = widget.nation;
+
+    List<Country> selectedCountries = List<Country>.generate(
+      selectedCountryNames.length,
+      (index) => Country(
+        name: selectedCountryNames[index],
+        iso: selectedCountryNames[index].substring(0, 2),
+      ),
+    );
+
+    List<String> unselectedCountryNames = countryNames
+        .where((element) => !selectedCountryNames.contains(element))
+        .toList();
+
+    List<Country> unselectedCountries = List<Country>.generate(
+      unselectedCountryNames.length,
+      (index) => Country(
+        name: unselectedCountryNames[index],
+        iso: unselectedCountryNames[index].substring(0, 2),
+      ),
+    );
+
     super.build(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -47,17 +68,22 @@ class _NationalityChooseState extends State<NationalityChoose>
           child: MultipleSearchSelection<Country>(
             showClearAllButton: false,
             onItemAdded: (c) {
-              if (count < 2) {
-                count++;
-                nations.add(c.name);
-                widget.onChange(nations);
-              } else {}
+              selectedCountryNames.add(c.name);
+              unselectedCountryNames.remove(c.name);
+              widget.onChange(selectedCountryNames);
+            },
+            onItemRemoved: (c) {
+              selectedCountryNames.remove(c.name);
+              unselectedCountryNames.add(c.name);
+              widget.onChange(selectedCountryNames);
             },
             showClearSearchFieldButton: true,
-            items: countries,
+            items: unselectedCountries,
             fieldToCheck: (c) {
               return c.name;
             },
+            initialPickedItems: selectedCountries,
+            maxCount: 2,
             itemBuilder: (country, index) {
               return Padding(
                 padding: const EdgeInsets.all(6),

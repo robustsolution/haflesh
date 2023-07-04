@@ -49,7 +49,7 @@ class WelcomeInfoPage extends StatelessWidget {
                           height: 12,
                         ),
                         Text(
-                          "Showcase the person behind the profile using media and prompts",
+                          "Showcase the person\n behind the profile\n using media and\n prompts",
                           textAlign: TextAlign.center,
                           style: CustomTextStyle.getTitleStyle(
                               Theme.of(context).colorScheme.secondary),
