@@ -262,7 +262,6 @@ class _AuthOTPPageState extends State<AuthOTPPage> {
               recognizer: TapGestureRecognizer()
                 ..onTap = () {
                   countSeconds();
-                  controller.clearComposing();
                 }),
         ],
       ),
