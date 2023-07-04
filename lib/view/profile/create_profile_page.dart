@@ -137,13 +137,9 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
     ProfileModel profile = context.read<ProfileBloc>().state.profile;
     switch (_currentPage) {
       case 0:
-        return const SizedBox(
-          height: 0,
-        );
+        return const SizedBox(height: 0);
       case 1:
-        return const SizedBox(
-          height: 0,
-        );
+        return const SizedBox(height: 0);
       case 2:
         return visibleStep3(profile);
       case 3:

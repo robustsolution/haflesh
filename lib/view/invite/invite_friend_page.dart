@@ -1,4 +1,4 @@
-// ignore_for_file: implementation_imports, library_private_types_in_public_api, avoid_print
+// ignore_for_file: library_private_types_in_public_api, implementation_imports
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,7 +9,6 @@ import 'package:hafleh/common/utils/logger.dart';
 import 'package:hafleh/common/widgets/button.dart';
 import 'package:hafleh/common/widgets/phone_number_input/phone_number_input.dart';
 import 'package:hafleh/core/blocs/auth/auth_bloc.dart';
-import 'package:hafleh/view/auth/auth_otp_page.dart';
 import 'package:intl_phone_number_input/src/utils/phone_number.dart';
 import 'package:intl_phone_number_input/src/utils/selector_config.dart';
 
@@ -44,7 +43,6 @@ class _InviteFriendPageState extends State<InviteFriendPage> {
     });
 
     // sent notification to my friend phone
-    print(phoneNumber);
   }
 
   void doSocialAuth(String type) async {
