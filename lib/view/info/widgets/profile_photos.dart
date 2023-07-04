@@ -1,4 +1,7 @@
 // ignore_for_file: library_private_types_in_public_api, no_leading_underscores_for_local_identifiers, dead_code, unused_element
+import 'dart:io';
+
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hafleh/common/utils/convTime.dart';
@@ -40,6 +43,20 @@ class _ProfilePhotosState extends State<ProfilePhotos> {
     List<CropAspectRatioPreset>? aspectRatioPresets;
     double compressQuality = 0.9;
     CroppingStyle croppingStyle = CroppingStyle.normal;
+
+    updatePhoto(File imageFile) async {
+      FirebaseStorage storage = FirebaseStorage.instance;
+      Reference ref = storage.ref().child('user');
+      UploadTask uploadTask = ref.putFile(imageFile);
+      String url = "";
+      uploadTask.whenComplete(() async {
+        url = await ref.getDownloadURL();
+      }).catchError((onError) {
+        print(onError);
+      });
+      print("Success");
+      return url;
+    }
 
     _openCamera(int index, MediaType type) async {
       try {
@@ -98,15 +115,24 @@ class _ProfilePhotosState extends State<ProfilePhotos> {
             croppingStyle: croppingStyle,
           ),
         );
-        setState(() {
+        setState(() async {
           if (media[0].type == 'video') {
             duration[index] = convTimetoMinSec(media[0].duration ?? 0.0);
             medias[index] = media[0].path;
             thumbnails[index] = media[0].thumbnail;
+            // print("Path;\n");
+            // print(media[0].path);
+            // print(media[0].thumbnail);
           } else {
             duration[index] == "";
             medias[index] = media[0].path;
             thumbnails[index] = media[0].path;
+
+            final file = File(media[0].path);
+            updatePhoto(file);
+
+            // print("Path;\n");
+            // print(media[0].path);
           }
         });
       } catch (e) {
