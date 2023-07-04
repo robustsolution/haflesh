@@ -30,7 +30,8 @@ List<Page<dynamic>> onGenerateAppViewPages(
   } else if (state == AuthRouteState.creatingInfo) {
     return [WelcomeInfoPage.page()];
   } else {
-    return [SignupPage.page(), WelcomePage.page()];
+    // return [SignupPage.page(), WelcomePage.page()];
+    return [WelcomePage.page(), WelcomePage.page()];
   }
 }
 
@@ -55,7 +56,8 @@ AuthRouteState getRouteState(
   } else if (authState is Authenticated &&
       (infoState.status == InfoStatus.notCreated ||
           infoState.status == InfoStatus.created ||
-          infoState.status == InfoStatus.createLoading)) {
+          infoState.status == InfoStatus.createLoading) &&
+      profileState.status != ProfileStatus.loading) {
     return AuthRouteState.creatingInfo;
   } else {
     return AuthRouteState.unauthenticated;
