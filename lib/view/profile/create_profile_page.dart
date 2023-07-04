@@ -62,7 +62,7 @@ class CreateProfilePage extends StatefulWidget {
 
 class _CreateProfilePageState extends State<CreateProfilePage> {
   int _currentPage = 0;
-  bool _isValid = true;
+  bool _isValid = false;
 
   @override
   void initState() {
@@ -71,32 +71,32 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
   }
 
   void validate(ProfileModel profile) {
-    bool validResult = true;
+    bool validResult = false;
 
     if ((profile.firstname == null && _currentPage == 0) ||
         (profile.firstname?.isEmpty ?? true && _currentPage == 0)) {
-      validResult = false;
+      validResult = true;
     } else if ((profile.gender == null && _currentPage == 2) ||
-        (profile.gender?.isEmpty ?? true && _currentPage == 2)) {
-      validResult = false;
+        (profile.gender?.isEmpty == true && _currentPage == 2)) {
+      validResult = true;
     } else if ((profile.town == null && _currentPage == 3) ||
-        (profile.town?.isEmpty ?? true && _currentPage == 3)) {
-      validResult = false;
+        (profile.town?.isEmpty == true && _currentPage == 3)) {
+      validResult = true;
     } else if ((profile.nation == null && _currentPage == 4) ||
-        (profile.nation?.isEmpty ?? true && _currentPage == 4)) {
-      validResult = false;
+        (profile.nation?.isEmpty == true && _currentPage == 4)) {
+      validResult = true;
     } else if ((profile.religious == null && _currentPage == 5) ||
-        (profile.religious?.isEmpty ?? true && _currentPage == 5)) {
-      validResult = false;
+        (profile.religious?.isEmpty == true && _currentPage == 5)) {
+      validResult = true;
     } else if ((profile.smoke == null && _currentPage == 6) ||
-        (profile.smoke?.isEmpty ?? true && _currentPage == 6)) {
-      validResult = false;
+        (profile.smoke?.isEmpty == true && _currentPage == 6)) {
+      validResult = true;
     } else if ((profile.drink == null && _currentPage == 7) ||
-        (profile.drink?.isEmpty ?? true && _currentPage == 7)) {
-      validResult = false;
+        (profile.drink?.isEmpty == true && _currentPage == 7)) {
+      validResult = true;
     } else if ((profile.drug == null && _currentPage == 8) ||
-        (profile.drug?.isEmpty ?? true && _currentPage == 8)) {
-      validResult = false;
+        (profile.drug?.isEmpty == true && _currentPage == 8)) {
+      validResult = true;
     }
 
     setState(() {
@@ -256,7 +256,7 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
                   child: Button(
                       title: "NEXT",
                       flag: true,
-                      disabled: !_isValid,
+                      disabled: _isValid,
                       onPressed: () {
                         setState(() {
                           _currentPage++;

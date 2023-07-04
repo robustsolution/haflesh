@@ -2,7 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:hafleh/core/blocs/auth/auth_bloc.dart';
 import 'package:hafleh/core/blocs/info/info_bloc.dart';
 import 'package:hafleh/core/blocs/profile/profile_bloc.dart';
-import 'package:hafleh/view/auth/signup_page.dart';
+import 'package:hafleh/view/auth/auth_page.dart';
 import 'package:hafleh/view/splash/splash_page.dart';
 import 'package:hafleh/view/welcome/welcome_done_page.dart';
 import 'package:hafleh/view/welcome/welcome_info_page.dart';

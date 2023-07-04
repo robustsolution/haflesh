@@ -15,11 +15,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       : authRepository = authenticationRepository,
         super(AppInitializing()) {
     on<SplashLoaded>((event, emit) async {
-      // if (authenticationRepository.isLoggedIn()) {
-      //   emit(Authenticated());
-      // } else {
-      emit(UnAuthenticated());
-      // }
+      if (authenticationRepository.isLoggedIn()) {
+        emit(Authenticated());
+      } else {
+        emit(UnAuthenticated());
+      }
     });
 
     on<PhoneSignInRequested>((event, emit) async {

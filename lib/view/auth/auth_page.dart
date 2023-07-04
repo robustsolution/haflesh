@@ -44,7 +44,7 @@ class _SignupPageState extends State<SignupPage> {
 
     context.read<AuthBloc>().add(PhoneSignInRequested(phoneNumber));
     Navigator.of(context)
-        .push(AuthOTPPage.route(phoneNumber: phoneNumber, type: 'signup'));
+        .push(AuthOTPPage.route(phoneNumber: phoneNumber, type: 'auth'));
   }
 
   void doSocialAuth(String type) async {

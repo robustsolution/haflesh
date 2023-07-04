@@ -44,7 +44,7 @@ class CreateInfoPage extends StatefulWidget {
 class _CreateInfoPageState extends State<CreateInfoPage> {
   List<dynamic> profileImages = [null, null, null, null, null, null];
   int _currentPage = 0;
-  bool _isValid = true;
+  bool _isValid = false;
 
   @override
   void initState() {
@@ -53,19 +53,19 @@ class _CreateInfoPageState extends State<CreateInfoPage> {
   }
 
   void validate(InfoModel info) {
-    bool validResult = true;
+    bool validResult = false;
 
     if (_currentPage == 0) {
-      validResult = false;
-    }
-    if (info.bio != null && _currentPage == 1) {
-      validResult = false;
-    }
-    if (info.bio == "" && _currentPage == 1) {
       validResult = true;
     }
-    if (_currentPage == 2) {
+    if (info.bio != null && _currentPage == 1) {
+      validResult = true;
+    }
+    if (info.bio == "" && _currentPage == 1) {
       validResult = false;
+    }
+    if (_currentPage == 2) {
+      validResult = true;
     }
 
     setState(() {
@@ -204,7 +204,7 @@ class _CreateInfoPageState extends State<CreateInfoPage> {
                           child: Button(
                               title: "NEXT",
                               flag: true,
-                              disabled: _isValid,
+                              disabled: !_isValid,
                               onPressed: () {
                                 setState(() {
                                   _currentPage++;
