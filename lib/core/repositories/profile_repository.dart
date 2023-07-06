@@ -24,8 +24,7 @@ class ProfileRepository {
 
   Future<ProfileModel> createProfile(ProfileModel profile) async {
     bool exists = await isCollectionExists('profiles');
-    if (exists) {
-    } else {
+    if (!exists) {
       await createCollection("profiles");
     }
 

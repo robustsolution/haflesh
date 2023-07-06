@@ -38,7 +38,10 @@ AuthRouteState getRouteState(
   ProfileState profileState,
   InfoState infoState,
 ) {
-  if (authState is AppInitializing) {
+  if (authState is AppInitializing ||
+      (authState is Authenticated &&
+          profileState.status == ProfileStatus.loading &&
+          infoState.status == InfoStatus.loading)) {
     return AuthRouteState.initializing;
   } else if (authState is Authenticated &&
       (profileState.status == ProfileStatus.success ||
