@@ -41,6 +41,7 @@ class _AuthOTPPageState extends State<AuthOTPPage> {
   @override
   void initState() {
     super.initState();
+
     timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (timeoutCount >= 0 && step == OTPState.shouldArrive) {
         setState(() {
@@ -53,6 +54,12 @@ class _AuthOTPPageState extends State<AuthOTPPage> {
         }
       }
     });
+
+    AuthState authState = context.read<AuthBloc>().state;
+    if (authState is AuthLoading && authState.type == "PhoneSignInRequested") {
+      context.loaderOverlay.show();
+    }
+    setState(() {});
   }
 
   @override
