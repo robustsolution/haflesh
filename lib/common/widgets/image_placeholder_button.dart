@@ -1,10 +1,10 @@
-import 'dart:io';
-
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hafleh/common/utils/images.dart';
 import 'package:pressable/pressable.dart';
+import 'dart:io' as io;
 
 class ImagePlaceholderButton extends StatelessWidget {
   final Function onPressed;
@@ -28,7 +28,7 @@ class ImagePlaceholderButton extends StatelessWidget {
     ];
     return Pressable.opacity(
       onPressed: () {
-        if (image == null) {
+        if (image == "") {
           showCupertinoModalPopup(
             context: context,
             builder: (BuildContext context) => CupertinoActionSheet(
@@ -53,7 +53,7 @@ class ImagePlaceholderButton extends StatelessWidget {
       },
       child: SizedBox(
           child: DottedBorder(
-              color: image != null
+              color: image != ""
                   ? Colors.transparent
                   : Theme.of(context).colorScheme.onSurface,
               strokeWidth: 2.5,
@@ -66,17 +66,14 @@ class ImagePlaceholderButton extends StatelessWidget {
                   decoration: BoxDecoration(
                       color: Colors.transparent,
                       borderRadius: BorderRadius.circular(20),
-                      image: (image != null
-                          ? (image is ImageProvider
-                              ? DecorationImage(
-                                  image: image!, fit: BoxFit.cover)
-                              : DecorationImage(
-                                  image:
-                                      Image.file(File(image), fit: BoxFit.cover)
-                                          .image,
-                                  fit: BoxFit.cover))
+                      image: (image != ""
+                          ? DecorationImage(
+                              image: isNetworkImage(image)
+                                  ? getNetworkImage(image)
+                                  : Image.file(io.File(image)).image,
+                              fit: BoxFit.cover)
                           : null)),
-                  child: image == null
+                  child: image == ""
                       ? Center(
                           child: SvgPicture.asset(
                           "assets/icons/attach.svg",

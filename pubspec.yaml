@@ -65,6 +65,9 @@ dependencies:
   loading_animation_widget: ^1.2.0+4
   firebase_storage: ^11.2.4
   flutter_spinkit: ^5.2.0
+  cached_network_image: ^3.2.3
+  uuid: ^3.0.7
+  path: ^1.8.2
 
 
 dev_dependencies:
