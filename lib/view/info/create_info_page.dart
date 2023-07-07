@@ -94,7 +94,15 @@ class _CreateInfoPageState extends State<CreateInfoPage> {
       User? authedUser = FirebaseAuth.instance.currentUser;
 
       if (authedUser != null) {
-        context.read<ProfileBloc>().add(const ProfileCreateRequested());
+        ProfileStatus profileState = context.read<ProfileBloc>().state.status;
+        if (profileState == ProfileStatus.notCreated) {
+          context.read<ProfileBloc>().add(const ProfileCreateRequested());
+        }
+
+        List<String> photos = ["", "", "", "", "", ""];
+        context
+            .read<InfoBloc>()
+            .add(InfoUpdated(info.copyWith(photos: photos)));
         context.read<InfoBloc>().add(const InfoCreateRequested());
       }
     } catch (e) {
@@ -113,26 +121,30 @@ class _CreateInfoPageState extends State<CreateInfoPage> {
 
   @override
   Widget build(BuildContext context) {
-    context.watch<InfoBloc>();
-
     return Scaffold(
         backgroundColor: Theme.of(context).colorScheme.secondary,
         body: BlocListener<ProfileBloc, ProfileState>(
             listener: (context, profileState) {
               if (profileState.status == ProfileStatus.createLoading) {
                 context.loaderOverlay.show();
-              } else {
+              } else if (profileState.status == ProfileStatus.created) {
                 context.loaderOverlay.hide();
               }
             },
             child: BlocListener<InfoBloc, InfoState>(
                 listener: (context, infoState) {
+                  print(infoState.status);
                   if (infoState.status == InfoStatus.createLoading) {
                     context.loaderOverlay.show();
-                  }
-                  if (infoState.status == ProfileStatus.created ||
-                      infoState.status == ProfileStatus.success) {
+                  } else if (infoState.status == InfoStatus.created) {
                     context.loaderOverlay.hide();
+                    if (context.read<ProfileBloc>().state.status ==
+                        ProfileStatus.created) {
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+                    }
+                    Navigator.pop(context);
+                    Navigator.pop(context);
                     Navigator.of(context).push<void>(WelcomeDonePage.route());
                   }
                 },

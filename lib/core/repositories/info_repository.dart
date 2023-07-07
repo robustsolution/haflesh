@@ -24,11 +24,9 @@ class InfoRepository {
 
   Future<InfoModel> createInfo(InfoModel info) async {
     bool exists = await isCollectionExists('infos');
-    if (exists) {
-    } else {
+    if (!exists) {
       await createCollection("infos");
     }
-
     await infoCollection.doc(authedUser!.uid).set(info.toMap());
     return info;
   }

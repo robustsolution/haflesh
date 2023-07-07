@@ -187,10 +187,11 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
         listener: ((context, profileState) {
           if (profileState.status == ProfileStatus.createLoading) {
             context.loaderOverlay.show();
-          }
-          if (profileState.status == ProfileStatus.created ||
-              profileState.status == ProfileStatus.success) {
+          } else if (profileState.status == ProfileStatus.created &&
+              context.read<InfoBloc>().state.status == InfoStatus.success) {
             context.loaderOverlay.hide();
+            Navigator.pop(context);
+            Navigator.pop(context);
             Navigator.of(context).push<void>(WelcomeDonePage.route());
           }
         }),
@@ -272,13 +273,13 @@ class _CreateProfilePageState extends State<CreateProfilePage> {
                             if (_currentPage >= 9) {
                               _currentPage = 8;
                               if (context.read<InfoBloc>().state.status ==
-                                  InfoStatus.success) {
-                                createProfile();
-                              }
-                              if (context.read<InfoBloc>().state.status ==
                                   InfoStatus.notCreated) {
                                 Navigator.of(context)
                                     .push<void>(WelcomeInfoPage.route());
+                              }
+                              if (context.read<InfoBloc>().state.status ==
+                                  InfoStatus.success) {
+                                createProfile();
                               }
                             }
                           })),
