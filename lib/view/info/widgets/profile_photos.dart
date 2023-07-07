@@ -1,34 +1,60 @@
-// ignore_for_file: library_private_types_in_public_api, no_leading_underscores_for_local_identifiers, dead_code, unused_element
+// ignore_for_file: library_private_types_in_public_api, no_leading_underscores_for_local_identifiers, dead_code, unused_element, prefer_null_aware_operators
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hafleh/core/blocs/info/info_bloc.dart';
+import 'package:hafleh/core/models/info_model.dart';
 import 'package:hl_image_picker/hl_image_picker.dart';
 
+import 'package:hafleh/common/values/constants.dart';
 import 'package:hafleh/common/utils/convTime.dart';
 import 'package:hafleh/common/values/custom_text_style.dart';
 import 'package:hafleh/common/widgets/image_placeholder_button.dart';
 
 class ProfilePhotos extends StatefulWidget {
-  final List<dynamic> profileImages;
-  final Function onChange;
+  const ProfilePhotos({super.key});
 
-  const ProfilePhotos(
-      {super.key, required this.profileImages, required this.onChange});
   @override
   _ProfilePhotosState createState() => _ProfilePhotosState();
 }
 
 class _ProfilePhotosState extends State<ProfilePhotos> {
   final picker = HLImagePicker();
-  List<String> duration = ["", "", "", "", "", ""];
+  List<Media> medias = [];
+  InfoModel _info = InfoModel();
+
+  Future<void> updateInfo(medias) async {
+    context.read<InfoBloc>().add(InfoUpdated(_info.copyWith(medias: medias)));
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    InfoModel info = context.read<InfoBloc>().state.info;
+
+    for (int i = 0; i < 6; i++) {
+      if (info.medias == null) {
+        Media temp = Media(
+          index: i,
+          type: '',
+          media: '',
+          thumbnail: '',
+          duration: '',
+        );
+        medias.add(temp);
+      } else {
+        medias = info.medias!;
+      }
+    }
+
+    setState(() {
+      _info = info;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
-    List<dynamic> medias = [null, null, null, null, null, null];
-    List<dynamic> thumbnails = [null, null, null, null, null, null];
-
-    for (int i = 0; i < widget.profileImages.length; i++) {
-      thumbnails[i] = widget.profileImages[i];
-    }
     bool isCroppingEnabled = true;
     int count = 1;
     MediaType type = MediaType.all;
@@ -61,13 +87,21 @@ class _ProfilePhotosState extends State<ProfilePhotos> {
         );
         setState(() {
           if (media.type == 'video') {
-            duration[index] = convTimetoMinSec(media.duration ?? 0.0);
-            medias[index] = media.path;
-            thumbnails[index] = media.thumbnail;
+            medias[index] = Media(
+              index: index,
+              type: 'video',
+              media: media.path,
+              thumbnail: media.thumbnail ?? "",
+              duration: convTimetoMinSec(media.duration ?? 0.0),
+            );
           } else {
-            duration[index] == "";
-            medias[index] = media.path;
-            thumbnails[index] = media.path;
+            medias[index] = Media(
+              index: index,
+              type: 'image',
+              media: media.path,
+              thumbnail: media.path,
+              duration: "",
+            );
           }
         });
       } catch (e) {
@@ -100,13 +134,21 @@ class _ProfilePhotosState extends State<ProfilePhotos> {
         );
         setState(() {
           if (media[0].type == 'video') {
-            duration[index] = convTimetoMinSec(media[0].duration ?? 0.0);
-            medias[index] = media[0].path;
-            thumbnails[index] = media[0].thumbnail;
+            medias[index] = Media(
+              index: index,
+              type: 'video',
+              media: media[0].path,
+              thumbnail: media[0].thumbnail ?? "",
+              duration: convTimetoMinSec(media[0].duration ?? 0.0),
+            );
           } else {
-            duration[index] == "";
-            medias[index] = media[0].path;
-            thumbnails[index] = media[0].path;
+            medias[index] = Media(
+              index: index,
+              type: 'image',
+              media: media[0].path,
+              thumbnail: media[0].path,
+              duration: "",
+            );
           }
         });
       } catch (e) {
@@ -117,24 +159,29 @@ class _ProfilePhotosState extends State<ProfilePhotos> {
     void onImageButtonClicked(String type, int index) async {
       switch (type) {
         case "Take Photo":
-          _openCamera(index, MediaType.image);
+          await _openCamera(index, MediaType.image);
           break;
         case "Record Video":
-          _openCamera(index, MediaType.video);
+          await _openCamera(index, MediaType.video);
           break;
         default:
-          _openPicker(index);
+          await _openPicker(index);
           break;
       }
-      widget.onChange(thumbnails);
+
+      await updateInfo(medias);
     }
 
     void onDelete(int index) {
       setState(() {
-        medias[index] = null;
-        thumbnails[index] = null;
-        duration[index] = "";
-        widget.onChange(thumbnails);
+        medias[index] = Media(
+          index: index,
+          type: '',
+          media: '',
+          thumbnail: '',
+          duration: '',
+        );
+        // widget.onChange(medias);
       });
     }
 
@@ -148,8 +195,8 @@ class _ProfilePhotosState extends State<ProfilePhotos> {
               Expanded(
                 flex: 1,
                 child: ImagePlaceholderButton(
-                    image: thumbnails[0],
-                    duration: duration[0],
+                    image: medias[0].thumbnail,
+                    duration: medias[0].duration,
                     onDelete: () {
                       onDelete(0);
                     },
@@ -161,8 +208,8 @@ class _ProfilePhotosState extends State<ProfilePhotos> {
               Expanded(
                   flex: 1,
                   child: ImagePlaceholderButton(
-                      image: thumbnails[1],
-                      duration: duration[1],
+                      image: medias[1].thumbnail,
+                      duration: medias[1].duration,
                       onDelete: () {
                         onDelete(1);
                       },
@@ -173,8 +220,8 @@ class _ProfilePhotosState extends State<ProfilePhotos> {
               Expanded(
                   flex: 1,
                   child: ImagePlaceholderButton(
-                      image: thumbnails[2],
-                      duration: duration[2],
+                      image: medias[2].thumbnail,
+                      duration: medias[2].duration,
                       onDelete: () {
                         onDelete(2);
                       },
@@ -192,8 +239,8 @@ class _ProfilePhotosState extends State<ProfilePhotos> {
               Expanded(
                 flex: 1,
                 child: ImagePlaceholderButton(
-                    image: thumbnails[3],
-                    duration: duration[3],
+                    image: medias[3].thumbnail,
+                    duration: medias[3].duration,
                     onDelete: () {
                       onDelete(3);
                     },
@@ -205,8 +252,8 @@ class _ProfilePhotosState extends State<ProfilePhotos> {
               Expanded(
                   flex: 1,
                   child: ImagePlaceholderButton(
-                      image: thumbnails[4],
-                      duration: duration[4],
+                      image: medias[4].thumbnail,
+                      duration: medias[4].duration,
                       onDelete: () {
                         onDelete(4);
                       },
@@ -217,8 +264,8 @@ class _ProfilePhotosState extends State<ProfilePhotos> {
               Expanded(
                   flex: 1,
                   child: ImagePlaceholderButton(
-                      image: thumbnails[5],
-                      duration: duration[5],
+                      image: medias[5].thumbnail,
+                      duration: medias[5].duration,
                       onDelete: () {
                         onDelete(5);
                       },

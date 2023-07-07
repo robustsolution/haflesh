@@ -42,7 +42,7 @@ class CreateInfoPage extends StatefulWidget {
 }
 
 class _CreateInfoPageState extends State<CreateInfoPage> {
-  List<dynamic> profileImages = [null, null, null, null, null, null];
+  List<dynamic> medias = [null, null, null, null, null, null];
   int _currentPage = 0;
   bool _isValid = false;
 
@@ -92,7 +92,6 @@ class _CreateInfoPageState extends State<CreateInfoPage> {
   void createInfo() async {
     try {
       User? authedUser = FirebaseAuth.instance.currentUser;
-      InfoModel info = context.read<InfoBloc>().state.info;
 
       if (authedUser != null) {
         ProfileStatus profileState = context.read<ProfileBloc>().state.status;
@@ -231,13 +230,7 @@ class _CreateInfoPageState extends State<CreateInfoPage> {
   }
 
   Widget step1(InfoModel info) {
-    return ProfilePhotos(
-        profileImages: profileImages,
-        onChange: (value) {
-          setState(() {
-            profileImages = value;
-          });
-        });
+    return const ProfilePhotos();
   }
 
   Widget step2(InfoModel info) {

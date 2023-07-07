@@ -1,10 +1,16 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'dart:io';
 import 'dart:ui' as ui; // Importing 'ui' class only for its type 'ByteData'
 import 'dart:async';
 import 'dart:typed_data';
+import 'package:path/path.dart' as path_lib;
 
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:hafleh/common/values/constants.dart';
+import 'package:uuid/uuid.dart';
 
 Future<Uint8List> getImageBytes(ImageProvider imageProvider) async {
   final Completer<Uint8List> completer = Completer();
@@ -22,17 +28,70 @@ Future<Uint8List> getImageBytes(ImageProvider imageProvider) async {
   return completer.future;
 }
 
-Future<String> updateFile(
-    int uid, bool type, String filename, File file) async {
-  String typePath = type == true ? "media" : "thumbnail";
+ImageProvider getNetworkImage(String url) {
+  try {
+    if (url == "") {
+      return const AssetImage('assets/images/image_preview.png');
+    }
+
+    final image = CachedNetworkImageProvider(url);
+    return image;
+  } catch (e) {
+    return const AssetImage('assets/images/image_preview.png');
+  }
+}
+
+bool isNetworkImage(String url) {
+  if (url.startsWith("http") == true) {
+    return true;
+  }
+  return false;
+}
+
+Future<String> uploadFile(String path, File file) async {
   FirebaseStorage storage = FirebaseStorage.instance;
-  Reference ref = storage.ref().child('user/$uid/$typePath/$filename');
+  Reference ref = storage.ref().child(path);
   UploadTask uploadTask = ref.putFile(file);
   String url = "";
-  uploadTask.whenComplete(() async {
+  await uploadTask.whenComplete(() async {
     url = await ref.getDownloadURL();
   }).catchError((err) {
     debugPrint(err.toString());
   });
   return url;
+}
+
+Future<Media> convertLocalToOnline(int uid, Media media) async {
+  if (media.type != "") {
+    String extension, filename, path;
+    extension = path_lib.extension(media.media);
+    filename = generateRandomString();
+    path = 'user/$uid/media/$filename$extension';
+    String mediaPath = await uploadFile(path, File(media.media));
+
+    extension = path_lib.extension(media.thumbnail);
+    filename = generateRandomString();
+    path = 'user/$uid/thumbnail/$filename$extension';
+    String thumbnailPath = await uploadFile(path, File(media.thumbnail));
+    return Media(
+      index: media.index,
+      type: media.type,
+      media: mediaPath,
+      thumbnail: thumbnailPath,
+      duration: media.duration,
+    );
+  } else {
+    return Media(
+      index: media.index,
+      type: '',
+      media: '',
+      thumbnail: '',
+      duration: '',
+    );
+  }
+}
+
+String generateRandomString() {
+  final Uuid uuid = Uuid();
+  return uuid.v1();
 }
