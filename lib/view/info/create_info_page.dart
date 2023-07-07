@@ -1,4 +1,4 @@
-// ignore_for_file: library_private_types_in_public_api, use_build_context_synchronously
+// ignore_for_file: library_private_types_in_public_api
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -140,7 +140,9 @@ class _CreateInfoPageState extends State<CreateInfoPage> {
             },
             child: BlocListener<InfoBloc, InfoState>(
                 listener: (context, infoState) {
-                  if (infoState.status == InfoStatus.created) {
+                  if (infoState.status == InfoStatus.createLoading) {
+                    context.loaderOverlay.show();
+                  } else if (infoState.status == InfoStatus.created) {
                     context.loaderOverlay.hide();
                     if (context.read<ProfileBloc>().state.status ==
                         ProfileStatus.created) {
