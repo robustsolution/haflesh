@@ -4,7 +4,6 @@ import 'package:hafleh/core/models/info_model.dart';
 import 'package:hafleh/core/repositories/firestore_service.dart';
 
 class InfoRepository {
-  final authedUser = FirebaseAuth.instance.currentUser;
   final CollectionReference infoCollection =
       FirebaseFirestore.instance.collection('infos');
 
@@ -23,11 +22,14 @@ class InfoRepository {
   }
 
   Future<InfoModel> createInfo(InfoModel info) async {
+    final authedUser = FirebaseAuth.instance.currentUser;
     bool exists = await isCollectionExists('infos');
+
     if (!exists) {
       await createCollection("infos");
     }
     await infoCollection.doc(authedUser!.uid).set(info.toMap());
+
     return info;
   }
 

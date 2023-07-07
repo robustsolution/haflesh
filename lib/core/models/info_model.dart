@@ -27,7 +27,8 @@ class InfoModel {
 
   factory InfoModel.fromSnapsot(Map<String, dynamic> snapshot) {
     return InfoModel(
-      medias: List<Media>.from(snapshot['medias'] ?? []),
+      medias: List<Media>.from(
+          snapshot['medias'].map((i) => Media.fromJson(i)).toList() ?? []),
       bio: snapshot['bio'],
       prompts: List<String>.from(snapshot['prompts'] ?? []),
       answers: List<String>.from(snapshot['answers'] ?? []),
@@ -35,7 +36,7 @@ class InfoModel {
   }
 
   Map<String, dynamic> toMap() => {
-        'medias': medias,
+        'medias': medias!.map((e) => e.toJson()).toList(),
         'bio': bio,
         'prompts': prompts,
         'answers': answers,

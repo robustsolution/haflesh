@@ -1,9 +1,11 @@
-// ignore_for_file: library_private_types_in_public_api
+// ignore_for_file: library_private_types_in_public_api, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:hafleh/common/utils/images.dart';
+import 'package:hafleh/common/values/constants.dart';
 import 'package:hafleh/common/values/custom_text_style.dart';
 import 'package:hafleh/common/utils/logger.dart';
 import 'package:hafleh/common/widgets/static_progress_bar.dart';
@@ -92,6 +94,7 @@ class _CreateInfoPageState extends State<CreateInfoPage> {
   void createInfo() async {
     try {
       User? authedUser = FirebaseAuth.instance.currentUser;
+      InfoModel info = context.read<InfoBloc>().state.info;
 
       if (authedUser != null) {
         ProfileStatus profileState = context.read<ProfileBloc>().state.status;
@@ -99,10 +102,14 @@ class _CreateInfoPageState extends State<CreateInfoPage> {
           context.read<ProfileBloc>().add(const ProfileCreateRequested());
         }
 
-        List<String> photos = ["", "", "", "", "", ""];
-        context
-            .read<InfoBloc>()
-            .add(InfoUpdated(info.copyWith(photos: photos)));
+        context.loaderOverlay.show();
+        for (var i = 0; i < info.medias!.length; i++) {
+          if (info.medias![i].type != "") {
+            Media temp = await uploadMedia(authedUser.uid, info.medias![i]);
+            info.medias![i] = temp;
+          }
+        }
+
         context.read<InfoBloc>().add(const InfoCreateRequested());
       }
     } catch (e) {
@@ -133,10 +140,7 @@ class _CreateInfoPageState extends State<CreateInfoPage> {
             },
             child: BlocListener<InfoBloc, InfoState>(
                 listener: (context, infoState) {
-                  print(infoState.status);
-                  if (infoState.status == InfoStatus.createLoading) {
-                    context.loaderOverlay.show();
-                  } else if (infoState.status == InfoStatus.created) {
+                  if (infoState.status == InfoStatus.created) {
                     context.loaderOverlay.hide();
                     if (context.read<ProfileBloc>().state.status ==
                         ProfileStatus.created) {

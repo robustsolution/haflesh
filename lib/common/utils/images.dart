@@ -1,9 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'dart:io';
-import 'dart:ui' as ui; // Importing 'ui' class only for its type 'ByteData'
 import 'dart:async';
-import 'dart:typed_data';
 import 'package:path/path.dart' as path_lib;
 
 import 'package:firebase_storage/firebase_storage.dart';
@@ -11,22 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:hafleh/common/values/constants.dart';
 import 'package:uuid/uuid.dart';
-
-Future<Uint8List> getImageBytes(ImageProvider imageProvider) async {
-  final Completer<Uint8List> completer = Completer();
-  final ImageStream stream = imageProvider.resolve(ImageConfiguration.empty);
-  final listener =
-      ImageStreamListener((ImageInfo image, bool synchronousCall) async {
-    final ByteData? byteData =
-        await image.image.toByteData(format: ui.ImageByteFormat.png);
-    final Uint8List pngBytes = byteData!.buffer.asUint8List();
-    completer.complete(pngBytes);
-  });
-
-  stream.addListener(listener);
-
-  return completer.future;
-}
 
 ImageProvider getNetworkImage(String url) {
   try {
@@ -61,7 +43,7 @@ Future<String> uploadFile(String path, File file) async {
   return url;
 }
 
-Future<Media> convertLocalToOnline(int uid, Media media) async {
+Future<Media> uploadMedia(String uid, Media media) async {
   if (media.type != "") {
     String extension, filename, path;
     extension = path_lib.extension(media.media);
